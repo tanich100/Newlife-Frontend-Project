@@ -19,7 +19,7 @@ class CustomBottomNavBar extends StatelessWidget {
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.money),
-          label: 'Favorites',
+          label: 'Donate',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.notifications),
@@ -28,7 +28,7 @@ class CustomBottomNavBar extends StatelessWidget {
         BottomNavigationBarItem(
           icon: Icon(Icons.person),
           label: 'Profile',
-        ),       
+        ),
       ],
       backgroundColor: Colors.yellow,
       selectedItemColor: Colors.white,
@@ -42,7 +42,7 @@ class CustomBottomNavBar extends StatelessWidget {
     switch (currentRoute) {
       case '/':
         return 0;
-      case '/favorites':
+      case '/donate':
         return 1;
       case '/notifications':
         return 2;
@@ -59,7 +59,7 @@ class CustomBottomNavBar extends StatelessWidget {
         Get.toNamed('/');
         break;
       case 1:
-        Get.toNamed('/favorites');
+        Get.toNamed('/donate');
         break;
       case 2:
         Get.toNamed('/notifications');
