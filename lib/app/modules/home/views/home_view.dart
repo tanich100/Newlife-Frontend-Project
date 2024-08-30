@@ -1,24 +1,20 @@
 import 'package:flutter/material.dart';
-import '../widgets/camera_button.dart';
-import '../widgets/favorites_button.dart';
-import '../widgets/filter_dropdown.dart';
-import '../widgets/pet_display.dart';
-import '../widgets/recommended_pets.dart';
-import '../widgets/new_arrivals.dart';
-import '../widgets/category_selector.dart';
-import '../widgets/custom_bottom_nav_bar.dart';
+import 'package:get/get.dart';
+import 'package:newlife_app/app/modules/home/views/camera_button.dart';
+import 'package:newlife_app/app/modules/home/views/category_selector.dart';
+import 'package:newlife_app/app/modules/home/views/custom_bottom_nav_bar.dart';
+import 'package:newlife_app/app/modules/home/views/filter_dropdown.dart';
+import 'package:newlife_app/app/modules/home/views/new_arrivals.dart';
+import 'package:newlife_app/app/modules/home/views/pets_display.dart';
+import 'package:newlife_app/app/modules/home/views/recommended_pets.dart';
 
-class MainPage extends StatefulWidget {
-  @override
-  _MainPageState createState() => _MainPageState();
-}
+import '../controllers/home_controller.dart';
 
-class _MainPageState extends State<MainPage> {
-  String _selectedTag = 'All';
-
+class HomeView extends GetView<HomeController> {
+  const HomeView({super.key});
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
+    final HomeController controller = Get.find<HomeController>();
 
     return Scaffold(
       appBar: AppBar(
@@ -28,7 +24,6 @@ class _MainPageState extends State<MainPage> {
           children: [
             Expanded(child: SearchBar()),
             CameraButton(),
-            FavoritesButton(),
           ],
         ),
         actions: [FilterDropdown()],
@@ -40,7 +35,6 @@ class _MainPageState extends State<MainPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Recommended Pets
               Container(
                 padding: EdgeInsets.symmetric(vertical: 16.0),
                 child: Column(
@@ -66,8 +60,6 @@ class _MainPageState extends State<MainPage> {
                 ),
               ),
               SizedBox(height: 5),
-
-              // New Arrivals
               Container(
                 padding: EdgeInsets.symmetric(vertical: 16.0),
                 child: Column(
@@ -93,29 +85,21 @@ class _MainPageState extends State<MainPage> {
                 ),
               ),
               SizedBox(height: 2),
-
-              // Category Selector
               Container(
                 padding: EdgeInsets.symmetric(vertical: 8.0),
                 child: CategorySelector(
                   onTagSelected: (tag) {
-                    setState(() {
-                      _selectedTag = tag;
-                    });
+                    controller.updateTag(tag);
                   },
                 ),
               ),
               SizedBox(height: 6),
-
-              // Pets Display
               Container(
                 color: Color.fromARGB(255, 242, 242, 242),
                 padding: EdgeInsets.symmetric(vertical: 16.0),
                 child: SizedBox(
                   height: 250,
-                  child: PetsDisplay(
-                    category: _selectedTag,
-                  ),
+                  child: PetsDisplay(),
                 ),
               ),
             ],

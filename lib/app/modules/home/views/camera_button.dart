@@ -5,9 +5,7 @@ class CameraButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       icon: Icon(Icons.camera_alt),
-      onPressed: () {
-        // Implement camera search functionality
-      },
+      onPressed: () {},
     );
   }
 }

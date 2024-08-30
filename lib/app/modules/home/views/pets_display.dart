@@ -1,23 +1,12 @@
 import 'package:flutter/material.dart';
-import '../models/pet.dart';
-import '../screens/detail_page.dart';
-import '../data/pets_data.dart';
+import 'package:get/get.dart';
+import 'package:newlife_app/app/modules/home/controllers/home_controller.dart';
 
 class PetsDisplay extends StatelessWidget {
-  final String category;
-
-  PetsDisplay({required this.category});
-
   @override
   Widget build(BuildContext context) {
-    print('Selected category: $category');
-
-    final filteredPets = category == 'All'
-        ? pets
-        : pets.where((pet) {
-            print('Checking pet: ${pet.name}, Category: ${pet.category}');
-            return pet.category.toLowerCase() == category.toLowerCase();
-          }).toList();
+    final HomeController controller = Get.find<HomeController>();
+    final filteredPets = controller.filteredPets;
 
     return GridView.builder(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -29,14 +18,6 @@ class PetsDisplay extends StatelessWidget {
       itemBuilder: (context, index) {
         final pet = filteredPets[index];
         return GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => DetailPage(pet: pet),
-              ),
-            );
-          },
           child: Card(
             child: Column(
               children: [
