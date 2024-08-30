@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newlife_app/app/modules/home/controllers/home_controller.dart';
+import 'package:newlife_app/app/modules/petsDetail/views/pets_detail_view.dart';
 
 class PetsDisplay extends StatelessWidget {
   @override
@@ -18,6 +19,7 @@ class PetsDisplay extends StatelessWidget {
       itemBuilder: (context, index) {
         final pet = filteredPets[index];
         return GestureDetector(
+          
           child: Card(
             child: Column(
               children: [
