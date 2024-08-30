@@ -30,13 +30,14 @@ class CustomBottomNavBar extends StatelessWidget {
           label: 'Profile',
         ),
       ],
+      backgroundColor: Colors.yellow,
+      selectedItemColor: Colors.white,
+      unselectedItemColor: Colors.white70,
+      type: BottomNavigationBarType.fixed,
     );
   }
 
   int _getCurrentIndex(HomeController controller) {
-    // Define logic to return the current index based on the selected route
-    // For simplicity, return 0 for Home, 1 for Favorites, etc.
-    // You may need to adjust this logic based on your routing implementation
     final currentRoute = Get.currentRoute;
     switch (currentRoute) {
       case '/':
