@@ -71,9 +71,9 @@ class LoginView extends GetView<LoginController> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {
-                    
-                  },
+                  onTap: 
+                     () => Get.toNamed('/register'),
+                  
                   child: Text(
                     'Sign up',
                     style: TextStyle(
