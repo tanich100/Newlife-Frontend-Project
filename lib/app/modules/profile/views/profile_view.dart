@@ -25,7 +25,12 @@ class ProfileView extends GetView<ProfileController> {
                     ),
                     IconButton(
                       icon: Icon(Icons.settings),
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.bottomSheet(
+                          SettingsMenu(),
+                          backgroundColor: Colors.transparent,
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -114,6 +119,67 @@ class ProfileView extends GetView<ProfileController> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
+  }
+}
+
+class SettingsMenu extends StatelessWidget {
+  const SettingsMenu({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.amber[100],
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 40,
+            height: 4,
+            margin: EdgeInsets.symmetric(vertical: 10),
+            decoration: BoxDecoration(
+              color: Colors.grey,
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+          _buildMenuItem(
+              Icons.edit, 'แก้ไขโปรไฟล์', () => Get.toNamed('/edit-profile')),
+          _buildMenuItem(Icons.pets, 'ประวัติการขออุปการะ',
+              () => Get.toNamed('/adoption-history')),
+          _buildMenuItem(Icons.house, 'ประวัติการอุปการะ',
+              () => Get.toNamed('/medical-history')),
+          _buildMenuItem(Icons.volunteer_activism, 'ประวัติการบริจาคเงิน',
+              () => Get.toNamed('/donation-history')),
+          _buildMenuItem(Icons.list_alt, 'ขั้นตอนการอุปการะ',
+              () => Get.toNamed('/adoption-process')),
+          _buildMenuItem(Icons.exit_to_app, 'ออกจากระบบ', () {
+            // Handle logout logic here
+            Get.offAllNamed(
+                '/login'); // Navigate to login page and remove all previous routes
+          }),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMenuItem(IconData icon, String text, VoidCallback onTap) {
+    return ListTile(
+      leading: Container(
+        padding: EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: Colors.amber,
+          shape: BoxShape.circle,
+        ),
+        child: Icon(icon, color: Colors.white),
+      ),
+      title: Text(text),
+      onTap: () {
+        Get.back();
+        onTap();
+      },
     );
   }
 }
