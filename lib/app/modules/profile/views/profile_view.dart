@@ -124,8 +124,6 @@ class ProfileView extends GetView<ProfileController> {
 }
 
 class SettingsMenu extends StatelessWidget {
-  const SettingsMenu({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -150,7 +148,7 @@ class SettingsMenu extends StatelessWidget {
           _buildMenuItem(Icons.pets, 'ประวัติการขออุปการะ',
               () => Get.toNamed('/adoption-history')),
           _buildMenuItem(Icons.house, 'ประวัติการอุปการะ',
-              () => Get.toNamed('/medical-history')),
+              () => Get.toNamed('/adopted-history')),
           _buildMenuItem(Icons.volunteer_activism, 'ประวัติการบริจาคเงิน',
               () => Get.toNamed('/donation-history')),
           _buildMenuItem(Icons.list_alt, 'ขั้นตอนการอุปการะ',
