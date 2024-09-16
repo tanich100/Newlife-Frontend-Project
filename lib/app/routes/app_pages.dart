@@ -10,6 +10,8 @@ import '../modules/notification/bindings/notification_binding.dart';
 import '../modules/notification/views/notification_view.dart';
 import '../modules/petsDetail/bindings/pets_detail_binding.dart';
 import '../modules/petsDetail/views/pets_detail_view.dart';
+import '../modules/postPet/bindings/post_pet_binding.dart';
+import '../modules/postPet/views/post_pet_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
 import '../modules/register/bindings/register_binding.dart';
@@ -57,6 +59,11 @@ class AppPages {
       name: _Paths.REGISTER,
       page: () => const RegisterView(),
       binding: RegisterBinding(),
+    ),
+    GetPage(
+      name: _Paths.POST_PET,
+      page: () => const PostPetView(),
+      binding: PostPetBinding(),
     ),
   ];
 }

@@ -74,7 +74,7 @@ class ProfileView extends GetView<ProfileController> {
           Icons.add,
           color: Colors.white,
         ),
-        onPressed: () {},
+        onPressed: () => Get.toNamed('/post-pet'),
       ),
     );
   }
@@ -107,7 +107,7 @@ class ProfileInfo extends StatelessWidget {
               ),
               SizedBox(height: 10),
               Text(
-                'คารีน่า ถนอมญาติ',
+                'คาริน่า ถนอมญาติ',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ],

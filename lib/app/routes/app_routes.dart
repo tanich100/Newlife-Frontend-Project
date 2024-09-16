@@ -10,6 +10,7 @@ abstract class Routes {
   static const PETS_DETAIL = _Paths.PETS_DETAIL;
   static const LOGIN = _Paths.LOGIN;
   static const REGISTER = _Paths.REGISTER;
+  static const POST_PET = _Paths.POST_PET;
 }
 
 abstract class _Paths {
@@ -21,4 +22,5 @@ abstract class _Paths {
   static const PETS_DETAIL = '/pets-detail';
   static const LOGIN = '/login';
   static const REGISTER = '/register';
+  static const POST_PET = '/post-pet';
 }
