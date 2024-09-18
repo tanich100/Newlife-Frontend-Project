@@ -116,19 +116,20 @@ class CameraView extends GetView<CameraControllerX> {
     );
   }
 
-  Widget _buildFlashButton() {
-    return IconButton(
-      icon: Icon(
-        Icons.flash_on,
-        color: Colors.white,
-        // ขนาด icon
-        size: 30,
-      ),
-      onPressed: () {
-        // TODO: Toggle flash
-      },
-    );
-  }
+ Widget _buildFlashButton() {
+  final CameraControllerX cameraController = Get.find<CameraControllerX>();
+
+  return Obx(() => IconButton(
+    icon: Icon(
+      cameraController.isFlashOn.value ? Icons.flash_on : Icons.flash_off,
+      color: Colors.white,
+      size: 30,
+    ),
+    onPressed: () {
+      cameraController.toggleFlash();
+    },
+  ));
+}
 
   void _takePicture() async {
     try {

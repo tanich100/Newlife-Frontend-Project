@@ -5,6 +5,8 @@ import 'package:permission_handler/permission_handler.dart';
 class CameraControllerX extends GetxController {
   late CameraController cameraController;
   RxBool isCameraInitialized = false.obs;
+  RxBool isFlashOn = false.obs;
+  
 
   @override
   void onInit() {
@@ -37,6 +39,19 @@ class CameraControllerX extends GetxController {
       isCameraInitialized.value = true;
     } catch (e) {
       print('Error initializing camera: $e');
+    }
+  }
+
+   void toggleFlash() {
+    if (!isCameraInitialized.value) return;
+
+    isFlashOn.value = !isFlashOn.value;
+    _setFlashMode(isFlashOn.value ? FlashMode.torch : FlashMode.off);
+  }
+
+  void _setFlashMode(FlashMode mode) {
+    if (cameraController.value.isInitialized) {
+      cameraController.setFlashMode(mode);
     }
   }
 
