@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../modules/camera/bindings/camera_binding.dart';
+import '../modules/camera/views/camera_view.dart';
 import '../modules/donate/bindings/donate_binding.dart';
 import '../modules/donate/views/donate_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -57,13 +59,18 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.REGISTER,
-      page: () =>  RegisterView(),
+      page: () => RegisterView(),
       binding: RegisterBinding(),
     ),
     GetPage(
       name: _Paths.POST_PET,
       page: () => const PostPetView(),
       binding: PostPetBinding(),
+    ),
+    GetPage(
+      name: _Paths.CAMERA,
+      page: () => const CameraView(),
+      binding: CameraBinding(),
     ),
   ];
 }
