@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:newlife_app/app/modules/home/views/camera_button.dart';
 import 'package:newlife_app/app/modules/home/views/category_selector.dart';
 import 'package:newlife_app/app/modules/home/views/custom_bottom_nav_bar.dart';
+import 'package:newlife_app/app/modules/home/views/favorites_button.dart';
 import 'package:newlife_app/app/modules/home/views/filter_dropdown.dart';
 import 'package:newlife_app/app/modules/home/views/new_arrivals.dart';
 import 'package:newlife_app/app/modules/home/views/pets_display.dart';
@@ -24,6 +25,7 @@ class HomeView extends GetView<HomeController> {
           children: [
             Expanded(child: SearchBar()),
             CameraButton(),
+            FavoritesButton()
           ],
         ),
         actions: [FilterDropdown()],
