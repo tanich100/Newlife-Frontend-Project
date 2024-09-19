@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:newlife_app/app/modules/login/views/login_view.dart';
+import 'package:newlife_app/app/modules/register/views/interest_view.dart';
 
 class AdoptView extends StatefulWidget {
   @override
@@ -357,7 +358,7 @@ class _AdoptPageState extends State<AdoptView> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => LoginView()),
+                      MaterialPageRoute(builder: (context) => InterestView()),
                     );
                   },
                   style: ButtonStyle(
