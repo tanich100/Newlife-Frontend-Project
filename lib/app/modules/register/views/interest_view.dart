@@ -10,7 +10,7 @@ class InterestView extends StatelessWidget{
       ),
       body: const Center(
         child: Text(
-          'อ่านออกเป็นควาย',
+          'อ่านออกเป็นควาย(หยอกๆ)',
           style: TextStyle(fontSize: 60),
         ),
       ),

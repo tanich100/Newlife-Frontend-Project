@@ -18,7 +18,7 @@ class _AdoptPageState extends State<AdoptView> {
         child: AppBar(
           title: Text(
             'บันทึกข้อมูลสำหรับการอุปการะ',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 31),
           ),
           centerTitle: true,
         ),
