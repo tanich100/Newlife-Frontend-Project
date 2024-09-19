@@ -78,7 +78,7 @@ class _AdoptionHistoryViewState extends State<AdoptionHistoryView>
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(16.0),
             child: ElevatedButton(
               child: Text('กลับไปที่หน้าหลัก',
                   style: TextStyle(color: Colors.black, fontSize: 16)),
@@ -127,7 +127,7 @@ class _AdoptionHistoryViewState extends State<AdoptionHistoryView>
           children: [
             CircleAvatar(
               backgroundImage: NetworkImage(
-                  'https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_square.jpg'),
+                  'https://t4.ftcdn.net/jpg/09/13/64/57/360_F_913645734_uaYTFPqd8vMv48NzmQlgBUISr2aIHR5K.jpg'),
               radius: 35,
             ),
             SizedBox(width: 16),

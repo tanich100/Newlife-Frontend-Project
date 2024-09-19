@@ -1,4 +1,7 @@
 import 'package:get/get.dart';
+
+import '../modules/adoptedHistory/bindings/adopted_history_binding.dart';
+import '../modules/adoptedHistory/views/adopted_history_view.dart';
 import '../modules/adoptionHistory/bindings/adoption_history_binding.dart';
 import '../modules/adoptionHistory/views/adoption_history_view.dart';
 import '../modules/camera/bindings/camera_binding.dart';
@@ -84,6 +87,11 @@ class AppPages {
       name: _Paths.FAVORITE,
       page: () => const FavoriteView(),
       binding: FavoriteBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADOPTED_HISTORY,
+      page: () => const AdoptedHistoryView(),
+      binding: AdoptedHistoryBinding(),
     ),
   ];
 }
