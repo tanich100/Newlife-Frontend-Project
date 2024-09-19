@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:newlife_app/app/modules/postPet/views/post_detail_page.dart';
 
 class NewPostPage extends StatelessWidget {
   final String postType;
@@ -18,12 +19,15 @@ class NewPostPage extends StatelessWidget {
             shape: BoxShape.circle,
           ),
           child: IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.black),
+            icon: Icon(Icons.arrow_back_ios_new, color: Colors.black),
             onPressed: () => Get.back(),
           ),
         ),
         title: Text('โพสต์ใหม่',
-            style: TextStyle(color: Colors.black, fontSize: 20)),
+            style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 20)),
         backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
@@ -45,8 +49,7 @@ class NewPostPage extends StatelessWidget {
                         radius: 20,
                       ),
                       SizedBox(width: 8),
-                      Text('คาริน่า ถนอมญาติ',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      Text('คาริน่า ถนอมญาติ', style: TextStyle(fontSize: 18)),
                     ],
                   ),
                   SizedBox(height: 16),
@@ -84,15 +87,14 @@ class NewPostPage extends StatelessWidget {
                   ),
                   SizedBox(height: 16),
                   TextField(
-                    maxLines: 5,
+                    maxLines: 8,
                     decoration: InputDecoration(
                       hintText: 'คุณกำลังคิดอะไร',
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  SizedBox(height: 16),
-                  Text('ช่องทางการติดต่อ:',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  SizedBox(height: 20),
+                  Text('ช่องทางการติดต่อ', style: TextStyle(fontSize: 17)),
                   SizedBox(height: 8),
                   TextField(
                     decoration: InputDecoration(
@@ -100,7 +102,7 @@ class NewPostPage extends StatelessWidget {
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  SizedBox(height: 8),
+                  SizedBox(height: 15),
                   TextField(
                     decoration: InputDecoration(
                       hintText: '@ID Line',
@@ -116,7 +118,11 @@ class NewPostPage extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             child: ElevatedButton(
               child: Text('ขั้นตอนต่อไป',
-                  style: TextStyle(color: Colors.black, fontSize: 16)),
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  )),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xFFFFD54F),
                 padding: EdgeInsets.symmetric(vertical: 16),
@@ -124,7 +130,8 @@ class NewPostPage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () =>
+                  Get.to(() => PostPageDetail(selectedType: postType)),
             ),
           ),
         ],

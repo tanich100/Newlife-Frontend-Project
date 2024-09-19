@@ -25,14 +25,25 @@ class _PostTypeSelectionPageState extends State<PostTypeSelectionPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Get.back(),
+        leading: Container(
+          margin: EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: Color(0xFFFFD54F),
+            shape: BoxShape.circle,
+          ),
+          child: IconButton(
+            icon: Icon(Icons.arrow_back_ios_new, color: Colors.black),
+            onPressed: () => Get.back(),
+          ),
         ),
         title: Text('เลือกประเภทของโพสต์',
-            style: TextStyle(color: Colors.black, fontSize: 18)),
+            style: TextStyle(
+                color: Colors.black,
+                fontSize: 20,
+                fontWeight: FontWeight.bold)),
         backgroundColor: Colors.white,
         elevation: 0,
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -53,7 +64,7 @@ class _PostTypeSelectionPageState extends State<PostTypeSelectionPage> {
             ),
             SizedBox(height: 16),
             Text('รายการที่แนะนำ',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
             SizedBox(height: 8),
             _buildRadioListTile(
               title: 'ประกาศหาผู้รับเลี้ยง',
@@ -75,7 +86,10 @@ class _PostTypeSelectionPageState extends State<PostTypeSelectionPage> {
               width: double.infinity,
               child: ElevatedButton(
                 child: Text('ขั้นตอนต่อไป',
-                    style: TextStyle(color: Colors.black, fontSize: 16)),
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16)),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFFFFD54F),
                   padding: EdgeInsets.symmetric(vertical: 16),

@@ -45,9 +45,8 @@ class ProfileView extends GetView<ProfileController> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Get.back(),
-        ),
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => Get.toNamed('/home')),
         IconButton(
           icon: Icon(Icons.settings),
           onPressed: () {
@@ -73,6 +72,7 @@ class ProfileView extends GetView<ProfileController> {
         icon: Icon(
           Icons.add,
           color: Colors.white,
+          size: 35,
         ),
         onPressed: () => Get.toNamed('/post-pet'),
       ),
