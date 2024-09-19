@@ -47,7 +47,7 @@ class ProfileView extends GetView<ProfileController> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         IconButton(
-            icon: const Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back_ios),
             onPressed: () => Get.toNamed('/home')),
         IconButton(
           icon: Icon(Icons.settings),

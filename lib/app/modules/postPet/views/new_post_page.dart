@@ -78,7 +78,7 @@ class NewPostPage extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(postType), // Display the selected post type
+                              Text(postType),
                             ],
                           ),
                         ),

@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
-
-import '../modules/History/bindings/history_binding.dart';
-import '../modules/History/views/history_view.dart';
+import '../modules/adoptionHistory/bindings/adoption_history_binding.dart';
+import '../modules/adoptionHistory/views/adoption_history_view.dart';
 import '../modules/camera/bindings/camera_binding.dart';
 import '../modules/camera/views/camera_view.dart';
 import '../modules/donate/bindings/donate_binding.dart';
@@ -71,13 +70,13 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.CAMERA,
-      page: () =>  CameraView(),
+      page: () => CameraView(),
       binding: CameraBinding(),
     ),
     GetPage(
-      name: _Paths.HISTORY,
-      page: () => const HistoryView(),
-      binding: HistoryBinding(),
+      name: _Paths.ADOPTION_HISTORY,
+      page: () => const AdoptionHistoryView(),
+      binding: AdoptionHistoryBinding(),
     ),
   ];
 }
