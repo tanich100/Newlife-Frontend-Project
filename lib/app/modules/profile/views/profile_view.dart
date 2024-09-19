@@ -26,8 +26,8 @@ class ProfileView extends GetView<ProfileController> {
                 Divider(
                   color: Colors.grey,
                   thickness: 1,
-                  indent: 20,
-                  endIndent: 20,
+                  indent: 10,
+                  endIndent: 10,
                 ),
                 const SizedBox(height: 8),
                 PostView(),
@@ -90,7 +90,7 @@ class ProfileInfo extends StatelessWidget {
         Center(
           child: const Text(
             'โปรไฟล์ของฉัน',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
           ),
         ),
         const SizedBox(height: 20),
@@ -128,22 +128,25 @@ class PostView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-        childAspectRatio: 1,
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: GridView.builder(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+          childAspectRatio: 1,
+        ),
+        itemCount: imageUrls.length,
+        itemBuilder: (context, index) {
+          return Image.network(
+            imageUrls[index],
+            fit: BoxFit.cover,
+          );
+        },
       ),
-      itemCount: imageUrls.length,
-      itemBuilder: (context, index) {
-        return Image.network(
-          imageUrls[index],
-          fit: BoxFit.cover,
-        );
-      },
     );
   }
 }
@@ -171,7 +174,7 @@ class SettingsMenu extends StatelessWidget {
           _buildMenuItem(
               Icons.edit, 'แก้ไขโปรไฟล์', () => Get.to(EditProfilePage())),
           SizedBox(height: 10),
-          _buildMenuItem(Icons.pets, 'ประวัติการขออุปการะ',
+          _buildMenuItem(Icons.pets, 'ประวัติการขอรับอุปการะ',
               () => Get.toNamed('/adoption-history')),
           SizedBox(height: 10),
           _buildMenuItem(Icons.house, 'ประวัติการอุปการะ',

@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../modules/History/bindings/history_binding.dart';
+import '../modules/History/views/history_view.dart';
 import '../modules/camera/bindings/camera_binding.dart';
 import '../modules/camera/views/camera_view.dart';
 import '../modules/donate/bindings/donate_binding.dart';
@@ -71,6 +73,11 @@ class AppPages {
       name: _Paths.CAMERA,
       page: () =>  CameraView(),
       binding: CameraBinding(),
+    ),
+    GetPage(
+      name: _Paths.HISTORY,
+      page: () => const HistoryView(),
+      binding: HistoryBinding(),
     ),
   ];
 }
