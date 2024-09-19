@@ -1,24 +1,38 @@
 import 'package:flutter/material.dart';
 
-import 'package:get/get.dart';
-
-import '../controllers/donate_controller.dart';
-
-class DonateView extends GetView<DonateController> {
-  const DonateView({super.key});
+class DonateView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('DonateView'),
-        centerTitle: true,
-      ),
-      body: const Center(
-        child: Text(
-          'DonateView is working',
-          style: TextStyle(fontSize: 20),
-        ),
-      ),
+      backgroundColor: Color.fromARGB(255, 236, 221, 107),
+      appBar: AppBar(title: Text('Donate'),backgroundColor: Color.fromARGB(255, 236, 217, 79),),
+      body: ListView(
+        children: [
+          Center(
+            child: Container(
+              width: 300,
+              height: 500,
+            child: Image(
+            image: NetworkImage('images/H-1.jpg'),
+            fit: BoxFit.contain,
+          ),
+          ),
+          ),
+          SizedBox(height: 20), 
+          Center(
+            child: ElevatedButton(
+              onPressed: () {
+                print("Copy Success");
+              },
+              child: Text('Copy'),
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15), 
+                textStyle: TextStyle(fontSize: 18), 
+              ),
+            ),
+          ),
+        ],
+          ),
     );
   }
 }

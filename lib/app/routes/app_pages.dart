@@ -34,7 +34,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.DONATE,
-      page: () => const DonateView(),
+      page: () => DonateView(),
       binding: DonateBinding(),
     ),
     GetPage(
