@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:camera/camera.dart';
 import '../controllers/camera_controller.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CameraView extends GetView<CameraControllerX> {
   const CameraView({Key? key}) : super(key: key);
@@ -68,7 +69,7 @@ class CameraView extends GetView<CameraControllerX> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _buildThumbnail(),
+            _buildImagePicker(),
             _buildCaptureButton(),
             _buildFlashButton(),
           ],
@@ -88,6 +89,30 @@ class CameraView extends GetView<CameraControllerX> {
       ),
       // TODO: Replace with actual thumbnail
       child: const Icon(Icons.image, color: Colors.white),
+    );
+  }
+
+  Widget _buildImagePicker() {
+    return GestureDetector(
+      onTap: _pickImages,
+      child: Obx(() => Container(
+        width: 85,
+        height: 85,
+        decoration: BoxDecoration(
+          color: Color.fromARGB(255, 16, 15, 15),
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: Colors.white),
+        ),
+        child: controller.selectedImages.isEmpty
+            ? const Icon(Icons.image, color: Colors.white)
+            : ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.file(
+                  controller.selectedImages.first,
+                  fit: BoxFit.cover,
+                ),
+              ),
+      )),
     );
   }
 
@@ -131,7 +156,7 @@ class CameraView extends GetView<CameraControllerX> {
   ));
 }
 
-  void _takePicture() async {
+   void _takePicture() async {
     try {
       final image = await controller.cameraController.takePicture();
       Get.snackbar('Success', 'Picture saved to ${image.path}');
@@ -140,4 +165,18 @@ class CameraView extends GetView<CameraControllerX> {
       Get.snackbar('Error', 'Failed to take picture: $e');
     }
   }
+
+  void _pickImages() async {
+    final ImagePicker _picker = ImagePicker();
+    final List<XFile>? images = await _picker.pickMultiImage();
+    if (images != null) {
+      if (images.length + controller.selectedImages.length > 5) {
+        Get.snackbar('แจ้งเตือน', 'คุณสามารถเลือกรูปได้สูงสุด 5 รูป');
+        return;
+      }
+      controller.addSelectedImages(images);
+    }
+  }
 }
+
+

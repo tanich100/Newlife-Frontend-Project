@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:get/get.dart';
 import 'package:camera/camera.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -6,6 +8,18 @@ class CameraControllerX extends GetxController {
   late CameraController cameraController;
   RxBool isCameraInitialized = false.obs;
   RxBool isFlashOn = false.obs;
+
+
+  final RxList<File> selectedImages = <File>[].obs;
+
+  void addSelectedImages(List<XFile> images) {
+    final newImages = images.map((xFile) => File(xFile.path)).toList();
+    selectedImages.addAll(newImages);
+   if (selectedImages.length > 5) {
+    // ถ้ามีรูปมากกว่า 5 รูป ให้ตัดเหลือแค่ 5 รูปแรก
+    selectedImages.removeRange(5, selectedImages.length);
+  }
+  }
   
 
   @override
