@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newlife_app/app/modules/profile/controllers/profile_controller.dart';
+import 'package:newlife_app/app/modules/profile/views/edit_profile_page.dart';
 
 class ProfileView extends GetView<ProfileController> {
   const ProfileView({Key? key}) : super(key: key);
@@ -8,6 +9,7 @@ class ProfileView extends GetView<ProfileController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -96,10 +98,10 @@ class ProfileInfo extends StatelessWidget {
           child: Column(
             children: [
               CircleAvatar(
-                radius: 55,
+                radius: 80,
                 backgroundColor: Color(0xFFD9D9D9),
                 child: CircleAvatar(
-                  radius: 50,
+                  radius: 75,
                   backgroundImage: NetworkImage(
                     'https://ae-pic-a1.aliexpress-media.com/kf/Sd2a617eb4fd54862b20b2e7a4dae68efs.jpg_640x640Q90.jpg_.webp',
                   ),
@@ -167,18 +169,21 @@ class SettingsMenu extends StatelessWidget {
             ),
           ),
           _buildMenuItem(
-              Icons.edit, 'แก้ไขโปรไฟล์', () => Get.toNamed('/edit-profile')),
+              Icons.edit, 'แก้ไขโปรไฟล์', () => Get.to(EditProfilePage())),
+          SizedBox(height: 10),
           _buildMenuItem(Icons.pets, 'ประวัติการขออุปการะ',
               () => Get.toNamed('/adoption-history')),
+          SizedBox(height: 10),
           _buildMenuItem(Icons.house, 'ประวัติการอุปการะ',
               () => Get.toNamed('/adopted-history')),
-          _buildMenuItem(Icons.volunteer_activism, 'ประวัติการบริจาคเงิน',
-              () => Get.toNamed('/donation-history')),
+          SizedBox(height: 10),
           _buildMenuItem(Icons.list_alt, 'ขั้นตอนการอุปการะ',
               () => Get.toNamed('/adoption-process')),
+          SizedBox(height: 10),
           _buildMenuItem(Icons.exit_to_app, 'ออกจากระบบ', () {
             Get.offAllNamed('/login');
           }),
+          SizedBox(height: 10),
         ],
       ),
     );

@@ -98,7 +98,7 @@ class _PostPageDetailState extends State<PostPageDetail> {
                       ),
                     ),
                   _DetailsWidget(isLookingForAdoption: isLookingForAdoption),
-                  SizedBox(height: 6),
+                  SizedBox(height: 8),
                   _AddressWidget(),
                 ],
               ),
