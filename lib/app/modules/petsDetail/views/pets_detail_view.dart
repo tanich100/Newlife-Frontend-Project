@@ -3,10 +3,15 @@ import 'package:get/get.dart';
 
 import 'confirm_dialog.dart';
 
-class PetsDetailView extends StatelessWidget {
+class PetsDetailView extends StatefulWidget {
   const PetsDetailView({Key? key}) : super(key: key);
 
   @override
+    _PetsDetailViewState createState() => _PetsDetailViewState();
+}
+ class _PetsDetailViewState extends State<PetsDetailView> {
+  bool isFavorite = false;
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -77,17 +82,33 @@ class PetsDetailView extends StatelessWidget {
           _buildTagBox(Icons.female, 'เมีย'),
         ],
       ),
-       Container(
-        padding: EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color:  Color.fromARGB(255, 239, 190, 31),
-          shape: BoxShape.circle,
-        ),
-        child: Icon(Icons.favorite, color: Colors.red, size: 30),
-      ),
+       _buildFavoriteButton(),
     ],
   );
 }
+
+  Widget _buildFavoriteButton() {
+    return InkWell(
+      onTap: () {
+        setState(() {
+          isFavorite = !isFavorite;
+        });
+      },
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 300),
+        padding: EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: isFavorite ? Color.fromARGB(255, 239, 190, 31) : Color.fromARGB(255, 239, 190, 31),
+          shape: BoxShape.circle,
+        ),
+        child: Icon(
+          isFavorite ? Icons.favorite : Icons.favorite_border,
+          color: isFavorite ? Colors.red : Colors.black,
+          size: 30,
+        ),
+      ),
+    );
+  }
 
 Widget _buildTagBox(IconData icon, String text) {
   return Container(
