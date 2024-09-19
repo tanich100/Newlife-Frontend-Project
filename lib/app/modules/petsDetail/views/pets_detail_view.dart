@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'confirm_dialog.dart';
+
 class PetsDetailView extends StatelessWidget {
   const PetsDetailView({Key? key}) : super(key: key);
 
@@ -10,7 +12,8 @@ class PetsDetailView extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
-          onPressed: () => Get.offNamed('/home'),
+          onPressed: () {},
+          // => Get.offNamed('/home'),
         ),
       ),
       body: SingleChildScrollView(
@@ -176,7 +179,7 @@ Widget _buildTagBox(IconData icon, String text) {
     );
   }
 
-  Widget _buildControls() {
+   Widget _buildControls() {
     return Center(
       child: SizedBox(
         width: 250,
@@ -186,7 +189,7 @@ Widget _buildTagBox(IconData icon, String text) {
             'ต้องการอุปการะ',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          onPressed: () {},
+          onPressed: () => _showConfirmDialog(),
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color.fromARGB(255, 244, 204, 47),
             foregroundColor: Colors.black,
@@ -197,5 +200,21 @@ Widget _buildTagBox(IconData icon, String text) {
         ),
       ),
     );
+  }
+
+  void _showConfirmDialog() async {
+    final result = await Get.dialog<bool>(
+      ConfirmDialogView(petName: 'โลร่า'),
+      barrierDismissible: false,
+    );
+
+    if (result == true) {
+      // TODO: Add logic for confirming adoption
+      Get.snackbar(
+        'สำเร็จ',
+        'คุณได้ยืนยันการอุปการะน้องโลร่าแล้ว',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
   }
 }
