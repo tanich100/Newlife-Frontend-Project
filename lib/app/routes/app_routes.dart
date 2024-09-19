@@ -13,6 +13,7 @@ abstract class Routes {
   static const POST_PET = _Paths.POST_PET;
   static const CAMERA = _Paths.CAMERA;
   static const HISTORY = _Paths.HISTORY;
+  static const FAVORITE = _Paths.FAVORITE;
 }
 
 abstract class _Paths {
@@ -27,4 +28,5 @@ abstract class _Paths {
   static const POST_PET = '/post-pet';
   static const CAMERA = '/camera';
   static const HISTORY = '/history';
+  static const FAVORITE = '/favorite';
 }

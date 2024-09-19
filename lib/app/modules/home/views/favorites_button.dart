@@ -7,8 +7,7 @@ class FavoritesButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       icon: Icon(Icons.favorite),
-      onPressed: () {}
-       
+      onPressed: () => Get.toNamed('/favorite')
     );
   }
 }
