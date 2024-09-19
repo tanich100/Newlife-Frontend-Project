@@ -37,7 +37,9 @@ class CameraView extends GetView<CameraControllerX> {
               padding: EdgeInsets.all(8.0),
               child: IconButton(
                 icon: Icon(Icons.close, color: Colors.white),
-                onPressed: () => Get.back(),
+                onPressed: () {controller.disposeCamera(); Get.toNamed('/home'); }
+                
+               
               ),
             ),
           ),

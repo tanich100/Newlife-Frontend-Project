@@ -5,6 +5,8 @@ import '../modules/camera/bindings/camera_binding.dart';
 import '../modules/camera/views/camera_view.dart';
 import '../modules/donate/bindings/donate_binding.dart';
 import '../modules/donate/views/donate_view.dart';
+import '../modules/favorite/bindings/favorite_binding.dart';
+import '../modules/favorite/views/favorite_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/login/bindings/login_binding.dart';
@@ -77,6 +79,11 @@ class AppPages {
       name: _Paths.ADOPTION_HISTORY,
       page: () => const AdoptionHistoryView(),
       binding: AdoptionHistoryBinding(),
+    ),
+    GetPage(
+      name: _Paths.FAVORITE,
+      page: () => const FavoriteView(),
+      binding: FavoriteBinding(),
     ),
   ];
 }

@@ -12,6 +12,13 @@ class CameraControllerX extends GetxController {
 
   final RxList<File> selectedImages = <File>[].obs;
 
+   void disposeCamera() {
+    if (cameraController.value.isInitialized) {
+      cameraController.dispose();
+    }
+    isCameraInitialized.value = false;
+  }
+
   void addSelectedImages(List<XFile> images) {
     final newImages = images.map((xFile) => File(xFile.path)).toList();
     selectedImages.addAll(newImages);
