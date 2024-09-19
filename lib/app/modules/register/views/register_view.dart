@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:newlife_app/app/modules/register/views/adopt_detail_view.dart';
+import 'package:newlife_app/app/modules/register/views/detail_adopt.dart';
 import '../controllers/register_controller.dart';
 
 class RegisterView extends GetView<RegisterController> {
