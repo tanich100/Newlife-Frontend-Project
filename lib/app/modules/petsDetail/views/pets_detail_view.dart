@@ -7,9 +7,10 @@ class PetsDetailView extends StatefulWidget {
   const PetsDetailView({Key? key}) : super(key: key);
 
   @override
-    _PetsDetailViewState createState() => _PetsDetailViewState();
+  _PetsDetailViewState createState() => _PetsDetailViewState();
 }
- class _PetsDetailViewState extends State<PetsDetailView> {
+
+class _PetsDetailViewState extends State<PetsDetailView> {
   bool isFavorite = false;
 
   Widget build(BuildContext context) {
@@ -17,24 +18,27 @@ class PetsDetailView extends StatefulWidget {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
-          onPressed: () {},
-          // => Get.offNamed('/home'),
+          onPressed: () {
+            Get.back();
+          },
         ),
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding:  EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildPetImage(),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               Padding(
                 padding: EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                   _buildPetTypeTag(),
+                    _buildPetTypeTag(),
                     SizedBox(height: 16),
                     _buildPetInfoHeader(),
                     SizedBox(height: 16),
@@ -71,21 +75,21 @@ class PetsDetailView extends StatefulWidget {
     );
   }
 
- Widget _buildPetTypeTag() {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      Row(
-        children: [
-          _buildTagBox(Icons.pets, 'แมว'),
-          SizedBox(width: 10),
-          _buildTagBox(Icons.female, 'เมีย'),
-        ],
-      ),
-       _buildFavoriteButton(),
-    ],
-  );
-}
+  Widget _buildPetTypeTag() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            _buildTagBox(Icons.pets, 'แมว'),
+            SizedBox(width: 10),
+            _buildTagBox(Icons.female, 'เมีย'),
+          ],
+        ),
+        _buildFavoriteButton(),
+      ],
+    );
+  }
 
   Widget _buildFavoriteButton() {
     return InkWell(
@@ -98,7 +102,9 @@ class PetsDetailView extends StatefulWidget {
         duration: Duration(milliseconds: 300),
         padding: EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: isFavorite ? Color.fromARGB(255, 239, 190, 31) : Color.fromARGB(255, 239, 190, 31),
+          color: isFavorite
+              ? Color.fromARGB(255, 239, 190, 31)
+              : Color.fromARGB(255, 239, 190, 31),
           shape: BoxShape.circle,
         ),
         child: Icon(
@@ -110,72 +116,73 @@ class PetsDetailView extends StatefulWidget {
     );
   }
 
-Widget _buildTagBox(IconData icon, String text) {
-  return Container(
-    width: 120, 
-    height: 40,  
-    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(8),
-      border: Border.all(
-        color: Colors.black,
-        width: 0.5,
+  Widget _buildTagBox(IconData icon, String text) {
+    return Container(
+      width: 120,
+      height: 40,
+      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: Colors.black,
+          width: 0.5,
+        ),
       ),
-    ),
-    child: Row(
-      mainAxisSize: MainAxisSize.min,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 26), // ลดขนาด icon ลงเล็กน้อย
+          SizedBox(width: 4),
+          Expanded(
+            child: Text(
+              text,
+              style: TextStyle(fontWeight: FontWeight.w800, fontSize: 14),
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPetInfoHeader() {
+    return Row(
       children: [
-        Icon(icon, size: 26), // ลดขนาด icon ลงเล็กน้อย
-        SizedBox(width: 4),
-        Expanded(
+        Text(
+          'โลร่า',
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(
+          width: 10,
+        ),
+        Text(
+          '(8 เดือน)',
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(width: 20),
+        Container(
           child: Text(
-            text,
-            style: TextStyle(fontWeight: FontWeight.w800, fontSize: 14),
-          textAlign: TextAlign.center,
-            overflow: TextOverflow.ellipsis,
+            'สถานะ:',
+            style: TextStyle(
+                fontSize: 18, color: Colors.black, fontWeight: FontWeight.bold),
           ),
         ),
-      ],
-    ),
-  );
-}
-
- Widget _buildPetInfoHeader() {
-  return Row(
-    children: [
-      Text(
-        'โลร่า',
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-      ),
-      SizedBox(width: 10,),
-      Text(
-        '(8 เดือน)',
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-      ),
-      SizedBox(width: 20), 
-      Container(
-        child: Text(
-          'สถานะ:',
-          style: TextStyle(fontSize: 18, color: Colors.black,fontWeight: FontWeight.bold),
-          
+        SizedBox(
+          width: 10,
         ),
-      ),
-      SizedBox(width: 10,),
-      Text(
+        Text(
           'พร้อมให้รับอุปการะ',
           style: TextStyle(fontSize: 14, color: Colors.black87),
         ),
-      
-    ],
-  );
-}
-
- 
+      ],
+    );
+  }
 
   Widget _buildPetLocation() {
     return Row(
       children: [
-        Icon(Icons.location_on_sharp,color: Colors.red.shade500, size: 25),
+        Icon(Icons.location_on_sharp, color: Colors.red.shade500, size: 25),
         SizedBox(width: 4),
         Expanded(
           child: Text('คอนโดภูเก็ตทาวน์ ต.รัษฎา อ.เมืองภูเก็ต จ.ภูเก็ต'),
@@ -192,7 +199,9 @@ Widget _buildTagBox(IconData icon, String text) {
           'รายละเอียด',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 20,),
+        SizedBox(
+          height: 20,
+        ),
         Text(
           'น้องเป็นแมวที่ขี้อ้อนมาก เป็นแมวที่ชอบเล่นขี้เล่นพอสมควรอยู่ไม่นิ่งเลยค่ะ ชอบกินขนมแมวมาก ชอบเป็นที่รักคนและขี้อ้อนมาก ๆ',
         ),
@@ -200,7 +209,7 @@ Widget _buildTagBox(IconData icon, String text) {
     );
   }
 
-   Widget _buildControls() {
+  Widget _buildControls() {
     return Center(
       child: SizedBox(
         width: 250,
