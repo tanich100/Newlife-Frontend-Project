@@ -16,7 +16,7 @@ class LoginView extends GetView<LoginController> {
             child: Container(
               width: 300,
               height: 300,
-              child: Image(image: NetworkImage('images/Icon.jpg')),
+              child: Image.asset('images/Icon.jpg')
             ),
           ),
           SizedBox(height: 30),
