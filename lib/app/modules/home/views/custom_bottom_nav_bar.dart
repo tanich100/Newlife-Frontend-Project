@@ -40,7 +40,7 @@ class CustomBottomNavBar extends StatelessWidget {
   int _getCurrentIndex(HomeController controller) {
     final currentRoute = Get.currentRoute;
     switch (currentRoute) {
-      case '/':
+      case '/home':
         return 0;
       case '/donate':
         return 1;
@@ -56,7 +56,7 @@ class CustomBottomNavBar extends StatelessWidget {
   void _onItemTapped(int index) {
     switch (index) {
       case 0:
-        Get.toNamed('/');
+        Get.toNamed('/home');
         break;
       case 1:
         Get.toNamed('/donate');
