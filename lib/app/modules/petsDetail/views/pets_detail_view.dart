@@ -160,7 +160,7 @@ class _PetsDetailViewState extends State<PetsDetailView> {
           '(8 เดือน)',
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
-        SizedBox(width: 20),
+        SizedBox(width: 10),
         Container(
           child: Text(
             'สถานะ:',
@@ -169,10 +169,10 @@ class _PetsDetailViewState extends State<PetsDetailView> {
           ),
         ),
         SizedBox(
-          width: 10,
+          width: 5,
         ),
         Text(
-          'พร้อมให้รับอุปการะ',
+          'ยังไม่ได้รับอุปการะ',
           style: TextStyle(fontSize: 14, color: Colors.black87),
         ),
       ],
