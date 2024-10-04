@@ -37,14 +37,16 @@ class AdoptedHistoryView extends GetView<AdoptedHistoryController> {
             ],
           ),
         ),
-        body: TabBarView(
-          children: [
-            _buildCatList('ทั้งหมด'),
-            _buildCatList('รอดำเนินการ'),
-            _buildCatList('ผ่านเกณฑ์'),
-            _buildCatList('ไม่ผ่านเกณฑ์'),
-            _buildCatList('ยกเลิก'),
-          ],
+        body: SafeArea(
+          child: TabBarView(
+            children: [
+              _buildCatList('ทั้งหมด'),
+              _buildCatList('รอดำเนินการ'),
+              _buildCatList('ผ่านเกณฑ์'),
+              _buildCatList('ไม่ผ่านเกณฑ์'),
+              _buildCatList('ยกเลิก'),
+            ],
+          ),
         ),
       ),
     );

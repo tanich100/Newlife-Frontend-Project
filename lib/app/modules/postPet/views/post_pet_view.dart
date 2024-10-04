@@ -45,63 +45,65 @@ class _PostTypeSelectionPageState extends State<PostTypeSelectionPage> {
         elevation: 0,
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextField(
-              decoration: InputDecoration(
-                hintText: 'ประเภทของโพสต์',
-                prefixIcon: Icon(Icons.search, color: Colors.grey),
-                filled: true,
-                fillColor: Colors.grey[200],
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide.none,
-                ),
-              ),
-            ),
-            SizedBox(height: 16),
-            Text('รายการที่แนะนำ',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-            SizedBox(height: 8),
-            _buildRadioListTile(
-              title: 'ประกาศหาผู้รับเลี้ยง',
-              value: 'ประกาศหาผู้รับเลี้ยง',
-              icon: Icons.favorite_border,
-            ),
-            _buildRadioListTile(
-              title: 'ประกาศตามหาเจ้าของสัตว์เลี้ยง',
-              value: 'ประกาศตามหาเจ้าของสัตว์เลี้ยง',
-              icon: Icons.person_outline,
-            ),
-            _buildRadioListTile(
-              title: 'ประกาศตามหาสัตว์หาย',
-              value: 'ประกาศตามหาสัตว์หาย',
-              icon: Icons.pets,
-            ),
-            Spacer(),
-            Container(
-              width: double.infinity,
-              child: ElevatedButton(
-                child: Text('ขั้นตอนต่อไป',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16)),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFFFFD54F),
-                  padding: EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TextField(
+                decoration: InputDecoration(
+                  hintText: 'ประเภทของโพสต์',
+                  prefixIcon: Icon(Icons.search, color: Colors.grey),
+                  filled: true,
+                  fillColor: Colors.grey[200],
+                  border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide.none,
                   ),
                 ),
-                onPressed: () =>
-                    Get.to(() => NewPostPage(postType: _selectedType)),
               ),
-            ),
-          ],
+              SizedBox(height: 16),
+              Text('รายการที่แนะนำ',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+              SizedBox(height: 8),
+              _buildRadioListTile(
+                title: 'ประกาศหาผู้รับเลี้ยง',
+                value: 'ประกาศหาผู้รับเลี้ยง',
+                icon: Icons.favorite_border,
+              ),
+              _buildRadioListTile(
+                title: 'ประกาศตามหาเจ้าของสัตว์เลี้ยง',
+                value: 'ประกาศตามหาเจ้าของสัตว์เลี้ยง',
+                icon: Icons.person_outline,
+              ),
+              _buildRadioListTile(
+                title: 'ประกาศตามหาสัตว์หาย',
+                value: 'ประกาศตามหาสัตว์หาย',
+                icon: Icons.pets,
+              ),
+              Spacer(),
+              Container(
+                width: double.infinity,
+                child: ElevatedButton(
+                  child: Text('ขั้นตอนต่อไป',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16)),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFFFFD54F),
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  onPressed: () =>
+                      Get.to(() => NewPostPage(postType: _selectedType)),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

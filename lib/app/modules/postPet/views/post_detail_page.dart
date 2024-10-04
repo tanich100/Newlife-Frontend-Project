@@ -55,78 +55,81 @@ class _PostPageDetailState extends State<PostPageDetail> {
         elevation: 0,
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              padding: EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('ประเภท',
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('ประเภท',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 17)),
+                    SizedBox(height: 5),
+                    _buildRadioListTile(
+                      title: 'สุนัข',
+                      value: 'สุนัข',
+                    ),
+                    _buildRadioListTile(
+                      title: 'แมว',
+                      value: 'แมว',
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      'การดูแล',
                       style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
-                  SizedBox(height: 5),
-                  _buildRadioListTile(
-                    title: 'สุนัข',
-                    value: 'สุนัข',
-                  ),
-                  _buildRadioListTile(
-                    title: 'แมว',
-                    value: 'แมว',
-                  ),
-                  SizedBox(height: 5),
-                  Text(
-                    'การดูแล',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-                  ),
-                  CheckboxListTile(
-                    title: Text(
-                      'ต้องการความดูแลเป็นพิเศษ',
-                      style: TextStyle(fontSize: 15), // Adjust font size here
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
                     ),
-                    value: _isSpecialCareSelected,
-                    onChanged: _handleSpecialCareChange,
-                    activeColor: Color(0xFFFFD54F),
-                  ),
-                  if (_isSpecialCareSelected)
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 10),
-                      child: Text(
-                        'โปรดทราบสัตว์ที่ต้องการความดูแลพิเศษอาจมีโอกาสในการขอรับเลี้ยงน้อย',
-                        style: TextStyle(color: Colors.red, fontSize: 11.5),
+                    CheckboxListTile(
+                      title: Text(
+                        'ต้องการความดูแลเป็นพิเศษ',
+                        style: TextStyle(fontSize: 15), // Adjust font size here
                       ),
+                      value: _isSpecialCareSelected,
+                      onChanged: _handleSpecialCareChange,
+                      activeColor: Color(0xFFFFD54F),
                     ),
-                  _DetailsWidget(isLookingForAdoption: isLookingForAdoption),
-                  SizedBox(height: 8),
-                  _AddressWidget(),
-                ],
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: ElevatedButton(
-              child: Text('โพสต์',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  )),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFFFFD54F),
-                padding: EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+                    if (_isSpecialCareSelected)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Text(
+                          'โปรดทราบสัตว์ที่ต้องการความดูแลพิเศษอาจมีโอกาสในการขอรับเลี้ยงน้อย',
+                          style: TextStyle(color: Colors.red, fontSize: 11.5),
+                        ),
+                      ),
+                    _DetailsWidget(isLookingForAdoption: isLookingForAdoption),
+                    SizedBox(height: 8),
+                    _AddressWidget(),
+                  ],
                 ),
-                minimumSize: Size(double.infinity, 48),
               ),
-              onPressed: () {
-                Get.toNamed('/profile');
-              },
             ),
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ElevatedButton(
+                child: Text('โพสต์',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    )),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFFFFD54F),
+                  padding: EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  minimumSize: Size(double.infinity, 48),
+                ),
+                onPressed: () {
+                  Get.toNamed('/profile');
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

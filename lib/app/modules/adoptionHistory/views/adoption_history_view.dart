@@ -63,36 +63,38 @@ class _AdoptionHistoryViewState extends State<AdoptionHistoryView>
           ),
         ),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                _buildTabContent('ทั้งหมด'),
-                _buildTabContent('รอดำเนินการ'),
-                _buildTabContent('ผ่านเกณฑ์'),
-                _buildTabContent('ไม่ผ่านเกณฑ์'),
-                _buildTabContent('ยกเลิก'),
-              ],
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  _buildTabContent('ทั้งหมด'),
+                  _buildTabContent('รอดำเนินการ'),
+                  _buildTabContent('ผ่านเกณฑ์'),
+                  _buildTabContent('ไม่ผ่านเกณฑ์'),
+                  _buildTabContent('ยกเลิก'),
+                ],
+              ),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(16.0),
-            child: ElevatedButton(
-              child: Text('กลับไปที่หน้าหลัก',
-                  style: TextStyle(color: Colors.black, fontSize: 16)),
-              onPressed: () => Get.toNamed('/home'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFFFFD54F),
-                minimumSize: Size(double.infinity, 50),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+            Padding(
+              padding: EdgeInsets.all(16.0),
+              child: ElevatedButton(
+                child: Text('กลับไปที่หน้าหลัก',
+                    style: TextStyle(color: Colors.black, fontSize: 16)),
+                onPressed: () => Get.toNamed('/home'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFFFFD54F),
+                  minimumSize: Size(double.infinity, 50),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
