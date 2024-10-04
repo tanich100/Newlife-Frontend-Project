@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:newlife_app/app/modules/home/views/custom_bottom_nav_bar.dart';
 import 'package:newlife_app/app/modules/profile/controllers/profile_controller.dart';
 import 'package:newlife_app/app/modules/profile/views/adoption_rule.dart';
 import 'package:newlife_app/app/modules/profile/views/edit_profile_page.dart';
@@ -40,6 +41,7 @@ class ProfileView extends GetView<ProfileController> {
       ),
       floatingActionButton: _buildFloatingActionButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      bottomNavigationBar: CustomBottomNavBar(),
     );
   }
 
