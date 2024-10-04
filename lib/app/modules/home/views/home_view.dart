@@ -88,11 +88,16 @@ class HomeView extends GetView<HomeController> {
               ),
               SizedBox(height: 2),
               Container(
-                padding: EdgeInsets.symmetric(vertical: 8.0),
-                child: CategorySelector(
-                  onTagSelected: (tag) {
-                    controller.updateTag(tag);
-                  },
+                height: 50, // ปรับความสูงตามความเหมาะสม
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    CategorySelector(
+                      onTagSelected: (tag) {
+                        controller.updateTag(tag);
+                      },
+                    ),
+                  ],
                 ),
               ),
               SizedBox(height: 6),
