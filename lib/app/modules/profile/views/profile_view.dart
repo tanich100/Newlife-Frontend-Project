@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newlife_app/app/modules/profile/controllers/profile_controller.dart';
+import 'package:newlife_app/app/modules/profile/views/adoption_rule.dart';
 import 'package:newlife_app/app/modules/profile/views/edit_profile_page.dart';
 
 class ProfileView extends GetView<ProfileController> {
@@ -181,7 +182,7 @@ class SettingsMenu extends StatelessWidget {
               () => Get.toNamed('/adopted-history')),
           SizedBox(height: 10),
           _buildMenuItem(Icons.list_alt, 'ขั้นตอนการอุปการะ',
-              () => Get.toNamed('/adoption-process')),
+              () => Get.to(AdoptionRule())),
           SizedBox(height: 10),
           _buildMenuItem(Icons.exit_to_app, 'ออกจากระบบ', () {
             Get.offAllNamed('/login');
