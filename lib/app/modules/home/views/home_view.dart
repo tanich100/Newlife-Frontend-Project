@@ -40,26 +40,52 @@ class HomeView extends GetView<HomeController> {
               Container(
                 padding: EdgeInsets.symmetric(vertical: 16.0),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text(
-                        'แนะนำ',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w900,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: 240,
+                        padding: EdgeInsets.symmetric(vertical: 8.0),
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 241, 235, 169),
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 16.0),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    'แนะนำ',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w900,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                      width:
+                                          8), // เพิ่มระยะห่างระหว่างข้อความและไอคอน
+                                  // ใส่ไอคอนจาก assets อยู่ด้านหลัง
+                                  Image.asset(
+                                    'images/hot.png', // เปลี่ยนเป็น path ของไอคอนที่คุณต้องการ
+                                    width: 24, // กำหนดความกว้างของไอคอน
+                                    height: 24, // กำหนดความสูงของไอคอน
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 5),
+                            Container(
+                              height: 192,
+                              padding: EdgeInsets.symmetric(horizontal: 16.0),
+                              child: RecommendedPets(),
+                            ),
+                          ],
                         ),
                       ),
-                    ),
-                    SizedBox(height: 5),
-                    Container(
-                      height: 192,
-                      padding: EdgeInsets.symmetric(horizontal: 16.0),
-                      child: RecommendedPets(),
-                    ),
-                  ],
-                ),
+                    ]),
               ),
               SizedBox(height: 5),
               Container(
