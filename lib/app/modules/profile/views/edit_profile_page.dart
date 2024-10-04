@@ -16,8 +16,27 @@ class _EditProfilePageState extends State<EditProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('แก้ไขโปรไฟล์'),
+        leading: Container(
+          margin: EdgeInsets.all(8),
+          // decoration: BoxDecoration(
+          //   color: Color(0xFFFFD54F),
+          //   shape: BoxShape.circle,
+          // ),
+          child: IconButton(
+            icon: Icon(Icons.arrow_back_ios_new, color: Colors.black),
+            onPressed: () => Get.back(),
+          ),
+        ),
+        title: Text('แก้ไขโปรไฟล์',
+            style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 20)),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        centerTitle: true,
       ),
       body: SafeArea(
         child: Padding(
