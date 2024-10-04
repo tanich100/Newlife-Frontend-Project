@@ -7,36 +7,36 @@ class InterestView extends StatefulWidget {
 }
 
 class AddDetailPageState extends State<InterestView> {
-  List<String> selectedCategories = []; // Track multiple selected categories
-  bool isIncome = true; // Default to Income
-  bool isConfirmed = false; // State to show confirmation
-  String searchQuery = ''; // Search query string
-  final int maxSelections = 5; // Maximum number of selections allowed
+  List<String> selectedDogCategories = [];
+  List<String> selectedCatCategories = [];
+  bool isIncome = true;
+  bool isConfirmed = false;
+  String searchQuery = '';
+  final int maxSelections = 5;
 
   // Categories data with image paths for expenses
   final List<Category> expenseCategories = [
-    Category('หมา1', 'images/dogs/dog1.png'),
-    Category('หมา2', 'images/dogs/dog2.png'),
-    Category('หมา3', 'images/dogs/dog3.png'),
-    Category('หมา4', 'images/dogs/dog4.png'),
-    Category('หมา5', 'images/dogs/dog5.png'),
-    Category('หมา6', 'images/dogs/dog6.png'),
-    Category('หมา7', 'images/dogs/dog7.png'),
-    Category('หมา8', 'images/dogs/dog8.png'),
-    Category('หมา9', 'images/dogs/dog9.png'),
+    Category('มอลติพู', 'images/dogs/dog1.png'),
+    Category('ปั๊ก', 'images/dogs/dog2.png'),
+    Category('แจ็ครัสเซลล์ เทอร์เรียร์', 'images/dogs/dog3.png'),
+    Category('บีเกิ้ล', 'images/dogs/dog4.png'),
+    Category('ดัลเมเชียน', 'images/dogs/dog5.png'),
+    Category('ยอร์คเชียร์ เทอร์เรียร์', 'images/dogs/dog6.png'),
+    Category('บอร์เดอร์', 'images/dogs/dog7.png'),
+    Category('เยอรมัน เชพเพิร์ด', 'images/dogs/dog8.png'),
+    Category('ลาบราดอร์ เรทรีฟเวอร์', 'images/dogs/dog9.png'),
   ];
 
-  // Categories data with image paths for income
   final List<Category> incomeCategories = [
-    Category('แมว1', 'images/cats/cat1.png'),
-    Category('แมว2', 'images/cats/cat2.png'),
-    Category('แมว3', 'images/cats/cat3.png'),
-    Category('แมว4', 'images/cats/cat4.png'),
-    Category('แมว5', 'images/cats/cat5.png'),
-    Category('แมว6', 'images/cats/cat6.png'),
-    Category('แมว7', 'images/cats/cat7.png'),
-    Category('แมว8', 'images/cats/cat8.png'),
-    Category('แมว9', 'images/cats/cat9.png'),
+    Category('เปอร์เซีย', 'images/cats/cat1.png'),
+    Category('เตอร์กิชแองโกรา', 'images/cats/cat2.png'),
+    Category('สยาม', 'images/cats/cat3.png'),
+    Category('ผสม', 'images/cats/cat4.png'),
+    Category('อเมริกันชอร์ตแฮร์', 'images/cats/cat5.png'),
+    Category('เปอร์เซียผสม', 'images/cats/cat6.png'),
+    Category('เมนคูน', 'images/cats/cat7.png'),
+    Category('รัสเซียนบลู', 'images/cats/cat8.png'),
+    Category('พันธุ์ผสม', 'images/cats/cat9.png'),
   ];
 
   @override
@@ -53,7 +53,8 @@ class AddDetailPageState extends State<InterestView> {
           ),
           title: Text(
             'เลือกสัตว์เลี้ยงที่คุณชื่นชอบ 5 รายการ',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.black),
+            style: TextStyle(
+                fontWeight: FontWeight.bold, fontSize: 25, color: Colors.black),
           ),
           centerTitle: true,
           backgroundColor: Colors.white,
@@ -72,7 +73,12 @@ class AddDetailPageState extends State<InterestView> {
               },
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.search, color: Colors.black),
-                suffixIcon: Icon(Icons.camera_alt_outlined, color: Colors.black),
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.camera_alt_outlined),
+                  onPressed: () {
+                    Get.toNamed('/camera');
+                  },
+                ),
                 hintText: 'ค้นหาสัตว์เลี้ยง...',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
@@ -86,7 +92,7 @@ class AddDetailPageState extends State<InterestView> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _buildToggleButton('หมา', false),
+                _buildToggleButton('สุนัข', false),
                 SizedBox(width: 16),
                 _buildToggleButton('แมว', true),
               ],
@@ -103,16 +109,18 @@ class AddDetailPageState extends State<InterestView> {
                 itemCount: _filteredCategories().length,
                 itemBuilder: (context, index) {
                   final category = _filteredCategories()[index];
-                  final isSelected = selectedCategories.contains(category.name);
+                  final isSelected =
+                      _getSelectedCategories().contains(category.name);
                   return GestureDetector(
                     onTap: () {
                       setState(() {
                         if (isSelected) {
-                          selectedCategories.remove(category.name);
-                        } else if (selectedCategories.length < maxSelections) {
-                          selectedCategories.add(category.name);
+                          _getSelectedCategories().remove(category.name);
+                        } else if (_getAllSelectedCategories().length <
+                            maxSelections) {
+                          _getSelectedCategories().add(category.name);
                         }
-                        isConfirmed = selectedCategories.isNotEmpty;
+                        isConfirmed = _getSelectedCategories().isNotEmpty;
                       });
                     },
                     child: _buildCategoryCard(category, isSelected),
@@ -124,17 +132,21 @@ class AddDetailPageState extends State<InterestView> {
 
             ElevatedButton(
               onPressed: () {
-                if (selectedCategories.isNotEmpty) {
-                  List<Category> selectedCategoryObjects = selectedCategories.map((categoryName) {
-                    final category = (isIncome
-                        ? incomeCategories
-                        : expenseCategories).firstWhere((cat) => cat.name == categoryName);
+                if (_getSelectedCategories().isNotEmpty) {
+                  List<Category> selectedCategoryObjects =
+                      _getSelectedCategories().map((categoryName) {
+                    final category =
+                        (isIncome ? incomeCategories : expenseCategories)
+                            .firstWhere((cat) => cat.name == categoryName);
                     return category;
                   }).toList();
                   Get.back(result: selectedCategoryObjects);
                 }
               },
-              child: Text('เริ่มใช้งาน',style: TextStyle(color: Colors.black),),
+              child: Text(
+                'เริ่มใช้งาน',
+                style: TextStyle(color: Colors.black),
+              ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.yellow,
                 padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
@@ -143,9 +155,10 @@ class AddDetailPageState extends State<InterestView> {
             ),
             SizedBox(height: 20),
 
-            if (isConfirmed)
+            if (selectedDogCategories.isNotEmpty ||
+                selectedCatCategories.isNotEmpty)
               Text(
-                'หมวดหมู่ที่เลือก: ${selectedCategories.join(', ')}',
+                'ชนิดที่เลือก: ${selectedDogCategories.join(', ')} ${selectedCatCategories.join(', ')}',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
@@ -161,7 +174,6 @@ class AddDetailPageState extends State<InterestView> {
       onTap: () {
         setState(() {
           isIncome = value;
-          selectedCategories.clear(); // Reset selected categories when toggling
           isConfirmed = false; // Reset confirmation when toggling
         });
       },
@@ -194,22 +206,21 @@ class AddDetailPageState extends State<InterestView> {
         children: [
           Stack(
             children: [
-              // Category image
               ClipRRect(
-                borderRadius: BorderRadius.circular(15), // Ensure image fits rounded corners
+                borderRadius: BorderRadius.circular(15),
                 child: Image.asset(
                   category.imagePath,
-                  width: 80, // Adjust size as needed
-                  height: 110, // Adjust size as needed
-                  fit: BoxFit.cover, // Ensure the image fits properly
+                  width: 80,
+                  height: 110,
+                  fit: BoxFit.cover,
                 ),
               ),
-              // Positioned checkmark overlay on top-right of the image
               if (isSelected)
                 Positioned(
                   top: 5,
                   right: 5,
-                  child: Icon(Icons.check_circle, color: Colors.green, size: 24),
+                  child:
+                      Icon(Icons.check_circle, color: Colors.green, size: 24),
                 ),
             ],
           ),
@@ -224,7 +235,6 @@ class AddDetailPageState extends State<InterestView> {
     );
   }
 
-  // Function to filter categories based on search query
   List<Category> _filteredCategories() {
     List<Category> categories = isIncome ? incomeCategories : expenseCategories;
     if (searchQuery.isEmpty) {
@@ -234,6 +244,14 @@ class AddDetailPageState extends State<InterestView> {
           .where((category) => category.name.contains(searchQuery))
           .toList();
     }
+  }
+
+  List<String> _getSelectedCategories() {
+    return isIncome ? selectedCatCategories : selectedDogCategories;
+  }
+
+  List<String> _getAllSelectedCategories() {
+    return selectedDogCategories + selectedCatCategories;
   }
 }
 
