@@ -17,9 +17,19 @@ class ProfileView extends GetView<ProfileController> {
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                _buildHeader(),
+                Container(
+                  child: IconButton(
+                    icon: Icon(Icons.settings),
+                    onPressed: () {
+                      Get.bottomSheet(
+                        SettingsMenu(),
+                        backgroundColor: Colors.transparent,
+                      );
+                    },
+                  ),
+                ),
                 const SizedBox(height: 20),
                 ProfileInfo(),
                 const SizedBox(height: 20),
