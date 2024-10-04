@@ -5,9 +5,18 @@ class CameraButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      icon: Icon(Icons.camera_alt),
-      onPressed: () => Get.toNamed('/camera')
-       
-    );
+        icon: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.circle,
+          ),
+          padding: EdgeInsets.all(8), 
+          child: Icon(
+            Icons.camera_alt_outlined,
+            color: Colors.black, 
+            size: 24, 
+          ),
+        ),
+        onPressed: () => Get.toNamed('/camera'));
   }
 }

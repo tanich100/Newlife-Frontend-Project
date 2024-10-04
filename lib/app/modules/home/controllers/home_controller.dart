@@ -15,6 +15,13 @@ class HomeController extends GetxController {
               pet.category.toLowerCase() == selectedTag.value.toLowerCase())
           .toList();
 
+  
+  final RxString location = ''.obs;
+
+  void setLocation(String newLocation) {
+    location.value = newLocation;
+  }      
+
   void updateTag(String tag) {
     selectedTag.value = tag;
   }

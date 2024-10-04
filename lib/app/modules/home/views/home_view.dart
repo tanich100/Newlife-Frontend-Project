@@ -5,9 +5,11 @@ import 'package:newlife_app/app/modules/home/views/category_selector.dart';
 import 'package:newlife_app/app/modules/home/views/custom_bottom_nav_bar.dart';
 import 'package:newlife_app/app/modules/home/views/favorites_button.dart';
 import 'package:newlife_app/app/modules/home/views/filter_dropdown.dart';
+import 'package:newlife_app/app/modules/home/views/map_button.dart';
 import 'package:newlife_app/app/modules/home/views/new_arrivals.dart';
 import 'package:newlife_app/app/modules/home/views/pets_display.dart';
 import 'package:newlife_app/app/modules/home/views/recommended_pets.dart';
+import 'package:newlife_app/app/modules/home/views/text_search.dart';
 
 import '../controllers/home_controller.dart';
 
@@ -18,17 +20,41 @@ class HomeView extends GetView<HomeController> {
     final HomeController controller = Get.find<HomeController>();
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 236, 217, 79),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(child: SearchBar()),
-            CameraButton(),
-            FavoritesButton()
-          ],
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(130.0),
+        child: SafeArea(
+          child: AppBar(
+            backgroundColor: Color.fromARGB(255, 236, 217, 79),
+            flexibleSpace: Padding(
+              padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  MapButton(),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          height: 40,
+                          child: Row(
+                            children: [
+                              FilterDropdown(),
+                              Expanded(
+                                child: TextSearch(),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      CameraButton(),
+                      FavoritesButton(),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
-        actions: [FilterDropdown()],
       ),
       body: Container(
         color: Color.fromARGB(255, 229, 223, 174),
@@ -83,7 +109,6 @@ class HomeView extends GetView<HomeController> {
                       ),
                     ]),
               ),
-             
               Container(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

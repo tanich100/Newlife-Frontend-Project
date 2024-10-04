@@ -4,6 +4,7 @@ class FilterDropdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<String>(
+      icon: Icon(Icons.filter_list),
       onSelected: (value) {},
       itemBuilder: (BuildContext context) {
         return ['All', 'Dogs', 'Cats', 'Lost Pets', 'Special Care']
