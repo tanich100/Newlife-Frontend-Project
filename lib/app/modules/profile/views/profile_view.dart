@@ -111,7 +111,7 @@ class ProfileInfo extends StatelessWidget {
               SizedBox(height: 10),
               Text(
                 'คาริน่า ถนอมญาติ',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
             ],
           ),

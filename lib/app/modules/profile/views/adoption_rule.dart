@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class AdoptionRule extends StatefulWidget {
   @override
@@ -8,13 +9,34 @@ class AdoptionRule extends StatefulWidget {
 class _AdoptionRuleState extends State<AdoptionRule> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
+    return Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
-          title: Text('ขั้นตอนการรับอุปการะ'),
+          leading: Container(
+            margin: EdgeInsets.all(8),
+            // decoration: BoxDecoration(
+            //   color: Color(0xFFFFD54F),
+            //   shape: BoxShape.circle,
+            // ),
+            child: IconButton(
+              icon: Icon(Icons.arrow_back_ios_new, color: Colors.black),
+              onPressed: () => Get.back(),
+            ),
+          ),
+          title: Text('ขั้นตอนการอุปการะ',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20)),
+          backgroundColor: Colors.white,
+          elevation: 0,
+          centerTitle: true,
         ),
-        body: Padding(padding: const EdgeInsets.all(16.0), child: Column()),
-      ),
-    );
+        body: SafeArea(
+            child: Column(children: [
+          Expanded(
+            child: SingleChildScrollView(),
+          ),
+        ])));
   }
 }
