@@ -31,7 +31,7 @@ class HomeView extends GetView<HomeController> {
         actions: [FilterDropdown()],
       ),
       body: Container(
-        color: const Color.fromARGB(255, 255, 250, 207),
+        color: Color.fromARGB(255, 229, 223, 174),
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 7.0),
           child: Column(
@@ -46,9 +46,8 @@ class HomeView extends GetView<HomeController> {
                         height: 240,
                         padding: EdgeInsets.symmetric(vertical: 8.0),
                         decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 241, 235, 169),
+                          color: const Color.fromARGB(255, 249, 246, 215),
                           borderRadius: BorderRadius.circular(10),
-                          boxShadow: [],
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,14 +63,11 @@ class HomeView extends GetView<HomeController> {
                                       fontWeight: FontWeight.w900,
                                     ),
                                   ),
-                                  SizedBox(
-                                      width:
-                                          8), // เพิ่มระยะห่างระหว่างข้อความและไอคอน
-                                  // ใส่ไอคอนจาก assets อยู่ด้านหลัง
+                                  SizedBox(width: 8),
                                   Image.asset(
-                                    'images/hot.png', // เปลี่ยนเป็น path ของไอคอนที่คุณต้องการ
-                                    width: 24, // กำหนดความกว้างของไอคอน
-                                    height: 24, // กำหนดความสูงของไอคอน
+                                    'images/hot.png',
+                                    width: 26,
+                                    height: 26,
                                   ),
                                 ],
                               ),
@@ -87,20 +83,29 @@ class HomeView extends GetView<HomeController> {
                       ),
                     ]),
               ),
-              SizedBox(height: 5),
+             
               Container(
-                padding: EdgeInsets.symmetric(vertical: 16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text(
-                        'สมาชิกใหม่',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w900,
-                        ),
+                      child: Row(
+                        children: [
+                          Text(
+                            'สมาชิกใหม่',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                          SizedBox(width: 8),
+                          Image.asset(
+                            'images/new.png',
+                            width: 30,
+                            height: 30,
+                          ),
+                        ],
                       ),
                     ),
                     SizedBox(height: 8),
