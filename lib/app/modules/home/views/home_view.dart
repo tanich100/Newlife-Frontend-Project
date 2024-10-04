@@ -68,79 +68,100 @@ class HomeView extends GetView<HomeController> {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        height: 240,
-                        padding: EdgeInsets.symmetric(vertical: 8.0),
-                        decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 249, 246, 215),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              padding: EdgeInsets.symmetric(horizontal: 16.0),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    'แนะนำ',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w900,
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: Container(
+                          height: 240,
+                          width: 390,
+                          padding: EdgeInsets.symmetric(vertical: 8.0),
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 249, 246, 215),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'แนะนำ',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w900,
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(width: 8),
-                                  Image.asset(
-                                    'images/hot.png',
-                                    width: 26,
-                                    height: 26,
-                                  ),
-                                ],
+                                    SizedBox(width: 8),
+                                    Image.asset(
+                                      'images/hot.png',
+                                      width: 26,
+                                      height: 26,
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            SizedBox(height: 5),
-                            Container(
-                              height: 192,
-                              padding: EdgeInsets.symmetric(horizontal: 16.0),
-                              child: RecommendedPets(),
-                            ),
-                          ],
+                              SizedBox(height: 5),
+                              Container(
+                                height: 192,
+                                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                                child: RecommendedPets(),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ]),
               ),
               Container(
+                padding: EdgeInsets.symmetric(vertical: 16.0),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Row(
-                        children: [
-                          Text(
-                            'สมาชิกใหม่',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w900,
-                            ),
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: Container(
+                          height: 250,
+                          width: 390,
+                          padding: EdgeInsets.symmetric(vertical: 8.0),
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 249, 246, 215),
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                          SizedBox(width: 8),
-                          Image.asset(
-                            'images/new.png',
-                            width: 30,
-                            height: 30,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'สมาชิกใหม่',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w900,
+                                      ),
+                                    ),
+                                    SizedBox(width: 8),
+                                    Image.asset(
+                                      'images/new.png',
+                                      width: 30,
+                                      height: 30,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              Container(
+                                height: 192,
+                                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                                child: NewArrivals(),
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 8),
-                    Container(
-                      height: 192,
-                      padding: EdgeInsets.symmetric(horizontal: 16.0),
-                      child: NewArrivals(),
-                    ),
-                  ],
-                ),
+                    ]),
               ),
               SizedBox(height: 2),
               Container(
