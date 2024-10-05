@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newlife_app/app/data/user_data.dart';
+import 'package:newlife_app/app/modules/notification/views/detail_adoption.dart';
 
 
 class Adoptionrequest extends StatelessWidget {
@@ -41,7 +42,10 @@ class Adoptionrequest extends StatelessWidget {
             SizedBox(height: 16),
             ...adoptionRequests.map((userData) => Column(
               children: [
-                AdopterCard(userData: userData),
+                AdopterCard(
+                  userData: userData,
+                  onTap: () => Get.to(() => DetailAdoption(userData: userData)),
+                ),
                 SizedBox(height: 16),
               ],
             )).toList(),
@@ -54,15 +58,19 @@ class Adoptionrequest extends StatelessWidget {
 
 class AdopterCard extends StatelessWidget {
   final UserData userData;
+  final VoidCallback onTap;
 
   const AdopterCard({
     Key? key,
     required this.userData,
+    required this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return GestureDetector(
+      onTap: onTap,
+       child:  Card(
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       child: Padding(
@@ -88,14 +96,16 @@ class AdopterCard extends StatelessWidget {
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                   SizedBox(height: 4),
                   Text('รายได้ต่อเดือน : ${userData.income}'),
-                  Text('เวลาว่างต่อวัน : ${userData.duration}'),
-                  Text('ประเภทที่อยู่อาศัย : ${userData.type}'),
+                  Text('เวลาว่างต่อวัน : ${userData.free_time_per_day}'),
+                  Text('ประเภทที่อยู่อาศัย : ${userData.type_of_residence}'),
                 ],
               ),
             ),
           ],
         ),
       ),
-    );
+    ));
   }
+    
+   
 }
