@@ -26,9 +26,6 @@ class PostPetController extends GetxController {
   Future<void> getNewPet() async {
     adoptionPostList.value = [];
     adoptionPostList.value = await adoptionPostApi.getNewPet();
-    print("Length");
-    print(adoptionPostList.length);
-    print(adoptionPostList);
   }
 
   void increment() => count.value++;
