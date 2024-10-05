@@ -70,7 +70,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.POST_PET,
-      page: () => const PostPetView(),
+      page: () => PostPetView(),
       binding: PostPetBinding(),
     ),
     GetPage(
@@ -80,17 +80,17 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.ADOPTION_HISTORY,
-      page: () => const AdoptionHistoryView(),
+      page: () => AdoptionHistoryView(),
       binding: AdoptionHistoryBinding(),
     ),
     GetPage(
       name: _Paths.FAVORITE,
-      page: () => const FavoriteView(),
+      page: () => FavoriteView(),
       binding: FavoriteBinding(),
     ),
     GetPage(
       name: _Paths.ADOPTED_HISTORY,
-      page: () => const AdoptedHistoryView(),
+      page: () => AdoptedHistoryView(),
       binding: AdoptedHistoryBinding(),
     ),
   ];

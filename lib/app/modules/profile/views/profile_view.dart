@@ -15,7 +15,7 @@ class ProfileView extends GetView<ProfileController> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
@@ -30,9 +30,9 @@ class ProfileView extends GetView<ProfileController> {
                     },
                   ),
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: 20),
                 ProfileInfo(),
-                const SizedBox(height: 20),
+                SizedBox(height: 20),
                 Center(child: Icon(Icons.pets, size: 30)),
                 SizedBox(height: 8),
                 Divider(
@@ -41,9 +41,9 @@ class ProfileView extends GetView<ProfileController> {
                   indent: 10,
                   endIndent: 10,
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
                 PostView(),
-                const SizedBox(height: 20),
+                SizedBox(height: 20),
               ],
             ),
           ),
