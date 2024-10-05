@@ -5,7 +5,7 @@ class DonateView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 236, 221, 107),
+      backgroundColor: Color.fromARGB(255, 238, 236, 224),
       appBar: AppBar(
         title: Text('Donate'),
         backgroundColor: Color.fromARGB(255, 236, 217, 79),
@@ -14,10 +14,10 @@ class DonateView extends StatelessWidget {
         children: [
           Center(
             child: Container(
-              width: 300,
+              width: 500,
               height: 500,
-              child: Image(
-                image: NetworkImage('images/H-1.jpg'),
+              child: Image.asset(
+                'images/donate.jpg',
                 fit: BoxFit.contain,
               ),
             ),
