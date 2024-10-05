@@ -55,25 +55,25 @@ class ProfileView extends GetView<ProfileController> {
     );
   }
 
-  Widget _buildHeader() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        IconButton(
-            icon: const Icon(Icons.arrow_back_ios),
-            onPressed: () => Get.toNamed('/home')),
-        IconButton(
-          icon: Icon(Icons.settings),
-          onPressed: () {
-            Get.bottomSheet(
-              SettingsMenu(),
-              backgroundColor: Colors.transparent,
-            );
-          },
-        ),
-      ],
-    );
-  }
+  // Widget _buildHeader() {
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //     children: [
+  //       IconButton(
+  //           icon: const Icon(Icons.arrow_back_ios),
+  //           onPressed: () => Get.toNamed('/home')),
+  //       IconButton(
+  //         icon: Icon(Icons.settings),
+  //         onPressed: () {
+  //           Get.bottomSheet(
+  //             SettingsMenu(),
+  //             backgroundColor: Colors.transparent,
+  //           );
+  //         },
+  //       ),
+  //     ],
+  //   );
+  // }
 
   Widget _buildFloatingActionButton() {
     return Container(

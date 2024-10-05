@@ -30,7 +30,7 @@ class CustomBottomNavBar extends StatelessWidget {
           label: 'Profile',
         ),
       ],
-      backgroundColor: Colors.yellow,
+      backgroundColor: Color(0xfffdcf09),
       selectedItemColor: Colors.white,
       unselectedItemColor: Colors.white70,
       type: BottomNavigationBarType.fixed,
@@ -56,16 +56,16 @@ class CustomBottomNavBar extends StatelessWidget {
   void _onItemTapped(int index) {
     switch (index) {
       case 0:
-        Get.toNamed('/home');
+        Get.offNamed('/home');
         break;
       case 1:
-        Get.toNamed('/donate');
+        Get.offNamed('/donate');
         break;
       case 2:
-        Get.toNamed('/notification');
+        Get.offNamed('/notification');
         break;
       case 3:
-        Get.toNamed('/profile');
+        Get.offNamed('/profile');
         break;
     }
   }
