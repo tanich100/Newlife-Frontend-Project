@@ -59,6 +59,14 @@ class HomeView extends GetView<HomeController> {
         ),
       ),
       body: Container(
+  decoration: BoxDecoration(
+    
+    color:  Color.fromARGB(255, 236, 217, 79),
+    
+    
+  ),
+      
+     child:  Container(
         decoration: BoxDecoration(
           color: Color.fromARGB(255, 229, 223, 174),
           borderRadius: BorderRadius.only(
@@ -197,6 +205,7 @@ class HomeView extends GetView<HomeController> {
             ],
           ),
         ),
+      ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
