@@ -18,7 +18,17 @@ class FavoriteView extends GetView<FavoriteController> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildHeader(),
+                Container(
+                  margin: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Color(0xFFFFD54F),
+                    shape: BoxShape.circle,
+                  ),
+                  child: IconButton(
+                    icon: Icon(Icons.arrow_back_ios_new, color: Colors.black),
+                    onPressed: () => Get.back(),
+                  ),
+                ),
                 SizedBox(height: 20),
                 Center(
                   child: const Text(

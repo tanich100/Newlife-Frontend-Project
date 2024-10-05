@@ -3,9 +3,8 @@ import 'package:get/get.dart';
 import 'package:newlife_app/app/data/user_data.dart';
 import 'package:newlife_app/app/modules/notification/views/detail_adoption.dart';
 
-
-class Adoptionrequest extends StatelessWidget {
-  const Adoptionrequest({Key? key}) : super(key: key);
+class adoptionRequest extends StatelessWidget {
+  const adoptionRequest({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +20,11 @@ class Adoptionrequest extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(left: 5),
               child: IconButton(
-                icon: Icon(Icons.arrow_back_ios, color: Colors.black, size: 25,),
+                icon: Icon(
+                  Icons.arrow_back_ios,
+                  color: Colors.black,
+                  size: 25,
+                ),
                 onPressed: () => Get.back(),
               ),
             ),
@@ -36,7 +39,10 @@ class Adoptionrequest extends StatelessWidget {
             Center(
               child: Text(
                 'จัดอันดับผู้ขอรับเลี้ยงของ น้องดำ',
-                style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
               ),
             ),
             SizedBox(height: 16),
@@ -106,6 +112,4 @@ class AdopterCard extends StatelessWidget {
       ),
     ));
   }
-    
-   
 }

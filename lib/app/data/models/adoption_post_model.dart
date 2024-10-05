@@ -1,9 +1,9 @@
 class AdoptionPost {
   int? adoptionPostId;
   int? userId;
-  String? image1;
-  String? image2;
-  String? image3;
+  String image1;
+  String image2;
+  String image3;
   String? image4;
   String? image5;
   String? image6;
@@ -30,9 +30,9 @@ class AdoptionPost {
   AdoptionPost({
     this.adoptionPostId,
     this.userId,
-    this.image1,
-    this.image2,
-    this.image3,
+    required this.image1,
+    required this.image2,
+    required this.image3,
     this.image4,
     this.image5,
     this.image6,
@@ -61,16 +61,16 @@ class AdoptionPost {
     return AdoptionPost(
       adoptionPostId: json['adoption_post_id'],
       userId: json['user_id'],
-      image1: json['image_1'],
-      image2: json['image_2'],
-      image3: json['image_3'],
-      image4: json['image_4'],
-      image5: json['image_5'],
-      image6: json['image_6'],
-      image7: json['image_7'],
-      image8: json['image_8'],
-      image9: json['image_9'],
-      image10: json['image_10'],
+      image1: json['image1'] ?? '',
+      image2: json['image2'] ?? '',
+      image3: json['image3'] ?? '',
+      image4: json['image4'],
+      image5: json['image5'],
+      image6: json['image6'],
+      image7: json['image7'],
+      image8: json['image8'],
+      image9: json['image9'],
+      image10: json['image10'],
       name: json['name'],
       breedId: json['breed_id'],
       age: json['age'],
@@ -96,16 +96,16 @@ class AdoptionPost {
     return {
       'adoption_post_id': adoptionPostId,
       'user_id': userId,
-      'image_1': image1,
-      'image_2': image2,
-      'image_3': image3,
-      'image_4': image4,
-      'image_5': image5,
-      'image_6': image6,
-      'image_7': image7,
-      'image_8': image8,
-      'image_9': image9,
-      'image_10': image10,
+      'image1': image1 ?? '',
+      'image2': image2 ?? '',
+      'image3': image3 ?? '',
+      'image4': image4,
+      'image5': image5,
+      'image6': image6,
+      'image7': image7,
+      'image8': image8,
+      'image9': image9,
+      'image10': image10,
       'name': name,
       'breed_id': breedId,
       'age': age,
