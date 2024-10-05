@@ -26,6 +26,18 @@ class AdoptionPostApi {
     }
   }
 
+  Future<List<AdoptionPost>> getNewPet() async {
+    try {
+      final response = await _apiService
+          .get(AppUrl.baseUrl + AppUrl.adoptionPosts + '/GetNewPet');
+      return (response.data as List)
+          .map((json) => AdoptionPost.fromJson(json))
+          .toList();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<AdoptionPost> createPost(AdoptionPost post) async {
     try {
       final response = await _apiService
