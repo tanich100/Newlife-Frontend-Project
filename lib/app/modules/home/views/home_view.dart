@@ -68,7 +68,7 @@ class HomeView extends GetView<HomeController> {
       
      child:  Container(
         decoration: BoxDecoration(
-          color: Color.fromARGB(255, 229, 223, 174),
+          color: Color.fromARGB(255, 255, 245, 205),
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(35),
             topRight: Radius.circular(35),
@@ -91,7 +91,7 @@ class HomeView extends GetView<HomeController> {
                           width: 390,
                           padding: EdgeInsets.symmetric(vertical: 8.0),
                           decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 249, 246, 215),
+                            color: const Color.fromARGB(255, 255, 255, 251),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Column(
@@ -141,7 +141,7 @@ class HomeView extends GetView<HomeController> {
                           width: 390,
                           padding: EdgeInsets.symmetric(vertical: 8.0),
                           decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 249, 246, 215),
+                            color: const Color.fromARGB(255, 253, 253, 253),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Column(
