@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:flutter/material.dart';
+import 'package:newlife_app/app/modules/notification/views/adoptionRequest.dart';
 
 class NotificationView extends StatefulWidget {
   const NotificationView({Key? key}) : super(key: key);
@@ -99,10 +100,14 @@ class _AdoptionHistoryViewState extends State<NotificationView>
     return ListView(
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       children: [
-        if (tabName == 'แจ้งเตือน' || tabName == 'คำขอรับเลี้ยง')
-          _buildAdoptionCard(
-            name: 'แจ้งเตือน:',
-          ),
+         if (tabName == 'แจ้งเตือน')
+        _buildAdoptionCard(
+          name: 'แจ้งเตือน:',
+        ),
+      if (tabName == 'คำขอรับเลี้ยง')
+        _buildAdoptionReq(
+          name: 'คำขอรับเลี้ยง:',
+        ),
       ],
     );
   }
@@ -144,3 +149,44 @@ class _AdoptionHistoryViewState extends State<NotificationView>
     );
   }
 }
+
+Widget _buildAdoptionReq({
+    required String name,
+  }) {
+     return GestureDetector(
+    onTap: () => Get.to(() => Adoptionrequest()),
+    child: Card(
+      color: Color(0xFFFFD54F),
+      margin: EdgeInsets.symmetric(vertical: 8),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Padding(
+        padding: EdgeInsets.all(16),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            CircleAvatar(
+              backgroundImage: NetworkImage(
+                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtn6gKRJ_Cx6faDUAqA5w_zyG_8jSwLe1ygA&s'),
+              radius: 35,
+            ),
+            SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(name,
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  SizedBox(height: 4),
+                  Text('ดูข้อมูล'),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+  }
+

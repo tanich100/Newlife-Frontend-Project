@@ -22,6 +22,8 @@ import '../modules/postPet/bindings/post_pet_binding.dart';
 import '../modules/postPet/views/post_pet_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
+import '../modules/ranking/bindings/ranking_binding.dart';
+import '../modules/ranking/views/ranking_view.dart';
 import '../modules/register/bindings/register_binding.dart';
 import '../modules/register/views/register_view.dart';
 
@@ -92,6 +94,11 @@ class AppPages {
       name: _Paths.ADOPTED_HISTORY,
       page: () => AdoptedHistoryView(),
       binding: AdoptedHistoryBinding(),
+    ),
+    GetPage(
+      name: _Paths.RANKING,
+      page: () => const RankingView(),
+      binding: RankingBinding(),
     ),
   ];
 }

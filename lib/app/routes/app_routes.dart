@@ -16,6 +16,7 @@ abstract class Routes {
   static const ADOPTION_HISTORY = _Paths.ADOPTION_HISTORY;
   static const FAVORITE = _Paths.FAVORITE;
   static const ADOPTED_HISTORY = _Paths.ADOPTED_HISTORY;
+  static const RANKING = _Paths.RANKING;
 }
 
 abstract class _Paths {
@@ -33,4 +34,5 @@ abstract class _Paths {
   static const ADOPTION_HISTORY = '/adoption-history';
   static const FAVORITE = '/favorite';
   static const ADOPTED_HISTORY = '/adopted-history';
+  static const RANKING = '/ranking';
 }
