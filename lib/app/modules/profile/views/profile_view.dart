@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newlife_app/app/modules/home/views/custom_bottom_nav_bar.dart';
+import 'package:newlife_app/app/modules/postPet/views/post_detail.dart';
 import 'package:newlife_app/app/modules/profile/controllers/profile_controller.dart';
 import 'package:newlife_app/app/modules/profile/views/adoption_rule.dart';
 import 'package:newlife_app/app/modules/profile/views/edit_profile_page.dart';
@@ -154,9 +155,12 @@ class PostView extends StatelessWidget {
         ),
         itemCount: imageUrls.length,
         itemBuilder: (context, index) {
-          return Image.network(
-            imageUrls[index],
-            fit: BoxFit.cover,
+          return GestureDetector(
+            onTap: () => Get.to(() => PostDetail()),
+            child: Image.network(
+              imageUrls[index],
+              fit: BoxFit.cover,
+            ),
           );
         },
       ),

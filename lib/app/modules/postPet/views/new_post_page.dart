@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:newlife_app/app/modules/postPet/views/post_detail_page.dart';
+import 'package:newlife_app/app/modules/postPet/views/new_post_detail_page.dart';
 
 class NewPostPage extends StatelessWidget {
   final String postType;
@@ -133,7 +133,7 @@ class NewPostPage extends StatelessWidget {
                   ),
                 ),
                 onPressed: () =>
-                    Get.to(() => PostPageDetail(selectedType: postType)),
+                    Get.to(() => NewPostPageDetail(selectedType: postType)),
               ),
             ),
           ],

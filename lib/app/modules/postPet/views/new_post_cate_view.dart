@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:newlife_app/app/modules/postPet/controllers/post_pet_controller.dart';
 import 'package:newlife_app/app/modules/postPet/views/new_post_page.dart';
 
-class PostPetView extends GetView<PostPetController> {
-  const PostPetView({super.key});
+class NewPostCateView extends GetView<PostPetController> {
+  const NewPostCateView({super.key});
 
   @override
   Widget build(BuildContext context) {

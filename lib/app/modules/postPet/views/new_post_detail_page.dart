@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class PostPageDetail extends StatefulWidget {
+class NewPostPageDetail extends StatefulWidget {
   final String selectedType;
 
-  const PostPageDetail({Key? key, required this.selectedType})
+  const NewPostPageDetail({Key? key, required this.selectedType})
       : super(key: key);
 
   @override
   _PostPageDetailState createState() => _PostPageDetailState();
 }
 
-class _PostPageDetailState extends State<PostPageDetail> {
+class _PostPageDetailState extends State<NewPostPageDetail> {
   String _animalType = 'สุนัข';
   bool _isSpecialCareSelected = false;
 

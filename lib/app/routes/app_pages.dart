@@ -19,9 +19,11 @@ import '../modules/notification/views/notification_view.dart';
 import '../modules/petsDetail/bindings/pets_detail_binding.dart';
 import '../modules/petsDetail/views/pets_detail_view.dart';
 import '../modules/postPet/bindings/post_pet_binding.dart';
-import '../modules/postPet/views/post_pet_view.dart';
+import '../modules/postPet/views/new_post_cate_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
+import '../modules/promote/bindings/promote_binding.dart';
+import '../modules/promote/views/promote_view.dart';
 import '../modules/ranking/bindings/ranking_binding.dart';
 import '../modules/ranking/views/ranking_view.dart';
 import '../modules/register/bindings/register_binding.dart';
@@ -72,7 +74,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.POST_PET,
-      page: () => PostPetView(),
+      page: () => NewPostCateView(),
       binding: PostPetBinding(),
     ),
     GetPage(
@@ -99,6 +101,11 @@ class AppPages {
       name: _Paths.RANKING,
       page: () => const RankingView(),
       binding: RankingBinding(),
+    ),
+    GetPage(
+      name: _Paths.PROMOTE,
+      page: () => const PromoteView(),
+      binding: PromoteBinding(),
     ),
   ];
 }
