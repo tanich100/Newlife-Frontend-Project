@@ -44,7 +44,7 @@ class CustomBottomNavBar extends StatelessWidget {
         return 0;
       case '/donate':
         return 1;
-      case '/notifications':
+      case '/notification':
         return 2;
       case '/profile':
         return 3;
@@ -62,7 +62,7 @@ class CustomBottomNavBar extends StatelessWidget {
         Get.toNamed('/donate');
         break;
       case 2:
-        Get.toNamed('/notifications');
+        Get.toNamed('/notification');
         break;
       case 3:
         Get.toNamed('/profile');
