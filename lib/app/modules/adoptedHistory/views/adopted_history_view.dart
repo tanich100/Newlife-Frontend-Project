@@ -12,9 +12,16 @@ class AdoptedHistoryView extends GetView<AdoptedHistoryController> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.black),
-            onPressed: () => Get.back(),
+          leading: Container(
+            margin: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Color(0xFFFFD54F),
+              shape: BoxShape.circle,
+            ),
+            child: IconButton(
+              icon: Icon(Icons.arrow_back_ios_new, color: Colors.black),
+              onPressed: () => Get.back(),
+            ),
           ),
           title: Text(
             'ประวัติการอุปการะ',

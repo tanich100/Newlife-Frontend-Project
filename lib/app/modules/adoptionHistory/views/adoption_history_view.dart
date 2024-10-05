@@ -31,9 +31,16 @@ class _AdoptionHistoryViewState extends State<AdoptionHistoryView>
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.black),
-          onPressed: () => Navigator.of(context).pop(),
+        leading: Container(
+          margin: EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: Color(0xFFFFD54F),
+            shape: BoxShape.circle,
+          ),
+          child: IconButton(
+            icon: Icon(Icons.arrow_back_ios_new, color: Colors.black),
+            onPressed: () => Get.back(),
+          ),
         ),
         title: Text('ประวัติการขอรับอุปการะ',
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),

@@ -14,10 +14,10 @@ class _AdoptionRuleState extends State<AdoptionRule> {
         appBar: AppBar(
           leading: Container(
             margin: EdgeInsets.all(8),
-            // decoration: BoxDecoration(
-            //   color: Color(0xFFFFD54F),
-            //   shape: BoxShape.circle,
-            // ),
+            decoration: BoxDecoration(
+              color: Color(0xFFFFD54F),
+              shape: BoxShape.circle,
+            ),
             child: IconButton(
               icon: Icon(Icons.arrow_back_ios_new, color: Colors.black),
               onPressed: () => Get.back(),
