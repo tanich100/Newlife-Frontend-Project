@@ -10,6 +10,7 @@ import 'package:newlife_app/app/modules/home/views/new_arrivals.dart';
 import 'package:newlife_app/app/modules/home/views/pets_display.dart';
 import 'package:newlife_app/app/modules/home/views/recommended_pets.dart';
 import 'package:newlife_app/app/modules/home/views/text_search.dart';
+import 'package:newlife_app/app/modules/postPet/controllers/post_pet_controller.dart';
 
 import '../controllers/home_controller.dart';
 
@@ -18,6 +19,7 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     final HomeController controller = Get.find<HomeController>();
+    final PostPetController postPetController = Get.put(PostPetController());
 
     return Scaffold(
       appBar: PreferredSize(
@@ -195,6 +197,13 @@ class HomeView extends GetView<HomeController> {
             ],
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          postPetController.getNewPet(); // Fetch new pets on button press
+        },
+        child: Icon(Icons.refresh), // Icon for the button
+        tooltip: 'Refresh Pets', // Tooltip for accessibility
       ),
       bottomNavigationBar: CustomBottomNavBar(),
     );
