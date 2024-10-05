@@ -21,7 +21,7 @@ class HomeView extends GetView<HomeController> {
 
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(130.0),
+        preferredSize: Size.fromHeight(125.0),
         child: SafeArea(
           child: AppBar(
             backgroundColor: Color.fromARGB(255, 236, 217, 79),
@@ -57,7 +57,13 @@ class HomeView extends GetView<HomeController> {
         ),
       ),
       body: Container(
-        color: Color.fromARGB(255, 229, 223, 174),
+        decoration: BoxDecoration(
+          color: Color.fromARGB(255, 229, 223, 174),
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(35),
+            topRight: Radius.circular(35),
+          ),
+        ),
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 7.0),
           child: Column(
