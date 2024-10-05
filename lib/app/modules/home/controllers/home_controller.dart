@@ -1,7 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newlife_app/app/data/pet_data.dart';
 
-class HomeController extends GetxController {
+class HomeController extends GetxController with GetSingleTickerProviderStateMixin {
   var selectedTag = 'All'.obs;
 
   List<Pet> get recommendedPets =>
@@ -18,26 +19,47 @@ class HomeController extends GetxController {
   
   final RxString location = ''.obs;
 
-  void setLocation(String newLocation) {
-    location.value = newLocation;
-  }      
-
-  void updateTag(String tag) {
-    selectedTag.value = tag;
-  }
+   late TabController tabController;
+  final RxString selectedCategory = 'ทั้งหมด'.obs;
+  final List<String> categories = ['ทั้งหมด', 'สุนัข', 'แมว', 'สัตว์สูญหาย', 'สัตว์ดูแลพิเศษ'];
 
   @override
   void onInit() {
     super.onInit();
+    tabController = TabController(length: categories.length, vsync: this);
+    tabController.addListener(() {
+      if (!tabController.indexIsChanging) {
+        setSelectedCategory(categories[tabController.index]);
+      }
+    });
   }
+
+  @override
+  void onClose() {
+    tabController.dispose();
+    super.onClose();
+  }
+
+  void setSelectedCategory(String category) {
+    selectedCategory.value = category;
+  }
+
+  void updateTag(String tag) {
+    print('Selected tag: $tag');
+    // เพิ่มลอจิกการกรองหรืออัพเดทข้อมูลตาม tag ที่นี่
+  }
+
+  void setLocation(String newLocation) {
+    location.value = newLocation;
+  }      
+
+
+
 
   @override
   void onReady() {
     super.onReady();
   }
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
+  
 }

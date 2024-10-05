@@ -181,7 +181,8 @@ class HomeView extends GetView<HomeController> {
               ),
               SizedBox(height: 2),
               Container(
-                height: 50, // ปรับความสูงตามความเหมาะสม
+                color: Colors.white,
+                height: 55, // ปรับความสูงตามความเหมาะสม
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: [
@@ -193,7 +194,7 @@ class HomeView extends GetView<HomeController> {
                   ],
                 ),
               ),
-              SizedBox(height: 6),
+             
               Container(
                 color: Color.fromARGB(255, 242, 242, 242),
                 padding: EdgeInsets.symmetric(vertical: 16.0),
