@@ -5,4 +5,6 @@ class AppUrl {
   static const String adoptionPosts = '/AdoptionPost';
   static const String image = '/getImage';
   static const String findOwnerPosts = '/FindOwnerPosts';
+  static const String user = '/User';
+
 }
