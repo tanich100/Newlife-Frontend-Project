@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:newlife_app/app/data/models/local_user.dart';
+import 'package:newlife_app/app/data/network/api/user_api.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -8,6 +10,7 @@ class UserController extends GetxController {
   RxInt userId = (-1).obs;
   RxString userName = ''.obs;
   RxString profileImage = ''.obs;
+  UserApi userApi = UserApi();
 
   Future<Database> get database async {
     return openDatabase(
@@ -83,7 +86,18 @@ class UserController extends GetxController {
       print("Error fetching user: $e");
     }
   }
+
+  void login(String username, String password) async {
+    try {
+      localUser user = await userApi.login(username, password);
+      print('Login successful! User ID: ${user.userId}, Name: ${user.name}');
+    } catch (e) {
+      print('Login failed: $e');
+    }
+  }
 }
+
+
 
 // @override
 // void onInit() {
