@@ -7,9 +7,9 @@ class localUser {
 
   factory localUser.fromJson(Map<String, dynamic> json) {
     return localUser(
-      userId: json['user_id'],
+      userId: json['userId'],
       name: json['name'],
-      imageUrl: json['image_url'],
+      imageUrl: json['imageUrl'],
     );
   }
 

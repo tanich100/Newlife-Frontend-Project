@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:newlife_app/app/modules/user/controllers/user_controller.dart';
 import '../controllers/login_controller.dart';
 
 class LoginView extends GetView<LoginController> {
-  const LoginView({Key? key}) : super(key: key);
+  LoginView({Key? key}) : super(key: key);
+  UserController userController = UserController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -14,33 +18,38 @@ class LoginView extends GetView<LoginController> {
         children: [
           Center(
             child: Container(
-              width: 300,
-              height: 300,
-              child: Image.asset('images/Icon.jpg')
-            ),
+                width: 300, height: 300, child: Image.asset('images/Icon.jpg')),
           ),
           SizedBox(height: 30),
-        Column(
-  children: [
-    buildCustomTextField(
-      label: 'Email',
-      prefixIcon: Icons.person,
-    ),
-    SizedBox(height: 25),
-    buildCustomTextField(
-      label: 'Password',
-      prefixIcon: Icons.lock,
-      isPassword: true,
-    ),
-  ],
-),
+          Column(
+            children: [
+              buildCustomTextField(
+                label: 'Email',
+                prefixIcon: Icons.person,
+                controller: emailController,
+              ),
+              SizedBox(height: 25),
+              buildCustomTextField(
+                label: 'Password',
+                prefixIcon: Icons.lock,
+                isPassword: true,
+                controller: passwordController
+              ),
+            ],
+          ),
           SizedBox(height: 100),
           Center(
             child: SizedBox(
               width: 300,
               height: 55,
               child: ElevatedButton(
-                onPressed: () => Get.offAllNamed('/home'),
+                // onPressed: () => Get.offAllNamed('/home'),
+                onPressed: () {
+                  print(emailController.text);
+                  print(passwordController.text);
+                  userController.login(emailController.text, passwordController.text);
+                  //print();
+                },
                 child: Text(
                   'เข้าสู่ระบบ',
                   style: TextStyle(
@@ -71,9 +80,7 @@ class LoginView extends GetView<LoginController> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: 
-                     () => Get.toNamed('/register'),
-                  
+                  onTap: () => Get.toNamed('/register'),
                   child: Text(
                     'Sign up',
                     style: TextStyle(
@@ -91,42 +98,45 @@ class LoginView extends GetView<LoginController> {
     );
   }
 
-Widget buildCustomTextField({
-  required String label,
-  required IconData prefixIcon,
-  IconData? suffixIcon,
-  bool isPassword = false,
-}) {
-  return Container(
-    width: 350,
-    height: 60,
-    decoration: BoxDecoration(
-      color: const Color.fromARGB(255, 218, 215, 215),
-      borderRadius: BorderRadius.circular(8),
-    ),
-    child: Row(
-      children: [
-        SizedBox(width: 16),
-        Icon(prefixIcon, color: const Color.fromARGB(255, 0, 0, 0), size: 24),
-        SizedBox(width: 16),
-        Expanded(
-          child: TextField(
-            obscureText: isPassword,
-            style: TextStyle(fontSize: 16, color: Colors.black87),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              hintText: label,
-              hintStyle: TextStyle(
-                color: Colors.grey[600],
-                fontSize: 16,
+  Widget buildCustomTextField({
+    required String label,
+    required IconData prefixIcon,
+    IconData? suffixIcon,
+    bool isPassword = false,
+    required TextEditingController controller,
+  }) {
+    return Container(
+      width: 350,
+      height: 60,
+      decoration: BoxDecoration(
+        color: const Color.fromARGB(255, 218, 215, 215),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        children: [
+          SizedBox(width: 16),
+          Icon(prefixIcon, color: const Color.fromARGB(255, 0, 0, 0), size: 24),
+          SizedBox(width: 16),
+          Expanded(
+            child: TextField(
+              obscureText: isPassword,
+              style: TextStyle(fontSize: 16, color: Colors.black87),
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: label,
+                hintStyle: TextStyle(
+                  color: Colors.grey[600],
+                  fontSize: 16,
+                ),
               ),
+              controller: controller,
             ),
           ),
-        ),
-        if (suffixIcon != null)
-          Icon(suffixIcon, color: Colors.grey[400], size: 24),
-        SizedBox(width: 16),
-      ],
-    ),
-  );
-}}
+          if (suffixIcon != null)
+            Icon(suffixIcon, color: Colors.grey[400], size: 24),
+          SizedBox(width: 16),
+        ],
+      ),
+    );
+  }
+}
