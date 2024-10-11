@@ -54,7 +54,7 @@ class AddDetailPageState extends State<InterestView> {
           title: Text(
             'เลือกสัตว์เลี้ยงที่คุณชื่นชอบ 5 รายการ',
             style: TextStyle(
-                fontWeight: FontWeight.bold, fontSize: 25, color: Colors.black),
+                fontWeight: FontWeight.bold, fontSize: 16, color: Colors.black),
           ),
           centerTitle: true,
           backgroundColor: Colors.white,
@@ -128,7 +128,6 @@ class AddDetailPageState extends State<InterestView> {
                 },
               ),
             ),
-            SizedBox(height: 20),
 
             ElevatedButton(
               onPressed: () {
@@ -154,6 +153,10 @@ class AddDetailPageState extends State<InterestView> {
                 textStyle: TextStyle(fontSize: 18),
               ),
             ),
+            TextButton(
+                      onPressed: () => Get.toNamed('/home'),
+                      child: Text('ข้าม'),
+                    ),
             SizedBox(height: 20),
 
             if (selectedDogCategories.isNotEmpty ||
