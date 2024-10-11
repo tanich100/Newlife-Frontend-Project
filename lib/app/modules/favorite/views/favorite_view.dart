@@ -2,107 +2,94 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newlife_app/app/modules/home/views/custom_bottom_nav_bar.dart';
 import '../controllers/favorite_controller.dart';
-import '../../../data/pet_data.dart';
+import '../../../data/models/favorite_pets_model.dart';
 
 class FavoriteView extends GetView<FavoriteController> {
-  const FavoriteView({super.key});
+  const FavoriteView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  margin: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: Color(0xFFFFD54F),
-                    shape: BoxShape.circle,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                children: [
+                  Container(
+                    margin: EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Color(0xFFFFD54F),
+                      shape: BoxShape.circle,
+                    ),
+                    child: IconButton(
+                      icon: Icon(Icons.arrow_back_ios_new, color: Colors.black),
+                      onPressed: () => Get.back(),
+                    ),
                   ),
-                  child: IconButton(
-                    icon: Icon(Icons.arrow_back_ios_new, color: Colors.black),
-                    onPressed: () => Get.back(),
+                  Expanded(
+                    child: Center(
+                      child: Text(
+                        'รายการโปรด',
+                        style: TextStyle(
+                            fontSize: 26, fontWeight: FontWeight.bold),
+                      ),
+                    ),
                   ),
-                ),
-                SizedBox(height: 20),
-                Center(
-                  child: const Text(
-                    'รายการโปรด',
-                    style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                SizedBox(height: 20),
-                _buildFavoriteList(),
-              ],
+                ],
+              ),
             ),
-          ),
+            Expanded(
+              child: Obx(() => ListView.builder(
+                    itemCount: controller.favoritePets.length,
+                    itemBuilder: (context, index) {
+                      final favorite = controller.favoritePets[index];
+                      return FavoriteItemCard(
+                        favorite: favorite,
+                        onRemove: () => controller.removePet(favorite),
+                      );
+                    },
+                  )),
+            ),
+          ],
         ),
       ),
       bottomNavigationBar: CustomBottomNavBar(),
     );
   }
-
-  Widget _buildHeader() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        IconButton(
-          icon: const Icon(Icons.arrow_back_ios),
-          onPressed: () => Get.back(),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildFavoriteList() {
-    return Obx(() => ListView.separated(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          itemCount: controller.favoritePets.length,
-          separatorBuilder: (context, index) => SizedBox(height: 12),
-          itemBuilder: (context, index) {
-            return FavoriteItemCard(
-              pet: controller.favoritePets[index],
-              onRemove: () =>
-                  controller.removePet(controller.favoritePets[index]),
-            );
-          },
-        ));
-  }
 }
 
 class FavoriteItemCard extends StatelessWidget {
-  final Pet pet;
+  final FavoriteAnimal favorite;
   final VoidCallback onRemove;
 
-  const FavoriteItemCard({Key? key, required this.pet, required this.onRemove})
-      : super(key: key);
+  const FavoriteItemCard({
+    Key? key,
+    required this.favorite,
+    required this.onRemove,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.white,
-      elevation: 2,
+      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      color: Colors.grey[100],
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Row(
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Container(
-                child: Image.network(
-                  pet.imageUrl,
-                  width: 80,
-                  height: 80,
-                  fit: BoxFit.cover,
-                ),
+            Container(
+              width: 60,
+              height: 60,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(8),
               ),
+              child: Icon(Icons.pets, color: Colors.grey[600], size: 30),
             ),
             SizedBox(width: 16),
             Expanded(
@@ -110,12 +97,16 @@ class FavoriteItemCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    pet.name,
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    'Name',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    '${pet.category}, ${pet.gender == 'male' ? 'ตัวผู้' : 'ตัวเมีย'}',
-                    style: TextStyle(fontSize: 14, color: Colors.grey),
+                    'AdoptionPost ID: ${favorite.adoptionPostId}',
+                    style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                  ),
+                  Text(
+                    'เพิ่มเมื่อ: ${_formatDate(favorite.dateAdded)}',
+                    style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                   ),
                 ],
               ),
@@ -128,5 +119,9 @@ class FavoriteItemCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _formatDate(DateTime date) {
+    return '${date.day}/${date.month}/${date.year}';
   }
 }

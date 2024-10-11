@@ -13,25 +13,19 @@ class FavoriteAnimal {
 
   factory FavoriteAnimal.fromJson(Map<String, dynamic> json) {
     return FavoriteAnimal(
-      favoriteAnimalId: json['favorite_animal_id'] != null
-          ? json['favorite_animal_id'] as int
-          : 0,
-      userId: json['user_id'] != null ? json['user_id'] as int : 0,
-      adoptionPostId: json['adoption_post_id'] != null
-          ? json['adoption_post_id'] as int
-          : 0,
-      dateAdded: json['date_added'] != null
-          ? DateTime.parse(json['date_added'])
-          : DateTime.now(),
+      favoriteAnimalId: json['favoriteAnimalId'] as int?,
+      userId: json['userId'] as int,
+      adoptionPostId: json['adoptionPostId'] as int,
+      dateAdded: DateTime.parse(json['dateAdded'] as String),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'favorite_animal_id': favoriteAnimalId,
-      'user_id': userId,
-      'adoption_post_id': adoptionPostId,
-      'date_added': dateAdded.toIso8601String(),
+      'favoriteAnimalId': favoriteAnimalId,
+      'userId': userId,
+      'adoptionPostId': adoptionPostId,
+      'dateAdded': dateAdded.toIso8601String(),
     };
   }
 }
