@@ -48,7 +48,7 @@ class UserController extends GetxController {
         //สร้างตารางเก็บข้อมูล User
         // มี User Id name image
         await db.execute("""
-          CREATE TABLE device (
+          CREATE TABLE user (
             user_id INTEGER NOT NULL,
             name TEXT NOT NULL,
             image_url TEXT NOT NULL,
@@ -57,7 +57,7 @@ class UserController extends GetxController {
         """);
 
         await db.execute("""
-            INSERT INTO device (user_id, name, image_url)
+            INSERT INTO user (user_id, name, image_url)
             VALUES (?, ?, ?);
           """, [-1, "", ""]);
       },
@@ -69,7 +69,7 @@ class UserController extends GetxController {
     try {
       List<Map<String, dynamic>> result = await selectRawQuery("""
         SELECT user_id, name, image_url 
-        FROM device 
+        FROM user 
         WHERE user_id = 1;
       """);
 
@@ -89,15 +89,25 @@ class UserController extends GetxController {
 
   void login(String username, String password) async {
     try {
+      await _getDB();
       localUser user = await userApi.login(username, password);
       print('Login successful! User ID: ${user.userId}, Name: ${user.name}');
+      await updateLocalUser(user.userId, user.name, user.imageUrl);
     } catch (e) {
       print('Login failed: $e');
     }
   }
+
+  Future<void> updateLocalUser(
+      int userId, String userName, String imgUrl) async {
+    await executeRawQuery("""
+      UPDATE user
+      SET user_id = ${userId}, name = "${userName}" ,image_url = "${imgUrl}"
+      WHERE user_id = 1;
+    """);
+    print("Updated");
+  }
 }
-
-
 
 // @override
 // void onInit() {
