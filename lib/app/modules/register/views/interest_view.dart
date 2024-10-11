@@ -18,13 +18,13 @@ class AddDetailPageState extends State<InterestView> {
   final List<Category> expenseCategories = [
     Category('มอลติพู', 'images/dogs/dog1.png'),
     Category('ปั๊ก', 'images/dogs/dog2.png'),
-    Category('แจ็ครัสเซลล์ เทอร์เรียร์', 'images/dogs/dog3.png'),
+    Category('แจ็ครัสเซลล์', 'images/dogs/dog3.png'),
     Category('บีเกิ้ล', 'images/dogs/dog4.png'),
     Category('ดัลเมเชียน', 'images/dogs/dog5.png'),
-    Category('ยอร์คเชียร์ เทอร์เรียร์', 'images/dogs/dog6.png'),
+    Category('ยอร์คเชียร์', 'images/dogs/dog6.png'),
     Category('บอร์เดอร์', 'images/dogs/dog7.png'),
-    Category('เยอรมัน เชพเพิร์ด', 'images/dogs/dog8.png'),
-    Category('ลาบราดอร์ เรทรีฟเวอร์', 'images/dogs/dog9.png'),
+    Category('เยอรมันเชพเพิร์ด', 'images/dogs/dog8.png'),
+    Category('ลาบราดอร์', 'images/dogs/dog9.png'),
   ];
 
   final List<Category> incomeCategories = [
@@ -32,7 +32,7 @@ class AddDetailPageState extends State<InterestView> {
     Category('เตอร์กิชแองโกรา', 'images/cats/cat2.png'),
     Category('สยาม', 'images/cats/cat3.png'),
     Category('ผสม', 'images/cats/cat4.png'),
-    Category('อเมริกันชอร์ตแฮร์', 'images/cats/cat5.png'),
+    Category('ชอร์ตแฮร์', 'images/cats/cat5.png'),
     Category('เปอร์เซียผสม', 'images/cats/cat6.png'),
     Category('เมนคูน', 'images/cats/cat7.png'),
     Category('รัสเซียนบลู', 'images/cats/cat8.png'),
@@ -104,7 +104,7 @@ class AddDetailPageState extends State<InterestView> {
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
                   crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
+                  mainAxisSpacing: 30,
                 ),
                 itemCount: _filteredCategories().length,
                 itemBuilder: (context, index) {
@@ -140,7 +140,8 @@ class AddDetailPageState extends State<InterestView> {
                             .firstWhere((cat) => cat.name == categoryName);
                     return category;
                   }).toList();
-                  Get.back(result: selectedCategoryObjects);
+
+                  Get.toNamed('/home',arguments: selectedCategoryObjects);
                 }
               },
               child: Text(
@@ -197,7 +198,10 @@ class AddDetailPageState extends State<InterestView> {
 
   // Card for displaying categories with checkmark overlaying the image
   Widget _buildCategoryCard(Category category, bool isSelected) {
-    return Card(
+  return Container(
+    width: 120, // ปรับขนาดความกว้างของ Card ตามที่ต้องการ
+    height: 150, // ปรับขนาดความสูงของ Card ตามที่ต้องการ
+    child: Card(
       color: Color(0xFFFEF1E1),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       elevation: 3,
@@ -209,9 +213,7 @@ class AddDetailPageState extends State<InterestView> {
               ClipRRect(
                 borderRadius: BorderRadius.circular(15),
                 child: Image.asset(
-                  category.imagePath,
-                  width: 80,
-                  height: 110,
+                  category.imagePath,// ปรับขนาดของภาพ
                   fit: BoxFit.cover,
                 ),
               ),
@@ -228,12 +230,13 @@ class AddDetailPageState extends State<InterestView> {
           // Category name
           Text(
             category.name,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
           ),
         ],
       ),
-    );
-  }
+    ),
+  );
+}
 
   List<Category> _filteredCategories() {
     List<Category> categories = isIncome ? incomeCategories : expenseCategories;
