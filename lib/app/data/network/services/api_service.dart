@@ -1,4 +1,6 @@
+import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
 import 'package:newlife_app/app/constants/app_url.dart';
 
 class ApiService {
@@ -8,7 +10,15 @@ class ApiService {
   );
 
   final Dio dio = Dio(_options)
-    ..interceptors.add(LogInterceptor(responseBody: true));
+    ..interceptors.add(LogInterceptor(responseBody: true))
+    ..httpClientAdapter = IOHttpClientAdapter(
+      createHttpClient: () {
+        HttpClient client = HttpClient();
+        client.badCertificateCallback =
+            (X509Certificate cert, String host, int port) => true;
+        return client;
+      },
+    );
 
   Future<Response> get(String url,
       {Map<String, dynamic>? queryParameters}) async {

@@ -7,4 +7,5 @@ class AppUrl {
   static const String findOwnerPosts = '/FindOwnerPosts';
   static const String user = '/User';
 
+  static const String favoriteAnimals = '/FavoriteAnimal';
 }
