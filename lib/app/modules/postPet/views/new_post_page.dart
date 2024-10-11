@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:newlife_app/app/modules/postPet/controllers/post_pet_controller.dart';
+import 'package:newlife_app/app/modules/postPet/views/add_images.dart';
 import 'package:newlife_app/app/modules/postPet/views/new_post_detail_page.dart';
 
 class NewPostPage extends StatelessWidget {
   final String postType;
+  final PostPetController controller = Get.find<PostPetController>();
 
-  const NewPostPage({Key? key, required this.postType}) : super(key: key);
+  NewPostPage({Key? key, required this.postType}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -54,39 +57,28 @@ class NewPostPage extends StatelessWidget {
                             style: TextStyle(fontSize: 18)),
                       ],
                     ),
-                    SizedBox(height: 16),
-                    Row(
-                      children: [
-                        ElevatedButton.icon(
-                          icon: Icon(Icons.add_photo_alternate,
-                              color: Colors.black),
-                          label: Text('รูปภาพ',
-                              style: TextStyle(color: Colors.black)),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            side: BorderSide(color: Colors.grey),
-                          ),
-                          onPressed: () {},
+                    SizedBox(height: 6),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 49),
+                      child: Container(
+                        width: 220, // กำหนดความกว้าง
+                        height: 40, // กำหนดความสูง
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(4),
                         ),
-                        SizedBox(width: 8),
-                        Expanded(
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 8),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey),
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(postType),
-                              ],
-                            ),
-                          ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(postType),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
+                    SizedBox(height: 16),
+                    AddImages(maxImages: 5),
                     SizedBox(height: 16),
                     TextField(
                       maxLines: 8,
