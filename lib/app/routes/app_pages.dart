@@ -28,6 +28,8 @@ import '../modules/ranking/bindings/ranking_binding.dart';
 import '../modules/ranking/views/ranking_view.dart';
 import '../modules/register/bindings/register_binding.dart';
 import '../modules/register/views/register_view.dart';
+import '../modules/user/bindings/user_binding.dart';
+import '../modules/user/views/user_view.dart';
 
 part 'app_routes.dart';
 
@@ -106,6 +108,11 @@ class AppPages {
       name: _Paths.PROMOTE,
       page: () => const PromoteView(),
       binding: PromoteBinding(),
+    ),
+    GetPage(
+      name: _Paths.USER,
+      page: () => const UserView(),
+      binding: UserBinding(),
     ),
   ];
 }
