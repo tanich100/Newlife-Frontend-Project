@@ -9,16 +9,19 @@ class AdoptView extends StatefulWidget {
 
 class _AdoptPageState extends State<AdoptView> {
   String? _selectedIncome;
+  String? _selectedExperience;
+  String? _selectedHousingType;
+  String? _selectedFreeTime;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(75.0), // ปรับความสูงตามต้องการ
+        preferredSize: Size.fromHeight(75.0),
         child: AppBar(
           title: Text(
             'บันทึกข้อมูลสำหรับการอุปการะ',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 31),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
           ),
           centerTitle: true,
         ),
@@ -26,8 +29,7 @@ class _AdoptPageState extends State<AdoptView> {
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: SingleChildScrollView(
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             // ส่วนข้อมูลเบื้องต้น
             _buildFormRow(),
             SizedBox(height: 8),
@@ -35,6 +37,7 @@ class _AdoptPageState extends State<AdoptView> {
             SizedBox(height: 8),
             _buildFormmmRow(),
 
+            SizedBox(height: 8),
             Align(
               alignment: Alignment.centerLeft,
               child: Text('รายได้ต่อเดือน (บาท)*:'),
@@ -43,313 +46,23 @@ class _AdoptPageState extends State<AdoptView> {
               spacing: 8.0,
               runSpacing: 8.0,
               children: [
-                SizedBox(
-                  width: 150,
-                  child: RadioListTile<String>(
-                    title: Text(
-                      'น้อยกว่า 10,000',
-                      style: TextStyle(fontSize: 12),
-                    ),
-                    value: 'น้อยกว่า 10,000',
-                    groupValue: _selectedIncome,
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedIncome = value;
-                      });
-                    },
-                  ),
-                ),
-                SizedBox(
-                  width: 150,
-                  child: RadioListTile<String>(
-                    title: Text(
-                      '10,000 - 19,000',
-                      style: TextStyle(fontSize: 12),
-                    ),
-                    value: '10,000 - 19,000',
-                    groupValue: _selectedIncome,
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedIncome = value;
-                      });
-                    },
-                  ),
-                ),
-                SizedBox(
-                  width: 150,
-                  child: RadioListTile<String>(
-                    title: Text(
-                      '20,000 - 29,000',
-                      style: TextStyle(fontSize: 12),
-                    ),
-                    value: '20,000 - 29,000',
-                    groupValue: _selectedIncome,
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedIncome = value;
-                      });
-                    },
-                  ),
-                ),
-                SizedBox(
-                  width: 150,
-                  child: RadioListTile<String>(
-                    title: Text(
-                      '30,000 - 39,000',
-                      style: TextStyle(fontSize: 12),
-                    ),
-                    value: '30,000 - 39,000',
-                    groupValue: _selectedIncome,
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedIncome = value;
-                      });
-                    },
-                  ),
-                ),
-                SizedBox(
-                  width: 150,
-                  child: RadioListTile<String>(
-                    title: Text(
-                      'มากกว่า 39,000',
-                      style: TextStyle(fontSize: 12),
-                    ),
-                    value: 'มากกว่า 39,000',
-                    groupValue: _selectedIncome,
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedIncome = value;
-                      });
-                    },
-                  ),
-                ),
+                // ชุด Radio สำหรับรายได้
+                _buildIncomeRadio('น้อยกว่า 10,000', 'น้อยกว่า 10,000'),
+                _buildIncomeRadio('10,000 - 19,000', '10,000 - 19,000'),
+                _buildIncomeRadio('20,000 - 29,000', '20,000 - 29,000'),
+                _buildIncomeRadio('30,000 - 39,000', '30,000 - 39,000'),
+                _buildIncomeRadio('มากกว่า 39,000', 'มากกว่า 39,000'),
               ],
             ),
             SizedBox(height: 16),
             _buildAdsField('ขนาดของที่อยู่อาศัย(ตารางเมตร)*'),
-            SizedBox(
-              height: 16,
-            ),
-            SizedBox(
-              width: 200,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'ประสบการณ์ในการดูแลสัตว์เลี้ยง*', // Label text ที่คุณต้องการแสดง
-                    style: TextStyle(fontSize: 14), // กำหนดขนาดของ label text
-                  ),
-                  Row(
-                    children: [
-                      Row(
-                        children: [
-                          Radio<String>(
-                            value: 'มี',
-                            groupValue: _selectedIncome,
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedIncome = value;
-                              });
-                            },
-                          ),
-                          Text(
-                            'มี',
-                            style: TextStyle(fontSize: 12),
-                          ),
-                        ],
-                      ),
-                      SizedBox(width: 16), // เพิ่มช่องว่างระหว่างตัวเลือก
-                      Row(
-                        children: [
-                          Radio<String>(
-                            value: 'ไม่มี',
-                            groupValue: _selectedIncome,
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedIncome = value;
-                              });
-                            },
-                          ),
-                          Text(
-                            'ไม่มี',
-                            style: TextStyle(fontSize: 12),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 16,
-            ),
-            SizedBox(
-              width: 500,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'ข้อมูลที่อยู่อาศัย ประเภทของที่อยู่*', // Label text ที่คุณต้องการแสดง
-                    style: TextStyle(fontSize: 14), // กำหนดขนาดของ label text
-                  ),
-                  Row(
-                    children: [
-                      Row(
-                        children: [
-                          Radio<String>(
-                            value: 'บ้านเดี่ยว',
-                            groupValue: _selectedIncome,
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedIncome = value;
-                              });
-                            },
-                          ),
-                          Text(
-                            'บ้านเดี่ยว',
-                            style: TextStyle(fontSize: 12),
-                          ),
-                        ],
-                      ),
-                      SizedBox(width: 16), // เพิ่มช่องว่างระหว่างตัวเลือก
-                      Row(
-                        children: [
-                          Radio<String>(
-                            value: 'คอนโดมิเนี่ยม',
-                            groupValue: _selectedIncome,
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedIncome = value;
-                              });
-                            },
-                          ),
-                          Text(
-                            'คอนโดมีเนี่ยม',
-                            style: TextStyle(fontSize: 12),
-                          ),
-                        ],
-                      ),
-                      SizedBox(width: 16), // เพิ่มช่องว่างระหว่างตัวเลือก
-                      Row(
-                        children: [
-                          Radio<String>(
-                            value: 'อาพาร์ทเม้น',
-                            groupValue: _selectedIncome,
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedIncome = value;
-                              });
-                            },
-                          ),
-                          Text(
-                            'อาพาร์ทเม้น',
-                            style: TextStyle(fontSize: 12),
-                          ),
-                        ],
-                      ),
-                      SizedBox(width: 16), // เพิ่มช่องว่างระหว่างตัวเลือก
-                      Row(
-                        children: [
-                          Radio<String>(
-                            value: 'บ้านเช่า',
-                            groupValue: _selectedIncome,
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedIncome = value;
-                              });
-                            },
-                          ),
-                          Text(
-                            'บ้านเช่า',
-                            style: TextStyle(fontSize: 12),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 16,
-            ),
-            SizedBox(
-              width: 500,
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'เวลาว่างต่อวัน*', // Label text ที่คุณต้องการแสดง
-                      style: TextStyle(fontSize: 14), // กำหนดขนาดของ label text
-                    ),
-                    SizedBox(width: 16), // เพิ่มช่องว่างระหว่างตัวเลือก
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Row(
-                            children: [
-                              Radio<String>(
-                                value: '3-5 ชั่วโมง',
-                                groupValue: _selectedIncome,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _selectedIncome = value;
-                                  });
-                                },
-                              ),
-                              Text(
-                                '3-5 ชั่วโมง',
-                                style: TextStyle(fontSize: 12),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Row(
-                            children: [
-                              Radio<String>(
-                                value: '6-8 ชั่วโมง',
-                                groupValue: _selectedIncome,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _selectedIncome = value;
-                                  });
-                                },
-                              ),
-                              Text(
-                                '6-8 ชั่วโมง',
-                                style: TextStyle(fontSize: 12),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Row(
-                            children: [
-                              Radio<String>(
-                                value: '9-12 ชั่วโมง',
-                                groupValue: _selectedIncome,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _selectedIncome = value;
-                                  });
-                                },
-                              ),
-                              Text(
-                                '9-12 ชั่วโมง',
-                                style: TextStyle(fontSize: 12),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ]),
-            ),
-            SizedBox(
-              height: 16,
-            ),
+            SizedBox(height: 16),
+            _buildExperienceField(),
+            SizedBox(height: 16),
+            _buildHousingTypeField(),
+            SizedBox(height: 16),
+            _buildFreeTimeField(),
+            SizedBox(height: 16),
             Center(
               child: SizedBox(
                 width: 300,
@@ -383,6 +96,278 @@ class _AdoptPageState extends State<AdoptView> {
       ),
     );
   }
+
+
+  Widget _buildIncomeRadio(String label, String value) {
+    return SizedBox(
+      width: 150,
+      child: RadioListTile<String>(
+        title: Text(
+          label,
+          style: TextStyle(fontSize: 12),
+        ),
+        value: value,
+        groupValue: _selectedIncome,
+        onChanged: (value) {
+          setState(() {
+            _selectedIncome = value;
+          });
+        },
+      ),
+    );
+  }
+
+
+  Widget _buildExperienceField() {
+    return SizedBox(
+      width: 220,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'ประสบการณ์ในการดูแลสัตว์เลี้ยง*',
+            style: TextStyle(fontSize: 14),
+          ),
+          Row(
+            children: [
+              Row(
+                children: [
+                  Radio<String>(
+                    value: 'มี',
+                    groupValue: _selectedExperience,
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedExperience = value;
+                      });
+                    },
+                  ),
+                  Text(
+                    'มี',
+                    style: TextStyle(fontSize: 12),
+                  ),
+                ],
+              ),
+              SizedBox(width: 16),
+              Row(
+                children: [
+                  Radio<String>(
+                    value: 'ไม่มี',
+                    groupValue: _selectedExperience,
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedExperience = value;
+                      });
+                    },
+                  ),
+                  Text(
+                    'ไม่มี',
+                    style: TextStyle(fontSize: 12),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+
+  Widget _buildHousingTypeField() {
+    return SizedBox(
+      width: 500,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'ข้อมูลที่อยู่อาศัย ประเภทของที่อยู่*',
+            style: TextStyle(fontSize: 14),
+          ),
+          Row(
+            children: [
+              _buildHousingTypeRadio('บ้านเดี่ยว', 'บ้านเดี่ยว'),
+              SizedBox(width: 16),
+              _buildHousingTypeRadio('คอนโดมิเนี่ยม', 'คอนโดมิเนี่ยม'),
+            ],
+          ),
+          Row(
+            children: [
+              _buildHousingTypeRadio('อาพาร์ทเม้น', 'อาพาร์ทเม้น'),
+              SizedBox(width: 16),
+              _buildHousingTypeRadio('บ้านเช่า', 'บ้านเช่า'),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+
+  Widget _buildFreeTimeField() {
+    return SizedBox(
+      width: 500,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'เวลาว่างต่อวัน*',
+            style: TextStyle(fontSize: 14),
+          ),
+          Row(
+            children: [
+              _buildFreeTimeRadio('3-5 ชั่วโมง', '3-5 ชั่วโมง'),
+              _buildFreeTimeRadio('6-8 ชั่วโมง', '6-8 ชั่วโมง'),
+              _buildFreeTimeRadio('9-12 ชั่วโมง', '9-12 ชั่วโมง'),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+
+  Widget _buildHousingTypeRadio(String label, String value) {
+    return Expanded(
+      child: Row(
+        children: [
+          Radio<String>(
+            value: value,
+            groupValue: _selectedHousingType,
+            onChanged: (value) {
+              setState(() {
+                _selectedHousingType = value;
+              });
+            },
+          ),
+          Text(
+            label,
+            style: TextStyle(fontSize: 12),
+          ),
+        ],
+      ),
+    );
+  }
+
+
+  Widget _buildFreeTimeRadio(String label, String value) {
+    return Expanded(
+      child: Row(
+        children: [
+          Radio<String>(
+            value: value,
+            groupValue: _selectedFreeTime,
+            onChanged: (value) {
+              setState(() {
+                _selectedFreeTime = value;
+              });
+            },
+          ),
+          Text(
+            label,
+            style: TextStyle(fontSize: 12),
+          ),
+        ],
+      ),
+    );
+  }}
+
+Widget _buildAdsField(String label) {
+  return Container(
+    width: 300, // กำหนดความกว้างที่ต้องการ
+    height: 60, // กำหนดความสูงที่ต้องการ
+    child: TextFormField(
+      decoration: InputDecoration(
+        labelText: label,
+        filled: true,
+        fillColor: Color.fromARGB(255, 221, 221, 221),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide.none,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide.none,
+        ),
+        contentPadding: EdgeInsets.symmetric(
+            horizontal: 16, vertical: 20), // ปรับ vertical padding
+      ),
+    ),
+  );
+}
+
+Widget _buildFormmmRow() {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      Expanded(
+        child: _buildOccField('อาชีพ*'),
+      ),
+      SizedBox(width: 10),
+      Expanded(
+        child: _buildNofField('จำนวนสมาชิกในครอบครัว*'),
+      ),
+    ],
+  );
+}
+
+Widget _buildOccField(String label) {
+  return Container(
+    width: 300,
+    height: 60,
+    child: TextFormField(
+      decoration: InputDecoration(
+        labelText: label,
+        filled: true,
+        fillColor: Color.fromARGB(255, 221, 221, 221),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide.none,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide.none,
+        ),
+        contentPadding: EdgeInsets.symmetric(
+            horizontal: 16, vertical: 20), // ปรับ vertical padding
+      ),
+    ),
+  );
+}
+
+Widget _buildNofField(String label) {
+  return Container(
+    width: 300, // กำหนดความกว้างที่ต้องการ
+    height: 60, // กำหนดความสูงที่ต้องการ
+    child: TextFormField(
+      decoration: InputDecoration(
+        labelText: label,
+        filled: true,
+        fillColor: Color.fromARGB(255, 221, 221, 221),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide.none,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide.none,
+        ),
+        contentPadding: EdgeInsets.symmetric(
+            horizontal: 16, vertical: 20), // ปรับ vertical padding
+      ),
+    ),
+  );
 }
 
 Widget _buildFormRow() {
@@ -553,105 +538,6 @@ Widget _buildPhoneField(String label) {
           borderSide: BorderSide.none,
         ),
         contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-      ),
-    ),
-  );
-}
-
-Widget _buildFormmmRow() {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      Expanded(
-        child: _buildOccField('อาชีพ*'),
-      ),
-      SizedBox(width: 10),
-      Expanded(
-        child: _buildNofField('จำนวนสมาชิกในครอบครัว*'),
-      ),
-    ],
-  );
-}
-
-Widget _buildOccField(String label) {
-  return Container(
-    width: 300,
-    height: 60,
-    child: TextFormField(
-      decoration: InputDecoration(
-        labelText: label,
-        filled: true,
-        fillColor: Color.fromARGB(255, 221, 221, 221),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide.none,
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide.none,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide.none,
-        ),
-        contentPadding: EdgeInsets.symmetric(
-            horizontal: 16, vertical: 20), // ปรับ vertical padding
-      ),
-    ),
-  );
-}
-
-Widget _buildNofField(String label) {
-  return Container(
-    width: 300, // กำหนดความกว้างที่ต้องการ
-    height: 60, // กำหนดความสูงที่ต้องการ
-    child: TextFormField(
-      decoration: InputDecoration(
-        labelText: label,
-        filled: true,
-        fillColor: Color.fromARGB(255, 221, 221, 221),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide.none,
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide.none,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide.none,
-        ),
-        contentPadding: EdgeInsets.symmetric(
-            horizontal: 16, vertical: 20), // ปรับ vertical padding
-      ),
-    ),
-  );
-}
-
-Widget _buildAdsField(String label) {
-  return Container(
-    width: 300, // กำหนดความกว้างที่ต้องการ
-    height: 60, // กำหนดความสูงที่ต้องการ
-    child: TextFormField(
-      decoration: InputDecoration(
-        labelText: label,
-        filled: true,
-        fillColor: Color.fromARGB(255, 221, 221, 221),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide.none,
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide.none,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide.none,
-        ),
-        contentPadding: EdgeInsets.symmetric(
-            horizontal: 16, vertical: 20), // ปรับ vertical padding
       ),
     ),
   );
