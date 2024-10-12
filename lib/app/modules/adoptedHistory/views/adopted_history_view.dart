@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:newlife_app/app/modules/home/controllers/home_controller.dart';
+import 'package:newlife_app/app/modules/home/views/custom_bottom_nav_bar.dart';
 import '../controllers/adopted_history_controller.dart';
 
 class AdoptedHistoryView extends GetView<AdoptedHistoryController> {
-  const AdoptedHistoryView({super.key});
+  AdoptedHistoryView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +57,7 @@ class AdoptedHistoryView extends GetView<AdoptedHistoryController> {
             ],
           ),
         ),
+        bottomNavigationBar: CustomBottomNavBar(),
       ),
     );
   }
