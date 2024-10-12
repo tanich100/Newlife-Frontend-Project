@@ -55,11 +55,12 @@ class UserController extends GetxController {
             PRIMARY KEY (user_id)
           );
         """);
-
+        print("Create DB");
         await db.execute("""
             INSERT INTO user (user_id, name, image_url)
             VALUES (?, ?, ?);
-          """, [-1, "", ""]);
+          """, [1, "", ""]);
+        print("Insert DB");
       },
       version: _version,
     );
@@ -67,6 +68,7 @@ class UserController extends GetxController {
 
   Future<void> getUser() async {
     try {
+      await _getDB();
       List<Map<String, dynamic>> result = await selectRawQuery("""
         SELECT user_id, name, image_url 
         FROM user 
@@ -78,8 +80,9 @@ class UserController extends GetxController {
         userName.value = result[0]['name'];
         profileImage.value = result[0]['image_url'];
       } else {
-        userId.value = -1;
-        userName.value = '';
+        print("No User Found");
+        userId.value = 1;
+        userName.value = 'No User';
         profileImage.value = '';
       }
     } catch (e) {
@@ -93,6 +96,8 @@ class UserController extends GetxController {
       localUser user = await userApi.login(username, password);
       print('Login successful! User ID: ${user.userId}, Name: ${user.name}');
       await updateLocalUser(user.userId, user.name, user.imageUrl);
+      await getUser();
+      Get.offAllNamed('/profile');
     } catch (e) {
       print('Login failed: $e');
     }
@@ -102,7 +107,7 @@ class UserController extends GetxController {
       int userId, String userName, String imgUrl) async {
     await executeRawQuery("""
       UPDATE user
-      SET user_id = ${userId}, name = "${userName}" ,image_url = "${imgUrl}"
+      SET name = '${userName}' ,image_url = '${imgUrl}'
       WHERE user_id = 1;
     """);
     print("Updated");

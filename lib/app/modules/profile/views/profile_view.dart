@@ -5,9 +5,11 @@ import 'package:newlife_app/app/modules/postPet/views/post_detail.dart';
 import 'package:newlife_app/app/modules/profile/controllers/profile_controller.dart';
 import 'package:newlife_app/app/modules/profile/views/adoption_rule.dart';
 import 'package:newlife_app/app/modules/profile/views/edit_profile_page.dart';
+import 'package:newlife_app/app/modules/user/controllers/user_controller.dart';
 
 class ProfileView extends GetView<ProfileController> {
-  const ProfileView({Key? key}) : super(key: key);
+  ProfileView({Key? key}) : super(key: key);
+  final UserController userController = Get.put(UserController());
 
   @override
   Widget build(BuildContext context) {
@@ -96,41 +98,59 @@ class ProfileView extends GetView<ProfileController> {
   }
 }
 
-class ProfileInfo extends StatelessWidget {
+// class ProfileInfo extends StatelessWidget {
+//   final UserController userController = Get.find<UserController>();
+
+class ProfileInfo extends StatefulWidget {
+  @override
+  _ProfileInfoState createState() => _ProfileInfoState();
+}
+
+class _ProfileInfoState extends State<ProfileInfo> {
+  final UserController userController = Get.find<UserController>();
+  @override
+  void initState() {
+    super.initState();
+    print("Init");
+    userController.getUser();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Center(
-          child: const Text(
-            'โปรไฟล์ของฉัน',
-            style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+    return Obx(() {
+      return Column(
+        children: [
+          Center(
+            child: const Text(
+              'โปรไฟล์ของฉัน',
+              style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+            ),
           ),
-        ),
-        const SizedBox(height: 20),
-        Center(
-          child: Column(
-            children: [
-              CircleAvatar(
-                radius: 80,
-                backgroundColor: Color(0xFFD9D9D9),
-                child: CircleAvatar(
-                  radius: 75,
-                  backgroundImage: NetworkImage(
-                    'https://ae-pic-a1.aliexpress-media.com/kf/Sd2a617eb4fd54862b20b2e7a4dae68efs.jpg_640x640Q90.jpg_.webp',
+          const SizedBox(height: 20),
+          Center(
+            child: Column(
+              children: [
+                const CircleAvatar(
+                  radius: 80,
+                  backgroundColor: Color(0xFFD9D9D9),
+                  child: CircleAvatar(
+                    radius: 75,
+                    backgroundImage: NetworkImage(
+                      'https://ae-pic-a1.aliexpress-media.com/kf/Sd2a617eb4fd54862b20b2e7a4dae68efs.jpg_640x640Q90.jpg_.webp',
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(height: 10),
-              Text(
-                'คาริน่า ถนอมญาติ',
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-              ),
-            ],
+                SizedBox(height: 10),
+                Text(
+                  userController.userName.value,
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
-    );
+        ],
+      );
+    });
   }
 }
 
@@ -201,7 +221,7 @@ class SettingsMenu extends StatelessWidget {
               () => Get.to(AdoptionRule())),
           SizedBox(height: 10),
           _buildMenuItem(Icons.exit_to_app, 'ออกจากระบบ', () {
-            Get.offAllNamed('/login');
+            Get.toNamed('/login');
           }),
           SizedBox(height: 10),
         ],
