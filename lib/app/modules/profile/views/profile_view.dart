@@ -127,13 +127,13 @@ class _ProfileInfoState extends State<ProfileInfo> {
           Center(
             child: Column(
               children: [
-                const CircleAvatar(
+                CircleAvatar(
                   radius: 80,
                   backgroundColor: Color(0xFFD9D9D9),
                   child: CircleAvatar(
                     radius: 75,
                     backgroundImage: NetworkImage(
-                      'https://ae-pic-a1.aliexpress-media.com/kf/Sd2a617eb4fd54862b20b2e7a4dae68efs.jpg_640x640Q90.jpg_.webp',
+                      "http://10.0.2.2:5296/User/getImage/${userController.profileImage.value}",
                     ),
                   ),
                 ),
