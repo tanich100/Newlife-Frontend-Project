@@ -22,13 +22,16 @@ class PetsDisplay extends StatelessWidget {
           final pet = controller.allPets[index];
           String name = '';
           String? imageUrl;
+          String imageEndpoint = '';
 
           if (pet is AdoptionPost) {
             name = pet.name ?? 'Unknown';
             imageUrl = pet.image1;
+            imageEndpoint = AppUrl.image;
           } else if (pet is FindOwnerPost) {
             name = pet.name ?? 'Unknown';
             imageUrl = pet.image1;
+            imageEndpoint = AppUrl.findOwnerPostImage;
           }
 
           return GestureDetector(
@@ -41,7 +44,7 @@ class PetsDisplay extends StatelessWidget {
                   Expanded(
                     child: imageUrl != null
                         ? Image.network(
-                            '${AppUrl.baseUrl}${pet is AdoptionPost ? AppUrl.adoptionPosts : AppUrl.findOwnerPosts}/getImage/$imageUrl',
+                            '${AppUrl.baseUrl}${pet is AdoptionPost ? AppUrl.adoptionPosts : AppUrl.findOwnerPosts}$imageEndpoint/$imageUrl',
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) {
                               print('Error loading image: $error');
