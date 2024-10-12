@@ -21,14 +21,18 @@ class RecommendedPets extends StatelessWidget {
             String name = '';
             String? imageUrl;
             String imageEndpoint = '';
+            String gender = '';
 
             if (pet is AdoptionPost) {
               name = pet.name ?? 'Unknown';
               imageUrl = pet.image1;
+              gender = pet.sex ?? '';
               imageEndpoint = AppUrl.image; //  endpoint สำหรับ AdoptionPost
             } else if (pet is FindOwnerPost) {
               name = pet.name ?? 'Unknown';
               imageUrl = pet.image1;
+              gender = pet.sex ?? '';
+
               imageEndpoint =
                   AppUrl.findOwnerPostImage; //  endpoint สำหรับ FindOwnerPost
             }
@@ -74,10 +78,27 @@ class RecommendedPets extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 10),
-                      Text(
-                        name,
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.center,
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              name,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          SizedBox(width: 4),
+                          Icon(
+                            gender.toLowerCase() == 'male'
+                                ? Icons.male
+                                : Icons.female,
+                            size: 24,
+                            color: gender.toLowerCase() == 'male'
+                                ? Colors.blue
+                                : Colors.pink,
+                          ),
+                        ],
                       ),
                     ],
                   ),
