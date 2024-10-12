@@ -131,8 +131,7 @@ class UserController extends GetxController {
     """);
   }
 
-  Future<void> resetToDefaultUser(
-      int userId, String userName, String imgUrl) async {
+  Future<void> resetToDefaultUser() async {
     await executeRawQuery("""
       UPDATE user
       SET name = '' ,image_url = ''

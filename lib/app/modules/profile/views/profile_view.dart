@@ -98,9 +98,6 @@ class ProfileView extends GetView<ProfileController> {
   }
 }
 
-// class ProfileInfo extends StatelessWidget {
-//   final UserController userController = Get.find<UserController>();
-
 class ProfileInfo extends StatefulWidget {
   @override
   _ProfileInfoState createState() => _ProfileInfoState();
@@ -189,6 +186,8 @@ class PostView extends StatelessWidget {
 }
 
 class SettingsMenu extends StatelessWidget {
+  final UserController userController = Get.find<UserController>();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -221,6 +220,7 @@ class SettingsMenu extends StatelessWidget {
               () => Get.to(AdoptionRule())),
           SizedBox(height: 10),
           _buildMenuItem(Icons.exit_to_app, 'ออกจากระบบ', () {
+            userController.resetToDefaultUser();
             Get.toNamed('/login');
           }),
           SizedBox(height: 10),
