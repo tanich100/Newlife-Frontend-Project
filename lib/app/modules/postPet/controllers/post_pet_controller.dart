@@ -7,11 +7,10 @@ import 'package:newlife_app/app/data/network/api/adoption_post_api.dart';
 import 'package:path_provider/path_provider.dart';
 
 class PostPetController extends GetxController {
-  //TODO: Implement PostPetController
   AdoptionPostApi adoptionPostApi = AdoptionPostApi();
   final adoptionPostList = <AdoptionPost>[].obs;
   final RxList<File> selectedImages = <File>[].obs;
-  final int maxImages = 5; // กำหนดจำนวนสูงสุดของรูปภาพ
+  final int maxImages = 5;
 
   final ImagePicker _picker = ImagePicker();
 
@@ -33,7 +32,7 @@ class PostPetController extends GetxController {
     super.onClose();
   }
 
-    // ฟังก์ชันเลือกภาพ
+  // ฟังก์ชันเลือกภาพ
   Future<void> pickImages() async {
     if (isMaxImagesSelected) {
       Get.snackbar('ข้อจำกัด', 'ไม่สามารถเลือกภาพได้เกิน $maxImages รูป',
@@ -65,8 +64,6 @@ class PostPetController extends GetxController {
   void removeImage(int index) {
     selectedImages.removeAt(index);
   }
-
-  
 
   Future<void> getNewPet() async {
     adoptionPostList.value = [];
@@ -106,12 +103,13 @@ class PostPetController extends GetxController {
     await getNewPet();
   }
 
- // ฟังก์ชันบันทึกภาพ
+  // ฟังก์ชันบันทึกภาพ
   Future<void> saveImages() async {
     try {
       final Directory directory = await getApplicationDocumentsDirectory();
       for (var image in selectedImages) {
-        final String fileName = DateTime.now().millisecondsSinceEpoch.toString() + '.jpg';
+        final String fileName =
+            DateTime.now().millisecondsSinceEpoch.toString() + '.jpg';
         final File savedImage = await image.copy('${directory.path}/$fileName');
         print('Saved image: ${savedImage.path}');
       }
@@ -130,7 +128,6 @@ class PostPetController extends GetxController {
       );
     }
   }
-
 
   void increment() => count.value++;
 }

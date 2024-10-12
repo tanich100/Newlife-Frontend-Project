@@ -9,10 +9,20 @@ class AdoptionPostApi {
   Future<List<AdoptionPost>> getPosts() async {
     try {
       final response = await _apiService.get(AppUrl.adoptionPosts);
-      return (response.data as List)
+      print('API Response: ${response.data}');
+
+      List<AdoptionPost> posts = (response.data as List)
           .map((json) => AdoptionPost.fromJson(json))
           .toList();
+
+      print('Parsed posts:');
+      posts.forEach((post) {
+        print('Post: ${post.toJson()}');
+      });
+
+      return posts;
     } catch (e) {
+      print('Error in getPosts: $e');
       rethrow;
     }
   }
