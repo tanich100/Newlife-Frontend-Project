@@ -39,6 +39,30 @@ class FindOwnerPostApi {
     }
   }
 
+  Future<List<FindOwnerPost>> getDogPosts() async {
+    try {
+      final response = await _apiService.get('${AppUrl.findOwnerPosts}/Dogs');
+      List<FindOwnerPost> posts = (response.data as List)
+          .map((json) => FindOwnerPost.fromJson(json))
+          .toList();
+      return posts;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<FindOwnerPost>> getCatPosts() async {
+    try {
+      final response = await _apiService.get('${AppUrl.findOwnerPosts}/Cats');
+      List<FindOwnerPost> posts = (response.data as List)
+          .map((json) => FindOwnerPost.fromJson(json))
+          .toList();
+      return posts;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<FindOwnerPost> createPost(FindOwnerPost post) async {
     try {
       final response = await _apiService

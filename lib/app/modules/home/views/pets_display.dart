@@ -20,7 +20,7 @@ class PetsDisplay extends StatelessWidget {
           crossAxisSpacing: 8.0,
           mainAxisSpacing: 8.0,
         ),
-        itemCount: controller.filteredAllPets.length,
+        itemCount: controller.filteredAllPets.length, // แสดงจาก filteredAllPets
         itemBuilder: (context, index) {
           final pet = controller.filteredAllPets[index];
           String name = '';
@@ -49,7 +49,7 @@ class PetsDisplay extends StatelessWidget {
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) {
                               print('Error loading image: $error');
-                              return Icon(Icons.pets, size: 50);
+                              return Icon(Icons.error);
                             },
                           )
                         : Icon(Icons.pets, size: 50),

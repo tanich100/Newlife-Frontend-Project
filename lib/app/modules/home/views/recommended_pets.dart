@@ -15,9 +15,10 @@ class RecommendedPets extends StatelessWidget {
       child: Obx(() {
         return ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: controller.allPets.length,
+          itemCount:
+              controller.recommendedPets.length, // แสดงผลจาก recommendedPets
           itemBuilder: (context, index) {
-            final pet = controller.allPets[index];
+            final pet = controller.recommendedPets[index];
             String name = '';
             String? imageUrl;
             String imageEndpoint = '';
@@ -72,10 +73,26 @@ class RecommendedPets extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 10),
-                      Text(
-                        name,
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.center,
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              name,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          Icon(
+                            gender.toLowerCase() == 'male'
+                                ? Icons.male
+                                : Icons.female,
+                            size: 24,
+                            color: gender.toLowerCase() == 'male'
+                                ? Colors.blue
+                                : Colors.pink,
+                          ),
+                        ],
                       ),
                     ],
                   ),

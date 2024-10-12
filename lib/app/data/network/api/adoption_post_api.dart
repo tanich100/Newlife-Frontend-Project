@@ -38,6 +38,43 @@ class AdoptionPostApi {
     }
   }
 
+  Future<List<AdoptionPost>> getDogPosts() async {
+    try {
+      final response = await _apiService.get('${AppUrl.adoptionPosts}/Dogs');
+      return (response.data as List)
+          .map((json) => AdoptionPost.fromJson(json))
+          .toList();
+    } catch (e) {
+      print('Error in getDogPosts: $e');
+      rethrow;
+    }
+  }
+
+  Future<List<AdoptionPost>> getCatPosts() async {
+    try {
+      final response = await _apiService.get('${AppUrl.adoptionPosts}/Cats');
+      return (response.data as List)
+          .map((json) => AdoptionPost.fromJson(json))
+          .toList();
+    } catch (e) {
+      print('Error in getCatPosts: $e');
+      rethrow;
+    }
+  }
+
+  Future<List<AdoptionPost>> getSpecialCarePosts() async {
+    try {
+      final response =
+          await _apiService.get('${AppUrl.adoptionPosts}/SpecialCare');
+      return (response.data as List)
+          .map((json) => AdoptionPost.fromJson(json))
+          .toList();
+    } catch (e) {
+      print('Error in getSpecialCarePosts: $e');
+      rethrow;
+    }
+  }
+
   Future<List<AdoptionPost>> getNewPet() async {
     try {
       final response = await _apiService
