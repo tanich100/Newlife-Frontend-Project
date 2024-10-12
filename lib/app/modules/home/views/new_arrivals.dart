@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newlife_app/app/modules/home/controllers/home_controller.dart';
 import 'package:newlife_app/app/modules/postPet/controllers/post_pet_controller.dart';
+import 'package:newlife_app/app/constants/app_url.dart';
 
 class NewArrivals extends StatelessWidget {
+  @override
   Widget build(BuildContext context) {
     final HomeController controller = Get.find<HomeController>();
     PostPetController postPetController = Get.put(PostPetController());
@@ -31,48 +33,54 @@ class NewArrivals extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // Null check for image1
-                      if (pet.image1 != null)
-                        ClipRRect(
-                          borderRadius:
-                              BorderRadius.vertical(top: Radius.circular(6)),
-                          child: Container(
-                            height: 120, // Image height
-                            width: 150,
-                            child: Image.network(
-                              'http://10.0.2.2:5296/AdoptionPost/getImage/' +
-                                  pet.image1,
-                              loadingBuilder:
-                                  (context, child, loadingProgress) {
-                                if (loadingProgress == null) return child;
-                                return Center(
-                                  child:
-                                      CircularProgressIndicator(), // Loading spinner
-                                );
-                              },
-                              errorBuilder: (context, error, stackTrace) {
-                                return Icon(Icons.broken_image,
-                                    size: 50,
-                                    color: Colors.red); // Error fallback
-                              },
-                            ),
-                          ),
+                      ClipRRect(
+                        borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(6)),
+                        child: Container(
+                          height: 120, // Image height
+                          width: 150,
+                          child: pet.image1 != null
+                              ? Image.network(
+                                  '${AppUrl.baseUrl}${AppUrl.adoptionPosts}/getImage/${pet.image1}',
+                                  fit: BoxFit.cover,
+                                  loadingBuilder:
+                                      (context, child, loadingProgress) {
+                                    if (loadingProgress == null) return child;
+                                    return Center(
+                                      child:
+                                          CircularProgressIndicator(), // Loading spinner
+                                    );
+                                  },
+                                  errorBuilder: (context, error, stackTrace) {
+                                    print('Error loading image: $error');
+                                    return Icon(Icons.broken_image,
+                                        size: 50,
+                                        color: Colors.red); // Error fallback
+                                  },
+                                )
+                              : Icon(Icons.pets, size: 50),
                         ),
-
+                      ),
                       SizedBox(height: 10),
                       Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(
-                            pet.name ?? 'Unknown', // Null check for name
-                            overflow: TextOverflow.ellipsis,
+                          Expanded(
+                            child: Text(
+                              pet.name ?? 'Unknown', // Null check for name
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                           SizedBox(width: 4),
                           Icon(
-                            pet.sex == 'male' ? Icons.male : Icons.female,
+                            pet.sex?.toLowerCase() == 'male'
+                                ? Icons.male
+                                : Icons.female,
                             size: 24,
-                            color:
-                                pet.sex == 'male' ? Colors.blue : Colors.pink,
+                            color: pet.sex?.toLowerCase() == 'male'
+                                ? Colors.blue
+                                : Colors.pink,
                           ),
                         ],
                       ),

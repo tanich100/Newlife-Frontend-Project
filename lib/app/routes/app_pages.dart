@@ -61,7 +61,10 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.PETS_DETAIL,
-      page: () => const PetsDetailView(),
+      page: () {
+        final pet = Get.arguments;
+        return PetsDetailView(pet: pet);
+      },
       binding: PetsDetailBinding(),
     ),
     GetPage(

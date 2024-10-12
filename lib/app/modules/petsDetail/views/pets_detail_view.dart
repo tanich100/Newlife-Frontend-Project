@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'confirm_dialog.dart';
 
 class PetsDetailView extends StatefulWidget {
-  const PetsDetailView({Key? key}) : super(key: key);
+  const PetsDetailView({Key? key, required pet}) : super(key: key);
 
   @override
   _PetsDetailViewState createState() => _PetsDetailViewState();

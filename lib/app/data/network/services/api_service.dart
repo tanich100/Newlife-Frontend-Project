@@ -13,7 +13,7 @@ class ApiService {
     ..interceptors.add(LogInterceptor(responseBody: true))
     ..httpClientAdapter = IOHttpClientAdapter(
       createHttpClient: () {
-        HttpClient client = HttpClient();
+        final client = HttpClient();
         client.badCertificateCallback =
             (X509Certificate cert, String host, int port) => true;
         return client;
