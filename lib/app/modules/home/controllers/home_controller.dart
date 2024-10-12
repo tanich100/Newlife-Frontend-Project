@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:newlife_app/app/data/models/adoption_post_model.dart';
+import 'package:newlife_app/app/data/models/find_owner_post_model.dart';
 import 'package:newlife_app/app/data/network/api/adoption_post_api.dart';
 import 'package:newlife_app/app/data/network/api/find_owner_post_api.dart';
 import 'package:newlife_app/app/data/pet_data.dart';
@@ -56,11 +58,19 @@ class HomeController extends GetxController
       final findOwnerPosts = await findOwnerPostApi.getPosts();
 
       allPets.value = [...adoptionPosts, ...findOwnerPosts];
-      allPets.shuffle();
-
+      filteredAllPets.value = allPets;
       print('Fetched ${allPets.length} total pets');
     } catch (e) {
       print('Error fetching pets: $e');
+    }
+  }
+
+  void navigateToPetDetail(dynamic pet) {
+    if (pet is AdoptionPost) {
+      Get.toNamed('/pets-detail', arguments: {'pet': pet, 'type': 'adoption'});
+    } else if (pet is FindOwnerPost) {
+      Get.toNamed('/pets-detail',
+          arguments: {'pet': pet, 'type': 'find-owner'});
     }
   }
 

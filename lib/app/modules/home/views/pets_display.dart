@@ -11,15 +11,18 @@ class PetsDisplay extends StatelessWidget {
     final HomeController controller = Get.find<HomeController>();
 
     return Obx(() {
+      if (controller.filteredAllPets.isEmpty) {
+        return Center(child: Text('No pets available'));
+      }
       return GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           crossAxisSpacing: 8.0,
           mainAxisSpacing: 8.0,
         ),
-        itemCount: controller.allPets.length,
+        itemCount: controller.filteredAllPets.length,
         itemBuilder: (context, index) {
-          final pet = controller.allPets[index];
+          final pet = controller.filteredAllPets[index];
           String name = '';
           String? imageUrl;
           String imageEndpoint = '';
@@ -35,9 +38,7 @@ class PetsDisplay extends StatelessWidget {
           }
 
           return GestureDetector(
-            onTap: () {
-              Get.toNamed('/pets_detail', arguments: pet);
-            },
+            onTap: () => controller.navigateToPetDetail(pet),
             child: Card(
               child: Column(
                 children: [
@@ -48,7 +49,7 @@ class PetsDisplay extends StatelessWidget {
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) {
                               print('Error loading image: $error');
-                              return Icon(Icons.error);
+                              return Icon(Icons.pets, size: 50);
                             },
                           )
                         : Icon(Icons.pets, size: 50),
