@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newlife_app/app/data/models/local_user.dart';
 import 'package:newlife_app/app/data/network/api/user_api.dart';
@@ -97,10 +98,28 @@ class UserController extends GetxController {
       print('Login successful! User ID: ${user.userId}, Name: ${user.name}');
       await updateLocalUser(user.userId, user.name, user.imageUrl);
       await getUser();
-      Get.offAllNamed('/profile');
+      Get.offAllNamed('/home');
     } catch (e) {
+      loginFail();
       print('Login failed: $e');
     }
+  }
+
+  void loginFail() {
+    Get.defaultDialog(
+      title: 'เข้าสู่ระบบไม่สำเร็จ',
+      middleText: 'Email หรือ Password ไม่ถูกต้อง',
+      textConfirm: 'OK',
+      onConfirm: () {
+        Get.back();
+      },
+      barrierDismissible: false,
+      backgroundColor: Colors.yellow,
+      titleStyle: TextStyle(color: Colors.black),
+      middleTextStyle: TextStyle(color: Colors.black),
+      confirmTextColor: Colors.black,
+      buttonColor: Colors.white,
+    );
   }
 
   Future<void> updateLocalUser(
@@ -110,7 +129,15 @@ class UserController extends GetxController {
       SET name = '${userName}' ,image_url = '${imgUrl}'
       WHERE user_id = 1;
     """);
-    print("Updated");
+  }
+
+  Future<void> resetToDefaultUser(
+      int userId, String userName, String imgUrl) async {
+    await executeRawQuery("""
+      UPDATE user
+      SET name = '' ,image_url = ''
+      WHERE user_id = 1;
+    """);
   }
 }
 
