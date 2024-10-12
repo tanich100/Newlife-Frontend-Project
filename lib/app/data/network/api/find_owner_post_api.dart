@@ -9,19 +9,32 @@ class FindOwnerPostApi {
   Future<List<FindOwnerPost>> getPosts() async {
     try {
       final response = await _apiService.get(AppUrl.findOwnerPosts);
-      return (response.data as List)
+      print('API Response: ${response.data}');
+
+      List<FindOwnerPost> posts = (response.data as List)
           .map((json) => FindOwnerPost.fromJson(json))
           .toList();
+
+      print('Parsed posts:');
+      posts.forEach((post) {
+        print('Post: ${post.toJson()}');
+      });
+
+      return posts;
     } catch (e) {
+      print('Error in getPosts: $e');
       rethrow;
     }
   }
 
   Future<FindOwnerPost> getPost(int id) async {
     try {
-      final response = await _apiService.get('${AppUrl.findOwnerPosts}/$id');
+      final response = await _apiService
+          .get('${AppUrl.findOwnerPosts}/GetFindOwnerPost/$id');
+      print('Response data: ${response.data}');
       return FindOwnerPost.fromJson(response.data);
     } catch (e) {
+      print('Error in getPost: $e');
       rethrow;
     }
   }

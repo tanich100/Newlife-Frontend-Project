@@ -1,59 +1,50 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:newlife_app/app/constants/app_url.dart';
+import 'package:newlife_app/app/data/models/adoption_post_model.dart';
+import 'package:newlife_app/app/data/models/find_owner_post_model.dart';
+import 'package:newlife_app/app/modules/petsDetail/controllers/pets_detail_controller.dart';
+import 'package:newlife_app/app/modules/petsDetail/views/confirm_dialog.dart';
 
-import 'confirm_dialog.dart';
-
-class PetsDetailView extends StatefulWidget {
-  const PetsDetailView({Key? key, required pet}) : super(key: key);
+class PetsDetailView extends GetView<PetsDetailController> {
+  const PetsDetailView({Key? key}) : super(key: key);
 
   @override
-  _PetsDetailViewState createState() => _PetsDetailViewState();
-}
-
-class _PetsDetailViewState extends State<PetsDetailView> {
-  bool isFavorite = false;
-
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Get.back();
-          },
+          onPressed: () => Get.back(),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildPetImage(),
-              SizedBox(
-                height: 20,
-              ),
-              Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildPetTypeTag(),
-                    SizedBox(height: 16),
-                    _buildPetInfoHeader(),
-                    SizedBox(height: 16),
-                    _buildPetLocation(),
-                    SizedBox(height: 20),
-                    _buildPetDescription(),
-                    SizedBox(height: 80),
-                    _buildControls(),
-                  ],
-                ),
-              ),
-            ],
+      body: Obx(() {
+        final post = controller.post.value;
+        if (post == null) {
+          return Center(child: CircularProgressIndicator());
+        }
+        return SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildPetImage(),
+                SizedBox(height: 20),
+                _buildPetTypeTag(),
+                SizedBox(height: 16),
+                _buildPetInfoHeader(),
+                SizedBox(height: 16),
+                _buildPetLocation(),
+                SizedBox(height: 20),
+                _buildPetDescription(),
+                SizedBox(height: 80),
+                _buildControls(),
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 
@@ -64,11 +55,23 @@ class _PetsDetailViewState extends State<PetsDetailView> {
         height: 350,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
-          child: Image(
-            image: NetworkImage(
-              'https://p16-va.lemon8cdn.com/tos-alisg-v-a3e477-sg/8120a94612554f8dac3c25f48ca214e7~tplv-tej9nj120t-origin.webp',
-            ),
-            fit: BoxFit.cover,
+          child: PageView.builder(
+            itemCount: controller.images.length,
+            onPageChanged: (index) =>
+                controller.currentImageIndex.value = index,
+            itemBuilder: (context, index) {
+              String imageUrl = controller.images[index];
+              String fullUrl =
+                  '${AppUrl.baseUrl}${controller.post.value is FindOwnerPost ? AppUrl.findOwnerPosts : AppUrl.adoptionPosts}${controller.post.value is FindOwnerPost ? AppUrl.findOwnerPostImage : AppUrl.image}/$imageUrl';
+              return Image.network(
+                fullUrl,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  print('Error loading image: $error');
+                  return Icon(Icons.error, size: 100);
+                },
+              );
+            },
           ),
         ),
       ),
@@ -81,35 +84,30 @@ class _PetsDetailViewState extends State<PetsDetailView> {
       children: [
         Row(
           children: [
-            _buildTagBox(Icons.pets, 'แมว'),
+            _buildTagBox(Icons.pets,
+                controller.post.value is AdoptionPost ? 'แมว' : 'สัตว์หาย'),
             SizedBox(width: 10),
-            _buildTagBox(Icons.female, 'เมีย'),
+            _buildTagBox(Icons.face, controller.post.value.sex ?? 'ไม่ระบุ'),
           ],
         ),
-        _buildFavoriteButton(),
+        Obx(() => _buildFavoriteButton()),
       ],
     );
   }
 
   Widget _buildFavoriteButton() {
     return InkWell(
-      onTap: () {
-        setState(() {
-          isFavorite = !isFavorite;
-        });
-      },
+      onTap: controller.toggleFavorite,
       child: AnimatedContainer(
         duration: Duration(milliseconds: 300),
         padding: EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: isFavorite
-              ? Color.fromARGB(255, 239, 190, 31)
-              : Color.fromARGB(255, 239, 190, 31),
+          color: Color.fromARGB(255, 239, 190, 31),
           shape: BoxShape.circle,
         ),
         child: Icon(
-          isFavorite ? Icons.favorite : Icons.favorite_border,
-          color: isFavorite ? Colors.red : Colors.black,
+          controller.isFavorite.value ? Icons.favorite : Icons.favorite_border,
+          color: controller.isFavorite.value ? Colors.red : Colors.black,
           size: 30,
         ),
       ),
@@ -131,7 +129,7 @@ class _PetsDetailViewState extends State<PetsDetailView> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 26), // ลดขนาด icon ลงเล็กน้อย
+          Icon(icon, size: 26),
           SizedBox(width: 4),
           Expanded(
             child: Text(
@@ -147,45 +145,55 @@ class _PetsDetailViewState extends State<PetsDetailView> {
   }
 
   Widget _buildPetInfoHeader() {
+    String name = controller.post.value.name ?? 'ไม่ระบุชื่อ';
+    String age = controller.post.value is AdoptionPost
+        ? '(${(controller.post.value as AdoptionPost).age ?? 'ไม่ระบุ'} เดือน)'
+        : '';
+    String status = controller.post.value is AdoptionPost
+        ? (controller.post.value as AdoptionPost).adoptionStatus ??
+            'ยังไม่ได้รับอุปการะ'
+        : 'สัตว์หาย';
+
     return Row(
       children: [
-        Text(
-          'โลร่า',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        Flexible(
+          child: Text(
+            name,
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
-        SizedBox(
-          width: 10,
-        ),
+        SizedBox(width: 5),
         Text(
-          '(8 เดือน)',
+          age,
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
         SizedBox(width: 10),
-        Container(
-          child: Text(
-            'สถานะ:',
-            style: TextStyle(
-                fontSize: 18, color: Colors.black, fontWeight: FontWeight.bold),
-          ),
-        ),
-        SizedBox(
-          width: 5,
-        ),
         Text(
-          'ยังไม่ได้รับอุปการะ',
-          style: TextStyle(fontSize: 14, color: Colors.black87),
+          'สถานะ:',
+          style: TextStyle(
+              fontSize: 18, color: Colors.black, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(width: 5),
+        Flexible(
+          child: Text(
+            status,
+            style: TextStyle(fontSize: 14, color: Colors.black87),
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
       ],
     );
   }
 
   Widget _buildPetLocation() {
+    String location = controller.post.value.addressDetails ?? 'ไม่ระบุที่อยู่';
     return Row(
       children: [
         Icon(Icons.location_on_sharp, color: Colors.red.shade500, size: 25),
         SizedBox(width: 4),
         Expanded(
-          child: Text('คอนโดภูเก็ตทาวน์ ต.รัษฎา อ.เมืองภูเก็ต จ.ภูเก็ต'),
+          child: Text(location),
         ),
       ],
     );
@@ -199,52 +207,47 @@ class _PetsDetailViewState extends State<PetsDetailView> {
           'รายละเอียด',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
-        SizedBox(
-          height: 20,
-        ),
-        Text(
-          'น้องเป็นแมวที่ขี้อ้อนมาก เป็นแมวที่ชอบเล่นขี้เล่นพอสมควรอยู่ไม่นิ่งเลยค่ะ ชอบกินขนมแมวมาก ชอบเป็นที่รักคนและขี้อ้อนมาก ๆ',
-        ),
+        SizedBox(height: 20),
+        Text(controller.post.value.description ?? 'ไม่มีคำอธิบายเพิ่มเติม'),
       ],
     );
   }
 
   Widget _buildControls() {
-    return Center(
-      child: SizedBox(
-        width: 250,
-        height: 60,
-        child: ElevatedButton(
-          child: Text(
-            'ต้องการอุปการะ',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-          onPressed: () => _showConfirmDialog(),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color.fromARGB(255, 244, 204, 47),
-            foregroundColor: Colors.black,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18),
+    if (controller.post.value is AdoptionPost) {
+      return Center(
+        child: SizedBox(
+          width: 250,
+          height: 60,
+          child: ElevatedButton(
+            child: Text(
+              'ต้องการอุปการะ',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            onPressed: () => _showConfirmDialog(),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color.fromARGB(255, 244, 204, 47),
+              foregroundColor: Colors.black,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18),
+              ),
             ),
           ),
         ),
-      ),
-    );
+      );
+    } else {
+      return SizedBox.shrink();
+    }
   }
 
   void _showConfirmDialog() async {
     final result = await Get.dialog<bool>(
-      ConfirmDialogView(petName: 'โลร่า'),
+      ConfirmDialogView(petName: controller.post.value.name ?? 'สัตว์เลี้ยง'),
       barrierDismissible: false,
     );
 
     if (result == true) {
-      // TODO: Add logic for confirming adoption
-      Get.snackbar(
-        'สำเร็จ',
-        'คุณได้ยืนยันการอุปการะน้องโลร่าแล้ว',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      controller.sendAdoptionRequest();
     }
   }
 }

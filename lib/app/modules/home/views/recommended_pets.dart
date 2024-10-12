@@ -27,12 +27,11 @@ class RecommendedPets extends StatelessWidget {
               name = pet.name ?? 'Unknown';
               imageUrl = pet.image1;
               gender = pet.sex ?? '';
+
               imageEndpoint = AppUrl.image; //  endpoint สำหรับ AdoptionPost
             } else if (pet is FindOwnerPost) {
               name = pet.name ?? 'Unknown';
               imageUrl = pet.image1;
-              gender = pet.sex ?? '';
-
               imageEndpoint =
                   AppUrl.findOwnerPostImage; //  endpoint สำหรับ FindOwnerPost
             }
@@ -41,12 +40,7 @@ class RecommendedPets extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PetsDetailView(pet: pet),
-                    ),
-                  );
+                  Get.toNamed('/pets-detail', arguments: {'pet': pet});
                 },
                 child: Container(
                   width: 150,
@@ -66,7 +60,7 @@ class RecommendedPets extends StatelessWidget {
                           width: 150,
                           child: imageUrl != null
                               ? Image.network(
-                                  '${AppUrl.baseUrl}${pet is AdoptionPost ? AppUrl.adoptionPosts : AppUrl.findOwnerPosts}$imageEndpoint/$imageUrl', // ใช้โครงสร้าง URL ที่เหมือนกัน
+                                  '${AppUrl.baseUrl}${pet is AdoptionPost ? AppUrl.adoptionPosts : AppUrl.findOwnerPosts}$imageEndpoint/$imageUrl',
                                   fit: BoxFit.cover,
                                   errorBuilder: (context, error, stackTrace) {
                                     print(
@@ -78,27 +72,10 @@ class RecommendedPets extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 10),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              name,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                          SizedBox(width: 4),
-                          Icon(
-                            gender.toLowerCase() == 'male'
-                                ? Icons.male
-                                : Icons.female,
-                            size: 24,
-                            color: gender.toLowerCase() == 'male'
-                                ? Colors.blue
-                                : Colors.pink,
-                          ),
-                        ],
+                      Text(
+                        name,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
                       ),
                     ],
                   ),

@@ -10,7 +10,14 @@ class ApiService {
   );
 
   final Dio dio = Dio(_options)
-    ..interceptors.add(LogInterceptor(responseBody: true))
+    ..interceptors.add(LogInterceptor(
+      request: true,
+      requestHeader: true,
+      requestBody: true,
+      responseHeader: true,
+      responseBody: true,
+      error: true,
+    ))
     ..httpClientAdapter = IOHttpClientAdapter(
       createHttpClient: () {
         final client = HttpClient();

@@ -108,7 +108,8 @@ class PostPetController extends GetxController {
     try {
       final Directory directory = await getApplicationDocumentsDirectory();
       for (var image in selectedImages) {
-        final String fileName = DateTime.now().millisecondsSinceEpoch.toString() + '.jpg';
+        final String fileName =
+            DateTime.now().millisecondsSinceEpoch.toString() + '.jpg';
         final File savedImage = await image.copy('${directory.path}/$fileName');
         print('Saved image: ${savedImage.path}');
       }

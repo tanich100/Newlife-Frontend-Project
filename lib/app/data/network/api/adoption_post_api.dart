@@ -29,9 +29,11 @@ class AdoptionPostApi {
 
   Future<AdoptionPost> getPost(int id) async {
     try {
-      final response = await _apiService.get('${AppUrl.adoptionPosts}/$id');
+      final response =
+          await _apiService.get('${AppUrl.adoptionPosts}/GetPost/$id');
       return AdoptionPost.fromJson(response.data);
     } catch (e) {
+      print('Error in getPost: $e');
       rethrow;
     }
   }

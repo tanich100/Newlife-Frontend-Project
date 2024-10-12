@@ -59,68 +59,77 @@ class AdoptionPost {
 
   factory AdoptionPost.fromJson(Map<String, dynamic> json) {
     return AdoptionPost(
-      adoptionPostId: json['adoptionPostId'],
-      userId: json['userId'],
-      image1: json['image1'],
-      image2: json['image2'],
-      image3: json['image3'],
-      image4: json['image4'],
-      image5: json['image5'],
-      image6: json['image6'],
-      image7: json['image7'],
-      image8: json['image8'],
-      image9: json['image9'],
-      image10: json['image10'],
+      adoptionPostId: json['adoption_post_id'] ?? json['adoptionPostId'],
+      userId: json['user_id'] ?? json['userId'],
+      image1: json['image_1'] ?? json['image1'],
+      image2: json['image_2'] ?? json['image2'],
+      image3: json['image_3'] ?? json['image3'],
+      image4: json['image_4'] ?? json['image4'],
+      image5: json['image_5'] ?? json['image5'],
+      image6: json['image_6'] ?? json['image6'],
+      image7: json['image_7'] ?? json['image7'],
+      image8: json['image_8'] ?? json['image8'],
+      image9: json['image_9'] ?? json['image9'],
+      image10: json['image_10'] ?? json['image10'],
       name: json['name'],
-      breedId: json['breedId'],
+      breedId: json['breed_id'] ?? json['breedId'],
       age: json['age'],
       sex: json['sex'],
-      isNeedAttention: json['isNeedAttention'],
+      isNeedAttention: json['is_need_attention'] ?? json['isNeedAttention'],
       description: json['description'],
-      provinceId: json['provinceId'],
-      districtId: json['districtId'],
-      subdistrictId: json['subdistrictId'],
-      addressDetails: json['addressDetails'],
-      adoptionStatus: json['adoptionStatus'],
-      postStatus: json['postStatus'],
-      createAt:
-          json['creatAt'] != null ? DateTime.parse(json['creatAt']) : null,
-      updateAt:
-          json['updateAt'] != null ? DateTime.parse(json['updateAt']) : null,
-      deleteAt:
-          json['deleteAt'] != null ? DateTime.parse(json['deleteAt']) : null,
+      provinceId: json['province_id'] ?? json['provinceId'],
+      districtId: json['district_id'] ?? json['districtId'],
+      subdistrictId: json['subdistrict_id'] ?? json['subdistrictId'],
+      addressDetails: json['address_details'] ?? json['addressDetails'],
+      adoptionStatus: json['adoption_status'] ?? json['adoptionStatus'],
+      postStatus: json['post_status'] ?? json['postStatus'],
+      createAt: json['create_at'] != null
+          ? DateTime.parse(json['create_at'])
+          : json['createAt'] != null
+              ? DateTime.parse(json['createAt'])
+              : null,
+      updateAt: json['update_at'] != null
+          ? DateTime.parse(json['update_at'])
+          : json['updateAt'] != null
+              ? DateTime.parse(json['updateAt'])
+              : null,
+      deleteAt: json['delete_at'] != null
+          ? DateTime.parse(json['delete_at'])
+          : json['deleteAt'] != null
+              ? DateTime.parse(json['deleteAt'])
+              : null,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'adoptionPostId': adoptionPostId,
-      'userId': userId,
-      'image1': image1,
-      'image2': image2,
-      'image3': image3,
-      'image4': image4,
-      'image5': image5,
-      'image6': image6,
-      'image7': image7,
-      'image8': image8,
-      'image9': image9,
-      'image10': image10,
+      'adoption_post_id': adoptionPostId,
+      'user_id': userId,
+      'image_1': image1,
+      'image_2': image2,
+      'image_3': image3,
+      'image_4': image4,
+      'image_5': image5,
+      'image_6': image6,
+      'image_7': image7,
+      'image_8': image8,
+      'image_9': image9,
+      'image_10': image10,
       'name': name,
-      'breedId': breedId,
+      'breed_id': breedId,
       'age': age,
       'sex': sex,
-      'isNeedAttention': isNeedAttention,
+      'is_need_attention': isNeedAttention,
       'description': description,
-      'provinceId': provinceId,
-      'districtId': districtId,
-      'subdistrictId': subdistrictId,
-      'addressDetails': addressDetails,
-      'adoptionStatus': adoptionStatus,
-      'postStatus': postStatus,
-      'createAt': createAt?.toIso8601String(),
-      'updateAt': updateAt?.toIso8601String(),
-      'deleteAt': deleteAt?.toIso8601String(),
+      'province_id': provinceId,
+      'district_id': districtId,
+      'subdistrict_id': subdistrictId,
+      'address_details': addressDetails,
+      'adoption_status': adoptionStatus,
+      'post_status': postStatus,
+      'create_at': createAt?.toIso8601String(),
+      'update_at': updateAt?.toIso8601String(),
+      'delete_at': deleteAt?.toIso8601String(),
     };
   }
 }
