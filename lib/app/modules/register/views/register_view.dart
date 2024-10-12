@@ -5,6 +5,12 @@ import '../controllers/register_controller.dart';
 
 class RegisterView extends GetView<RegisterController> {
   RegisterView({Key? key}) : super(key: key);
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmpasswordController =
+      TextEditingController();
+  RxBool isshowPassword = false.obs;
+  RxBool isshowConfirmPassword = false.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -31,25 +37,20 @@ class RegisterView extends GetView<RegisterController> {
               crossAxisAlignment:
                   CrossAxisAlignment.center, // Changed from stretch to center
               children: [
-                _buildTextField('อีเมล'),
+                _buildTextField('อีเมล', emailController),
                 SizedBox(height: 40),
-                _buildPasswordField('รหัสผ่าน'),
+                _buildPasswordField(
+                    'รหัสผ่าน', passwordController, isshowPassword),
                 SizedBox(height: 40),
-                _buildPasswordField('ยืนยันรหัสผ่าน'),
+                _buildPasswordField('ยืนยันรหัสผ่าน', confirmpasswordController,
+                    isshowConfirmPassword),
                 SizedBox(height: 40),
-                _buildTextField('ชื่อ'),
-                SizedBox(height: 40),
-                _buildTextField('นามสกุล'),
-                SizedBox(height: 130),
                 SizedBox(
                   width: 300,
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => AdoptView()),
-                      );
+                      Get.to(AdoptView());
                     },
                     style: ButtonStyle(
                       backgroundColor: WidgetStateProperty.all(Colors.yellow),
@@ -87,7 +88,10 @@ class RegisterView extends GetView<RegisterController> {
     );
   }
 
-  Widget _buildTextField(String label) {
+  Widget _buildTextField(
+    String label,
+    TextEditingController controller,
+  ) {
     return Container(
       width: 300, // กำหนดความกว้างที่ต้องการ
       height: 60, // กำหนดความสูงที่ต้องการ
@@ -111,17 +115,20 @@ class RegisterView extends GetView<RegisterController> {
           contentPadding: EdgeInsets.symmetric(
               horizontal: 16, vertical: 20), // ปรับ vertical padding
         ),
+        controller: controller,
       ),
     );
   }
 
-  Widget _buildPasswordField(String label) {
+  Widget _buildPasswordField(
+      String label, TextEditingController controller, RxBool isshow) {
     return Obx(() {
       return Container(
         width: 300, // กำหนดความกว้างที่ต้องการ
         height: 60,
         child: TextFormField(
-          obscureText: !controller.isPasswordVisible.value,
+          // controller: controller,
+          obscureText: !isshow.value,
           decoration: InputDecoration(
             labelText: label,
             filled: true,
@@ -141,11 +148,11 @@ class RegisterView extends GetView<RegisterController> {
             contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
             suffixIcon: IconButton(
               icon: Icon(
-                controller.isPasswordVisible.value
-                    ? Icons.visibility
-                    : Icons.visibility_off,
+                isshow.value ? Icons.visibility : Icons.visibility_off,
               ),
-              onPressed: controller.togglePasswordVisibility,
+              onPressed: () {
+                isshow.value = !isshow.value;
+              },
             ),
           ),
         ),
