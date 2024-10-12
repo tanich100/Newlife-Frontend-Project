@@ -5,6 +5,7 @@ import 'package:newlife_app/app/data/models/adoption_post_model.dart';
 import 'package:newlife_app/app/data/models/find_owner_post_model.dart';
 import 'package:newlife_app/app/modules/petsDetail/controllers/pets_detail_controller.dart';
 import 'package:newlife_app/app/modules/petsDetail/views/confirm_dialog.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class PetsDetailView extends GetView<PetsDetailController> {
   const PetsDetailView({Key? key}) : super(key: key);
@@ -38,7 +39,7 @@ class PetsDetailView extends GetView<PetsDetailController> {
                 _buildPetLocation(),
                 SizedBox(height: 20),
                 _buildPetDescription(),
-                SizedBox(height: 80),
+                SizedBox(height: 52),
                 _buildControls(),
               ],
             ),
@@ -49,32 +50,53 @@ class PetsDetailView extends GetView<PetsDetailController> {
   }
 
   Widget _buildPetImage() {
-    return Center(
-      child: Container(
-        width: 370,
-        height: 350,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
-          child: PageView.builder(
-            itemCount: controller.images.length,
-            onPageChanged: (index) =>
-                controller.currentImageIndex.value = index,
-            itemBuilder: (context, index) {
-              String imageUrl = controller.images[index];
-              String fullUrl =
-                  '${AppUrl.baseUrl}${controller.post.value is FindOwnerPost ? AppUrl.findOwnerPosts : AppUrl.adoptionPosts}${controller.post.value is FindOwnerPost ? AppUrl.findOwnerPostImage : AppUrl.image}/$imageUrl';
-              return Image.network(
-                fullUrl,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  print('Error loading image: $error');
-                  return Icon(Icons.error, size: 100);
-                },
-              );
-            },
+    return Column(
+      children: [
+        Container(
+          width: 370,
+          height: 350,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: PageView.builder(
+              controller: PageController(),
+              itemCount: controller.images.length,
+              onPageChanged: (index) =>
+                  controller.currentImageIndex.value = index,
+              itemBuilder: (context, index) {
+                String imageUrl = controller.images[index];
+                String fullUrl =
+                    '${AppUrl.baseUrl}${controller.post.value is FindOwnerPost ? AppUrl.findOwnerPosts : AppUrl.adoptionPosts}${controller.post.value is FindOwnerPost ? AppUrl.findOwnerPostImage : AppUrl.image}/$imageUrl';
+                return Image.network(
+                  fullUrl,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    print('Error loading image: $error');
+                    return Icon(Icons.error, size: 100);
+                  },
+                );
+              },
+            ),
           ),
         ),
-      ),
+        SizedBox(height: 15),
+        Obx(() {
+          if (controller.images.length > 1) {
+            return SmoothPageIndicator(
+              controller: PageController(
+                  initialPage: controller.currentImageIndex.value),
+              count: controller.images.length,
+              effect: ScrollingDotsEffect(
+                dotWidth: 8.0,
+                dotHeight: 8.0,
+                activeDotColor: Color.fromARGB(255, 239, 190, 31),
+                dotColor: Colors.grey,
+              ),
+            );
+          } else {
+            return SizedBox.shrink();
+          }
+        }),
+      ],
     );
   }
 
