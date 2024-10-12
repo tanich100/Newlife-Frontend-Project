@@ -46,7 +46,7 @@ class AddImages extends StatelessWidget {
                         },
                       )),
                 ),
-                // เปลี่ยนปุ่มปิดเป็นปุ่มบันทึก
+                
                 TextButton(
                   child: Text('บันทึก'),
                   onPressed: () async {
@@ -118,19 +118,19 @@ class AddImages extends StatelessWidget {
             backgroundColor: Colors.white,
             side: BorderSide(color: Colors.grey),
             padding:
-                EdgeInsets.all(12), // เพิ่ม padding ถ้าต้องการให้ปุ่มดูใหญ่ขึ้น
+                EdgeInsets.all(12), 
           ),
           onPressed: controller.isMaxImagesSelected
               ? null
               : () => _showImagePickerDialog(context),
           child: Icon(
-            Icons.add_photo_alternate, // ไอคอนที่ต้องการแสดง
-            color: Colors.black, // สีของไอคอน
+            Icons.add_photo_alternate, 
+            color: Colors.black, 
           ),
         ),
         SizedBox(height: 8),
-        Obx(() => Text('${controller.selectedImages.length} รูปที่เลือก')),
-        SizedBox(height: 16),
+        // Obx(() => Text('${controller.selectedImages.length} รูปที่เลือก')),
+        // SizedBox(height: 16),
 
         // แสดงรูปภาพที่เลือก
         Obx(() => GridView.builder(

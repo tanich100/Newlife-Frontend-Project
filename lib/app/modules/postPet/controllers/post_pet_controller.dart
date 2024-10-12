@@ -108,8 +108,7 @@ class PostPetController extends GetxController {
     try {
       final Directory directory = await getApplicationDocumentsDirectory();
       for (var image in selectedImages) {
-        final String fileName =
-            DateTime.now().millisecondsSinceEpoch.toString() + '.jpg';
+        final String fileName = DateTime.now().millisecondsSinceEpoch.toString() + '.jpg';
         final File savedImage = await image.copy('${directory.path}/$fileName');
         print('Saved image: ${savedImage.path}');
       }
@@ -118,7 +117,7 @@ class PostPetController extends GetxController {
         'บันทึกรูปภาพเรียบร้อยแล้ว',
         snackPosition: SnackPosition.BOTTOM,
       );
-      selectedImages.clear(); // ล้างรายการหลังจากบันทึกเสร็จแล้ว
+      // selectedImages.clear(); // ล้างรายการหลังจากบันทึกเสร็จแล้ว
     } catch (e) {
       print('Error saving images: $e');
       Get.snackbar(

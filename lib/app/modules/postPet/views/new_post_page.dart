@@ -61,7 +61,7 @@ class NewPostPage extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(left: 49),
                       child: Container(
-                        width: 220, // กำหนดความกว้าง
+                        width: 240, // กำหนดความกว้าง
                         height: 40, // กำหนดความสูง
                         padding:
                             EdgeInsets.symmetric(horizontal: 20, vertical: 8),
