@@ -57,24 +57,41 @@ class NewPostPage extends StatelessWidget {
                             style: TextStyle(fontSize: 18)),
                       ],
                     ),
-                    SizedBox(height: 6),
+                     SizedBox(height: 6),
                     Padding(
                       padding: const EdgeInsets.only(left: 49),
-                      child: Container(
-                        width: 240, // กำหนดความกว้าง
-                        height: 40, // กำหนดความสูง
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(postType),
-                          ],
-                        ),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 240,
+                            height: 40,
+                            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey),
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Text(postType),
+                          ),
+                          SizedBox(width: 8),
+                          GestureDetector(
+                            onTap: controller.isMaxImagesSelected
+                                ? null
+                                : () => controller.pickImages(),
+                            child: Container(
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey),
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: Icon(
+                                Icons.add_photo_alternate,
+                                color: Colors.black,
+                                size: 26,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     SizedBox(height: 16),

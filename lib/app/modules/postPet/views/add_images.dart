@@ -113,22 +113,22 @@ class AddImages extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white,
-            side: BorderSide(color: Colors.grey),
-            padding:
-                EdgeInsets.all(12), 
-          ),
-          onPressed: controller.isMaxImagesSelected
-              ? null
-              : () => _showImagePickerDialog(context),
-          child: Icon(
-            Icons.add_photo_alternate, 
-            color: Colors.black, 
-          ),
-        ),
-        SizedBox(height: 8),
+        // ElevatedButton(
+        //   style: ElevatedButton.styleFrom(
+        //     backgroundColor: Colors.white,
+        //     side: BorderSide(color: Colors.grey),
+        //     padding:
+        //         EdgeInsets.all(12), 
+        //   ),
+        //   onPressed: controller.isMaxImagesSelected
+        //       ? null
+        //       : () => _showImagePickerDialog(context),
+        //   child: Icon(
+        //     Icons.add_photo_alternate, 
+        //     color: Colors.black, 
+        //   ),
+        // ),
+        // SizedBox(height: 8),
         // Obx(() => Text('${controller.selectedImages.length} รูปที่เลือก')),
         // SizedBox(height: 16),
 
