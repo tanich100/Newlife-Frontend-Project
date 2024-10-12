@@ -39,7 +39,7 @@ class PetsDetailView extends GetView<PetsDetailController> {
                 _buildPetLocation(),
                 SizedBox(height: 20),
                 _buildPetDescription(),
-                SizedBox(height: 52),
+                SizedBox(height: 50),
                 _buildControls(),
               ],
             ),
@@ -106,10 +106,9 @@ class PetsDetailView extends GetView<PetsDetailController> {
       children: [
         Row(
           children: [
-            _buildTagBox(Icons.pets,
-                controller.post.value is AdoptionPost ? 'แมว' : 'สัตว์หาย'),
+            _buildTagBox(Icons.pets, controller.animalType.value),
             SizedBox(width: 10),
-            _buildTagBox(Icons.face, controller.post.value.sex ?? 'ไม่ระบุ'),
+            _buildTagBox(Icons.face, controller.post.value?.sex ?? 'ไม่ระบุ'),
           ],
         ),
         Obx(() => _buildFavoriteButton()),
@@ -174,34 +173,51 @@ class PetsDetailView extends GetView<PetsDetailController> {
     String status = controller.post.value is AdoptionPost
         ? (controller.post.value as AdoptionPost).adoptionStatus ??
             'ยังไม่ได้รับอุปการะ'
-        : 'สัตว์หาย';
+        : controller.post.value.postStatus ?? 'ตามหาเจ้าของ';
 
-    return Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Flexible(
-          child: Text(
-            name,
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            overflow: TextOverflow.ellipsis,
-          ),
+        Row(
+          children: [
+            Expanded(
+              child: RichText(
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+                text: TextSpan(
+                  style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
+                  children: [
+                    TextSpan(text: '$name $age '),
+                    TextSpan(
+                      text: 'สถานะ: ',
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    ),
+                    TextSpan(
+                      text: status,
+                      style: TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.normal),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
-        SizedBox(width: 5),
-        Text(
-          age,
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-        ),
-        SizedBox(width: 10),
-        Text(
-          'สถานะ:',
-          style: TextStyle(
-              fontSize: 18, color: Colors.black, fontWeight: FontWeight.bold),
-        ),
-        SizedBox(width: 5),
-        Flexible(
-          child: Text(
-            status,
-            style: TextStyle(fontSize: 14, color: Colors.black87),
-            overflow: TextOverflow.ellipsis,
+        SizedBox(height: 10),
+        RichText(
+          text: TextSpan(
+            style: TextStyle(fontSize: 18, color: Colors.black87),
+            children: [
+              TextSpan(
+                text: 'สายพันธุ์: ',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              TextSpan(text: controller.breedName.value),
+            ],
           ),
         ),
       ],
@@ -229,7 +245,7 @@ class PetsDetailView extends GetView<PetsDetailController> {
           'รายละเอียด',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 20),
+        SizedBox(height: 10),
         Text(controller.post.value.description ?? 'ไม่มีคำอธิบายเพิ่มเติม'),
       ],
     );

@@ -15,4 +15,7 @@ class AppUrl {
 
 //Fav url
   static const String favoriteAnimals = '/FavoriteAnimal';
+
+  // Breed url
+  static const String breeds = '/Breed';
 }

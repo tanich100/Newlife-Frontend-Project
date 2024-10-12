@@ -2,16 +2,21 @@ import 'package:get/get.dart';
 import 'package:newlife_app/app/data/models/adoption_post_model.dart';
 import 'package:newlife_app/app/data/models/find_owner_post_model.dart';
 import 'package:newlife_app/app/data/network/api/adoption_post_api.dart';
+import 'package:newlife_app/app/data/network/api/breed_api.dart';
 import 'package:newlife_app/app/data/network/api/find_owner_post_api.dart';
 
 class PetsDetailController extends GetxController {
   final AdoptionPostApi adoptionPostApi = AdoptionPostApi();
   final FindOwnerPostApi findOwnerPostApi = FindOwnerPostApi();
+  final BreedApi breedApi = BreedApi();
 
   final isFavorite = false.obs;
   final currentImageIndex = 0.obs;
   final images = <String>[].obs;
   final Rx<dynamic> post = Rx<dynamic>(null);
+
+  final animalType = ''.obs;
+  final breedName = ''.obs;
 
   @override
   void onInit() {
@@ -27,15 +32,36 @@ class PetsDetailController extends GetxController {
       if (pet is AdoptionPost) {
         final fetchedPost = await adoptionPostApi.getPost(pet.adoptionPostId!);
         post.value = fetchedPost;
+        await fetchBreedInfo(fetchedPost.breedId);
       } else if (pet is FindOwnerPost) {
         final fetchedPost =
             await findOwnerPostApi.getPost(pet.findOwnerPostId!);
         post.value = fetchedPost;
+        await fetchBreedInfo(fetchedPost.breedId);
       }
       updateImages();
     } catch (e) {
       print('Error fetching post details: $e');
-      Get.snackbar('Error', 'Failed to load pet details. Please try again.');
+      Get.snackbar(
+          'Error', 'ไม่สามารถโหลดข้อมูลสัตว์เลี้ยงได้ กรุณาลองใหม่อีกครั้ง');
+    }
+  }
+
+  Future<void> fetchBreedInfo(int? breedId) async {
+    if (breedId == null) {
+      animalType.value = 'ไม่ทราบ';
+      breedName.value = 'ไม่ทราบสายพันธุ์';
+      return;
+    }
+
+    try {
+      final breed = await breedApi.getBreed(breedId);
+      animalType.value = breed.animalType;
+      breedName.value = breed.breedName;
+    } catch (e) {
+      print('Error fetching breed info: $e');
+      animalType.value = 'ไม่ทราบ';
+      breedName.value = 'ไม่ทราบสายพันธุ์';
     }
   }
 
