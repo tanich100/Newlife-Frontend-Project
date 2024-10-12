@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:newlife_app/app/modules/postPet/controllers/post_pet_controller.dart';
 
 class NewPostPageDetail extends StatefulWidget {
   final String selectedType;
+  final PostPetController controller = Get.find<PostPetController>();
 
-  const NewPostPageDetail({Key? key, required this.selectedType})
-      : super(key: key);
+  NewPostPageDetail({Key? key, required this.selectedType}) : super(key: key);
 
   @override
   _PostPageDetailState createState() => _PostPageDetailState();
