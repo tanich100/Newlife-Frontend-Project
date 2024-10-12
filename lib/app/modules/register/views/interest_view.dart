@@ -42,6 +42,7 @@ class AddDetailPageState extends State<InterestView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(75.0),
         child: AppBar(
