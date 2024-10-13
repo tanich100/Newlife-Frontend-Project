@@ -305,10 +305,6 @@ Widget _buildFormmmRow() {
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
       Expanded(
-        child: _buildOccField('อาชีพ*'),
-      ),
-      SizedBox(width: 10),
-      Expanded(
         child: _buildNofField('จำนวนสมาชิกในครอบครัว*'),
       ),
     ],
@@ -381,11 +377,7 @@ Widget _buildFormRow() {
       ),
       SizedBox(width: 10),
       Expanded(
-        child: _buildGenderField('เพศ*'),
-      ),
-      SizedBox(width: 10),
-      Expanded(
-        child: _buildAgeField('อายุ*'),
+        child: _buildGenderField('เบอร์โทรติดต่อ*'),
       ),
     ],
   );
@@ -480,11 +472,15 @@ Widget _buildFormmRow() {
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
       Expanded(
-        child: _buildEmailField('อีเมล*'),
+        child: _buildAgeField('อายุ*'),
       ),
       SizedBox(width: 10),
       Expanded(
-        child: _buildPhoneField('เบอร์โทรติดต่อ*'),
+        child: _buildPhoneField('เพศ*'),
+      ),
+      SizedBox(width: 10),
+      Expanded(
+        child: _buildPhoneField('อาชีพ*'),
       ),
     ],
   );
