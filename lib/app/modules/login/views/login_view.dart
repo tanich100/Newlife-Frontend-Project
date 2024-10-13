@@ -26,7 +26,7 @@ class LoginView extends GetView<LoginController> {
           Column(
             children: [
               buildCustomTextField(
-                label: 'Email',
+                label: 'อีเมล',
                 prefixIcon: Icons.person,
                 controller: emailController,
               ),
@@ -87,7 +87,7 @@ class LoginView extends GetView<LoginController> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Do not have an account? ',
+                  'คุณยังไม่มีบัญชี? ',
                   style: TextStyle(
                     fontSize: 14,
                     color: Color.fromARGB(255, 121, 119, 119),
@@ -96,7 +96,7 @@ class LoginView extends GetView<LoginController> {
                 GestureDetector(
                   onTap: () => Get.toNamed('/register'),
                   child: Text(
-                    'Sign up',
+                    'สมัคร',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 14,
