@@ -9,6 +9,8 @@ class LoginView extends GetView<LoginController> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  RxBool isPasswordVisible = false.obs;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,12 +31,24 @@ class LoginView extends GetView<LoginController> {
                 controller: emailController,
               ),
               SizedBox(height: 25),
-              buildCustomTextField(
-                label: 'Password',
-                prefixIcon: Icons.lock,
-                isPassword: true,
-                controller: passwordController
-              ),
+
+              Obx(() {
+                return buildCustomTextField(
+                  label: 'รหัสผ่าน',
+                  prefixIcon: Icons.lock,
+                  isPassword: true,
+                  controller: passwordController,
+                  suffixIcon: isPasswordVisible.value
+                  ? Icons.visibility
+                  : Icons.visibility_off,
+                  
+                  onSuffixIconPressed: () {
+                    isPasswordVisible.value = !isPasswordVisible.value;
+                  },
+
+                  obscureText: !isPasswordVisible.value,
+                );
+              })
             ],
           ),
           SizedBox(height: 100),
@@ -104,6 +118,8 @@ class LoginView extends GetView<LoginController> {
     IconData? suffixIcon,
     bool isPassword = false,
     required TextEditingController controller,
+    bool obscureText = false,
+    VoidCallback? onSuffixIconPressed,
   }) {
     return Container(
       width: 350,
@@ -119,7 +135,7 @@ class LoginView extends GetView<LoginController> {
           SizedBox(width: 16),
           Expanded(
             child: TextField(
-              obscureText: isPassword,
+              obscureText: obscureText,
               style: TextStyle(fontSize: 16, color: Colors.black87),
               decoration: InputDecoration(
                 border: InputBorder.none,
@@ -133,7 +149,10 @@ class LoginView extends GetView<LoginController> {
             ),
           ),
           if (suffixIcon != null)
-            Icon(suffixIcon, color: Colors.grey[400], size: 24),
+            IconButton(
+              icon: Icon(suffixIcon, color: Colors.black, size: 24,),
+              onPressed: onSuffixIconPressed,
+            ),
           SizedBox(width: 16),
         ],
       ),
