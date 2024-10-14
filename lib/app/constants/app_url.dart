@@ -18,4 +18,12 @@ class AppUrl {
 
   // Breed url
   static const String breeds = '/Breed';
+
+  //Notification
+  static const String notificationAdoptionPost = '/NotificationAdoptionPost';
+  static const String notificationAdoptionPostByUserId =
+      '/NotificationAdoptionPost/GetList/';
+
+  static const String notificationAdoptionRequestByUserId =
+      '/NotificationAdoptionRequest/GetList/';
 }
