@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:newlife_app/app/constants/app_url.dart';
+import 'package:newlife_app/app/data/models/adoption_post_model.dart';
+import 'package:newlife_app/app/data/models/find_owner_post_model.dart';
 import 'package:newlife_app/app/modules/home/views/custom_bottom_nav_bar.dart';
 import 'package:newlife_app/app/modules/postPet/views/post_detail.dart';
 import 'package:newlife_app/app/modules/profile/controllers/profile_controller.dart';
@@ -9,7 +12,6 @@ import 'package:newlife_app/app/modules/user/controllers/user_controller.dart';
 
 class ProfileView extends GetView<ProfileController> {
   ProfileView({Key? key}) : super(key: key);
-  final UserController userController = Get.put(UserController());
 
   @override
   Widget build(BuildContext context) {
@@ -98,95 +100,110 @@ class ProfileView extends GetView<ProfileController> {
   }
 }
 
-class ProfileInfo extends StatefulWidget {
+class ProfileInfo extends GetView<ProfileController> {
   @override
-  _ProfileInfoState createState() => _ProfileInfoState();
+  Widget build(BuildContext context) {
+    return Obx(() => Column(
+          children: [
+            Center(
+              child: const Text(
+                'โปรไฟล์ของฉัน',
+                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+              ),
+            ),
+            const SizedBox(height: 20),
+            Center(
+              child: Column(
+                children: [
+                  CircleAvatar(
+                    radius: 80,
+                    backgroundColor: Color(0xFFD9D9D9),
+                    backgroundImage: controller.profileImage.value.isNotEmpty
+                        ? NetworkImage(
+                            "http://10.0.2.2:5296/User/getImage/${controller.profileImage.value}")
+                        : null,
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    controller.userName.value,
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ));
+  }
 }
 
-class _ProfileInfoState extends State<ProfileInfo> {
-  final UserController userController = Get.find<UserController>();
-  @override
-  void initState() {
-    super.initState();
-    print("Init");
-    userController.getUser();
-  }
-
+class PostView extends GetView<ProfileController> {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      return Column(
-        children: [
-          Center(
-            child: const Text(
-              'โปรไฟล์ของฉัน',
-              style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
-            ),
-          ),
-          const SizedBox(height: 20),
-          Center(
-            child: Column(
-              children: [
-                CircleAvatar(
-                  radius: 80,
-                  backgroundColor: Color(0xFFD9D9D9),
-                  child: CircleAvatar(
-                    radius: 75,
-                    backgroundImage: NetworkImage(
-                      "http://10.0.2.2:5296/User/getImage/${userController.profileImage.value}",
+      if (controller.isLoading.value) {
+        return Center(
+          child: CircularProgressIndicator(), // Loading Indicator
+        );
+      }
+
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: controller.userPosts.isEmpty
+            ? Center(child: Text('ไม่มีโพสต์'))
+            : GridView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                  childAspectRatio: 1,
+                ),
+                itemCount: controller.userPosts.length,
+                itemBuilder: (context, index) {
+                  dynamic post = controller.userPosts[index];
+                  String? imageUrl;
+                  String imageEndpoint = '';
+
+                  if (post is AdoptionPost) {
+                    imageUrl = post.image1;
+                    imageEndpoint = AppUrl.image;
+                  } else if (post is FindOwnerPost) {
+                    imageUrl = post.image1;
+                    imageEndpoint = AppUrl.findOwnerPostImage;
+                  }
+
+                  return GestureDetector(
+                    onTap: () {
+                      controller.selectPost(post);
+                      Get.to(() => PostDetail());
+                    },
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: imageUrl != null
+                              ? Image.network(
+                                  '${AppUrl.baseUrl}${post is AdoptionPost ? AppUrl.adoptionPosts : AppUrl.findOwnerPosts}$imageEndpoint/$imageUrl',
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    print('Error loading image: $error');
+                                    return Icon(Icons.error);
+                                  },
+                                )
+                              : Icon(Icons.pets, size: 50),
+                        ),
+                      ],
                     ),
-                  ),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  userController.userName.value,
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-          ),
-        ],
+                  );
+                },
+              ),
       );
     });
   }
 }
 
-class PostView extends StatelessWidget {
-  final List<String> imageUrls = [
-    'https://cdn.ennxo.com/uploads/products/640/528fd47ecf3346f2993d73c7a62e3002.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/1199px-Cat03.jpg',
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: GridView.builder(
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-          childAspectRatio: 1,
-        ),
-        itemCount: imageUrls.length,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () => Get.to(() => PostDetail()),
-            child: Image.network(
-              imageUrls[index],
-              fit: BoxFit.cover,
-            ),
-          );
-        },
-      ),
-    );
-  }
-}
-
 class SettingsMenu extends StatelessWidget {
-  final UserController userController = Get.find<UserController>();
+  final ProfileController controller = Get.find<ProfileController>();
 
   @override
   Widget build(BuildContext context) {
@@ -220,8 +237,7 @@ class SettingsMenu extends StatelessWidget {
               () => Get.to(AdoptionRule())),
           SizedBox(height: 10),
           _buildMenuItem(Icons.exit_to_app, 'ออกจากระบบ', () {
-            userController.resetToDefaultUser();
-            Get.toNamed('/login');
+            controller.logout();
           }),
           SizedBox(height: 10),
         ],

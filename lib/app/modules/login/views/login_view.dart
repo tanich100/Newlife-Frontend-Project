@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:newlife_app/app/modules/user/controllers/user_controller.dart';
 import '../controllers/login_controller.dart';
 
 class LoginView extends GetView<LoginController> {
   LoginView({Key? key}) : super(key: key);
-  UserController userController = UserController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
 
   RxBool isPasswordVisible = false.obs;
 
@@ -20,7 +16,10 @@ class LoginView extends GetView<LoginController> {
         children: [
           Center(
             child: Container(
-                width: 300, height: 300, child: Image.asset('images/Icon.jpg')),
+              width: 300,
+              height: 300,
+              child: Image.asset('images/Icon.jpg'),
+            ),
           ),
           SizedBox(height: 30),
           Column(
@@ -28,27 +27,24 @@ class LoginView extends GetView<LoginController> {
               buildCustomTextField(
                 label: 'อีเมล',
                 prefixIcon: Icons.person,
-                controller: emailController,
+                controller: controller.emailController,
               ),
               SizedBox(height: 25),
-
               Obx(() {
                 return buildCustomTextField(
                   label: 'รหัสผ่าน',
                   prefixIcon: Icons.lock,
                   isPassword: true,
-                  controller: passwordController,
+                  controller: controller.passwordController,
                   suffixIcon: isPasswordVisible.value
-                  ? Icons.visibility
-                  : Icons.visibility_off,
-                  
+                      ? Icons.visibility
+                      : Icons.visibility_off,
                   onSuffixIconPressed: () {
                     isPasswordVisible.value = !isPasswordVisible.value;
                   },
-
                   obscureText: !isPasswordVisible.value,
                 );
-              })
+              }),
             ],
           ),
           SizedBox(height: 100),
@@ -57,12 +53,8 @@ class LoginView extends GetView<LoginController> {
               width: 300,
               height: 55,
               child: ElevatedButton(
-                // onPressed: () => Get.offAllNamed('/home'),
                 onPressed: () {
-                  print(emailController.text);
-                  print(passwordController.text);
-                  userController.login(emailController.text, passwordController.text);
-                  //print();
+                  controller.login(); // เรียกฟังก์ชัน login ที่ปรับปรุง
                 },
                 child: Text(
                   'เข้าสู่ระบบ',
@@ -150,7 +142,7 @@ class LoginView extends GetView<LoginController> {
           ),
           if (suffixIcon != null)
             IconButton(
-              icon: Icon(suffixIcon, color: Colors.black, size: 24,),
+              icon: Icon(suffixIcon, color: Colors.black, size: 24),
               onPressed: onSuffixIconPressed,
             ),
           SizedBox(width: 16),

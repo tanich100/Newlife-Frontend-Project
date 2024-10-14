@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'app/routes/app_pages.dart';
 
 class MyHttpOverrides extends HttpOverrides {
@@ -12,14 +13,22 @@ class MyHttpOverrides extends HttpOverrides {
   }
 }
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await GetStorage.init();
+
   HttpOverrides.global = MyHttpOverrides();
   runApp(
     GetMaterialApp(
       title: "Application",
-      initialRoute: AppPages.INITIAL,
+      initialRoute: determineInitialRoute(),
       getPages: AppPages.routes,
       debugShowCheckedModeBanner: false,
     ),
   );
+}
+
+String determineInitialRoute() {
+  final storage = GetStorage();
+  return storage.hasData('token') ? Routes.HOME : Routes.LOGIN;
 }

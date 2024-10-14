@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
-
+import 'package:newlife_app/app/middleware/auth_middleware.dart';
+import 'package:newlife_app/app/modules/profile/controllers/profile_controller.dart';
 import '../modules/adoptedHistory/bindings/adopted_history_binding.dart';
 import '../modules/adoptedHistory/views/adopted_history_view.dart';
 import '../modules/adoptionHistory/bindings/adoption_history_binding.dart';
@@ -36,33 +37,38 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.HOME;
+  static const INITIAL = Routes.LOGIN;
 
   static final routes = [
     GetPage(
       name: _Paths.HOME,
       page: () => const HomeView(),
       binding: HomeBinding(),
+      middlewares: [AuthMiddleware()],
     ),
     GetPage(
       name: _Paths.DONATE,
       page: () => DonateView(),
       binding: DonateBinding(),
+      middlewares: [AuthMiddleware()],
     ),
     GetPage(
       name: _Paths.NOTIFICATION,
       page: () => NotificationView(),
       binding: NotificationBinding(),
+      middlewares: [AuthMiddleware()],
     ),
     GetPage(
       name: _Paths.PROFILE,
       page: () => ProfileView(),
       binding: ProfileBinding(),
+      middlewares: [AuthMiddleware()],
     ),
     GetPage(
       name: _Paths.PETS_DETAIL,
       page: () => PetsDetailView(),
       binding: PetsDetailBinding(),
+      middlewares: [AuthMiddleware()],
     ),
     GetPage(
       name: _Paths.LOGIN,
@@ -78,41 +84,49 @@ class AppPages {
       name: _Paths.POST_PET,
       page: () => NewPostCateView(),
       binding: PostPetBinding(),
+      middlewares: [AuthMiddleware()],
     ),
     GetPage(
       name: _Paths.CAMERA,
       page: () => CameraView(),
       binding: CameraBinding(),
+      middlewares: [AuthMiddleware()],
     ),
     GetPage(
       name: _Paths.ADOPTION_HISTORY,
       page: () => AdoptionHistoryView(),
       binding: AdoptionHistoryBinding(),
+      middlewares: [AuthMiddleware()],
     ),
     GetPage(
       name: _Paths.FAVORITE,
       page: () => FavoriteView(),
       binding: FavoriteBinding(),
+      middlewares: [AuthMiddleware()],
     ),
     GetPage(
       name: _Paths.ADOPTED_HISTORY,
       page: () => AdoptedHistoryView(),
       binding: AdoptedHistoryBinding(),
+      middlewares: [AuthMiddleware()],
     ),
     GetPage(
       name: _Paths.RANKING,
       page: () => const RankingView(),
       binding: RankingBinding(),
+      middlewares: [AuthMiddleware()],
     ),
     GetPage(
       name: _Paths.PROMOTE,
       page: () => const PromoteView(),
       binding: PromoteBinding(),
+      middlewares: [AuthMiddleware()],
     ),
-    GetPage(
-      name: _Paths.USER,
-      page: () => const UserView(),
-      binding: UserBinding(),
-    ),
+    // GetPage(
+    //   name: _Paths.USER,
+    //   page: () => const UserView(),
+    //   binding: UserBinding(),
+    //   middlewares: [AuthMiddleware()],
+    // ),
   ];
 }

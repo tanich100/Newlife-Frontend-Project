@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newlife_app/app/modules/promote/views/promote_view.dart';
+import 'package:newlife_app/app/modules/profile/controllers/profile_controller.dart';
+import 'package:newlife_app/app/constants/app_url.dart';
+import 'package:newlife_app/app/data/models/adoption_post_model.dart';
+import 'package:newlife_app/app/data/models/find_owner_post_model.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import 'confirm_dialog.dart';
 
-class PostDetail extends StatefulWidget {
-  const PostDetail({Key? key}) : super(key: key);
+class PostDetail extends GetView<ProfileController> {
+  final RxBool isFavorite = false.obs;
+  PostDetail({Key? key}) : super(key: key);
 
   @override
-  _PostDetailState createState() => _PostDetailState();
-}
-
-class _PostDetailState extends State<PostDetail> {
-  bool isFavorite = false;
-
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -54,9 +54,7 @@ class _PostDetailState extends State<PostDetail> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildPetImage(),
-              SizedBox(
-                height: 20,
-              ),
+              SizedBox(height: 20),
               Padding(
                 padding: EdgeInsets.all(16.0),
                 child: Column(
@@ -80,62 +78,113 @@ class _PostDetailState extends State<PostDetail> {
   }
 
   Widget _buildPetImage() {
-    return Center(
-      child: Container(
-        width: 370,
-        height: 350,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
-          child: Image(
-            image: NetworkImage(
-              'https://p16-va.lemon8cdn.com/tos-alisg-v-a3e477-sg/8120a94612554f8dac3c25f48ca214e7~tplv-tej9nj120t-origin.webp',
+    return Obx(() => Column(
+          children: [
+            Container(
+              width: 370,
+              height: 350,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: PageView.builder(
+                  controller: PageController(),
+                  itemCount: controller.images.length,
+                  onPageChanged: (index) =>
+                      controller.currentImageIndex.value = index,
+                  itemBuilder: (context, index) {
+                    String imageUrl = controller.images[index];
+                    String fullUrl =
+                        '${AppUrl.baseUrl}${controller.selectedPost.value is FindOwnerPost ? AppUrl.findOwnerPosts : AppUrl.adoptionPosts}${controller.selectedPost.value is FindOwnerPost ? AppUrl.findOwnerPostImage : AppUrl.image}/$imageUrl';
+                    return Image.network(
+                      fullUrl,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        print('Error loading image: $error');
+                        return Icon(Icons.error, size: 100);
+                      },
+                    );
+                  },
+                ),
+              ),
             ),
-            fit: BoxFit.cover,
-          ),
-        ),
-      ),
-    );
+            SizedBox(height: 15),
+            if (controller.images.length > 1)
+              SmoothPageIndicator(
+                controller: PageController(
+                    initialPage: controller.currentImageIndex.value),
+                count: controller.images.length,
+                effect: ScrollingDotsEffect(
+                  dotWidth: 8.0,
+                  dotHeight: 8.0,
+                  activeDotColor: Color.fromARGB(255, 239, 190, 31),
+                  dotColor: Colors.grey,
+                ),
+              ),
+          ],
+        ));
   }
 
   Widget _buildPetTypeTag() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          children: [
-            _buildTagBox(Icons.pets, 'แมว'),
-            SizedBox(width: 10),
-            _buildTagBox(Icons.female, 'เมีย'),
-          ],
-        ),
-        _buildFavoriteButton(),
-      ],
-    );
+    return Obx(() {
+      String animalType = controller.animalType.value;
+      String breedName = controller.breedName.value;
+      String gender = controller.selectedPost.value?.sex ?? 'ไม่ระบุ';
+
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  _buildTagBox(Icons.pets, animalType),
+                  SizedBox(width: 10),
+                  _buildTagBox(
+                      gender.toLowerCase() == 'male'
+                          ? Icons.male
+                          : Icons.female,
+                      gender),
+                ],
+              ),
+              _buildFavoriteButton(),
+            ],
+          ),
+          SizedBox(height: 10),
+          Text(
+            'สายพันธุ์: $breedName',
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+        ],
+      );
+    });
   }
 
   Widget _buildFavoriteButton() {
-    return InkWell(
-      onTap: () {
-        setState(() {
-          isFavorite = !isFavorite;
-        });
-      },
-      child: AnimatedContainer(
-        duration: Duration(milliseconds: 300),
-        padding: EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: isFavorite
-              ? Color.fromARGB(255, 239, 190, 31)
-              : Color.fromARGB(255, 239, 190, 31),
-          shape: BoxShape.circle,
-        ),
-        child: Icon(
-          isFavorite ? Icons.favorite : Icons.favorite_border,
-          color: isFavorite ? Colors.red : Colors.black,
-          size: 30,
-        ),
-      ),
-    );
+    return Obx(() => InkWell(
+          onTap: () {
+            isFavorite.toggle();
+            Get.snackbar(
+              'Favorite',
+              isFavorite.value
+                  ? 'Added to favorites'
+                  : 'Removed from favorites',
+              snackPosition: SnackPosition.BOTTOM,
+            );
+          },
+          child: AnimatedContainer(
+            duration: Duration(milliseconds: 300),
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Color.fromARGB(255, 239, 190, 31),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              isFavorite.value ? Icons.favorite : Icons.favorite_border,
+              color: isFavorite.value ? Colors.red : Colors.black,
+              size: 30,
+            ),
+          ),
+        ));
   }
 
   Widget _buildTagBox(IconData icon, String text) {
@@ -153,7 +202,7 @@ class _PostDetailState extends State<PostDetail> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 26), // ลดขนาด icon ลงเล็กน้อย
+          Icon(icon, size: 26),
           SizedBox(width: 4),
           Expanded(
             child: Text(
@@ -169,82 +218,79 @@ class _PostDetailState extends State<PostDetail> {
   }
 
   Widget _buildPetInfoHeader() {
-    return Row(
-      children: [
-        Text(
-          'โลร่า',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-        ),
-        SizedBox(
-          width: 10,
-        ),
-        Text(
-          '(8 เดือน)',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-        ),
-        SizedBox(width: 10),
-        Container(
-          child: Text(
-            'สถานะ:',
-            style: TextStyle(
-                fontSize: 18, color: Colors.black, fontWeight: FontWeight.bold),
+    return Obx(() {
+      String name = controller.selectedPost.value?.name ?? 'ไม่ระบุชื่อ';
+      String age = controller.selectedPost.value is AdoptionPost
+          ? '(${(controller.selectedPost.value as AdoptionPost).age ?? 'ไม่ระบุ'} เดือน)'
+          : '';
+      String status = controller.selectedPost.value is AdoptionPost
+          ? (controller.selectedPost.value as AdoptionPost).adoptionStatus ??
+              'ยังไม่ได้รับอุปการะ'
+          : controller.selectedPost.value?.postStatus ?? 'ตามหาเจ้าของ';
+
+      return Row(
+        children: [
+          Text(
+            name,
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
-        ),
-        SizedBox(
-          width: 5,
-        ),
-        Text(
-          'ยังไม่ได้รับอุปการะ',
-          style: TextStyle(fontSize: 14, color: Colors.black87),
-        ),
-      ],
-    );
+          SizedBox(width: 10),
+          Text(
+            age,
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'สถานะ:',
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  status,
+                  style: TextStyle(fontSize: 14, color: Colors.black87),
+                ),
+              ],
+            ),
+          ),
+        ],
+      );
+    });
   }
 
   Widget _buildPetLocation() {
-    return Row(
-      children: [
-        Icon(Icons.location_on_sharp, color: Colors.red.shade500, size: 25),
-        SizedBox(width: 4),
-        Expanded(
-          child: Text('คอนโดภูเก็ตทาวน์ ต.รัษฎา อ.เมืองภูเก็ต จ.ภูเก็ต'),
-        ),
-      ],
-    );
+    return Obx(() => Row(
+          children: [
+            Icon(Icons.location_on_sharp, color: Colors.red.shade500, size: 25),
+            SizedBox(width: 4),
+            Expanded(
+              child: Text(controller.selectedPost.value?.addressDetails ??
+                  'ไม่ระบุที่อยู่'),
+            ),
+          ],
+        ));
   }
 
   Widget _buildPetDescription() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'รายละเอียด',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-        SizedBox(
-          height: 20,
-        ),
-        Text(
-          'น้องเป็นแมวที่ขี้อ้อนมาก เป็นแมวที่ชอบเล่นขี้เล่นพอสมควรอยู่ไม่นิ่งเลยค่ะ ชอบกินขนมแมวมาก ชอบเป็นที่รักคนและขี้อ้อนมาก ๆ',
-        ),
-      ],
-    );
-  }
-
-  void _showConfirmDialog() async {
-    final result = await Get.dialog<bool>(
-      ConfirmDialogView(petName: 'โลร่า'),
-      barrierDismissible: false,
-    );
-
-    if (result == true) {
-      // TODO: Add logic for confirming adoption
-      Get.snackbar(
-        'สำเร็จ',
-        'คุณได้ยืนยันการอุปการะน้องโลร่าแล้ว',
-        snackPosition: SnackPosition.BOTTOM,
-      );
-    }
+    return Obx(() => Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'รายละเอียด',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 20),
+            Text(
+              controller.selectedPost.value?.description ??
+                  'ไม่มีคำอธิบายเพิ่มเติม',
+            ),
+          ],
+        ));
   }
 }
 

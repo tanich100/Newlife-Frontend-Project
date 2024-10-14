@@ -1,156 +1,156 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:newlife_app/app/data/models/local_user.dart';
-import 'package:newlife_app/app/data/network/api/user_api1.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
+// import 'package:flutter/material.dart';
+// import 'package:get/get.dart';
+// import 'package:newlife_app/app/data/models/local_user.dart';
+// import 'package:newlife_app/app/data/network/api/user_api1.dart';
+// import 'package:sqflite/sqflite.dart';
+// import 'package:path/path.dart';
 
-class UserController extends GetxController {
-  static const int _version = 1;
-  static const String _dbName = "user.db";
-  RxInt userId = (-1).obs;
-  RxString userName = ''.obs;
-  RxString profileImage = ''.obs;
-  UserApi1 userApi = UserApi1();
+// class UserController extends GetxController {
+//   static const int _version = 1;
+//   static const String _dbName = "user.db";
+//   RxInt userId = (-1).obs;
+//   RxString userName = ''.obs;
+//   RxString profileImage = ''.obs;
+//   UserApi1 userApi = UserApi1();
 
-  Future<Database> get database async {
-    return openDatabase(
-      join(await getDatabasesPath(), _dbName),
-      version: _version,
-    );
-  }
+//   Future<Database> get database async {
+//     return openDatabase(
+//       join(await getDatabasesPath(), _dbName),
+//       version: _version,
+//     );
+//   }
 
-  Future<void> executeRawQuery(String query) async {
-    Database db = await database;
-    await db.execute(query);
-  }
+//   Future<void> executeRawQuery(String query) async {
+//     Database db = await database;
+//     await db.execute(query);
+//   }
 
-  Future<List<Map<String, dynamic>>> selectRawQuery(String query) async {
-    Database db = await database;
+//   Future<List<Map<String, dynamic>>> selectRawQuery(String query) async {
+//     Database db = await database;
 
-    try {
-      List<Map<String, dynamic>> result = await db.rawQuery(query);
-      return result;
-    } catch (e) {
-      print('Error executing raw query: $e');
-      return [];
-    }
-  }
+//     try {
+//       List<Map<String, dynamic>> result = await db.rawQuery(query);
+//       return result;
+//     } catch (e) {
+//       print('Error executing raw query: $e');
+//       return [];
+//     }
+//   }
 
-  Future<void> closeDatabase() async {
-    Database db = await database;
-    await db.close();
-  }
+//   Future<void> closeDatabase() async {
+//     Database db = await database;
+//     await db.close();
+//   }
 
-  static Future<Database> _getDB() async {
-    return openDatabase(
-      join(await getDatabasesPath(), _dbName),
-      onCreate: (db, version) async {
-        //สร้างตารางเก็บข้อมูล User
-        // มี User Id name image
-        await db.execute("""
-          CREATE TABLE user (
-            user_id INTEGER NOT NULL,
-            name TEXT NOT NULL,
-            image_url TEXT NOT NULL,
-            PRIMARY KEY (user_id)
-          );
-        """);
-        print("Create DB");
-        await db.execute("""
-            INSERT INTO user (user_id, name, image_url)
-            VALUES (?, ?, ?);
-          """, [1, "", ""]);
-        print("Insert DB");
-      },
-      version: _version,
-    );
-  }
+//   static Future<Database> _getDB() async {
+//     return openDatabase(
+//       join(await getDatabasesPath(), _dbName),
+//       onCreate: (db, version) async {
+//         //สร้างตารางเก็บข้อมูล User
+//         // มี User Id name image
+//         await db.execute("""
+//           CREATE TABLE user (
+//             user_id INTEGER NOT NULL,
+//             name TEXT NOT NULL,
+//             image_url TEXT NOT NULL,
+//             PRIMARY KEY (user_id)
+//           );
+//         """);
+//         print("Create DB");
+//         await db.execute("""
+//             INSERT INTO user (user_id, name, image_url)
+//             VALUES (?, ?, ?);
+//           """, [1, "", ""]);
+//         print("Insert DB");
+//       },
+//       version: _version,
+//     );
+//   }
 
-  Future<void> getUser() async {
-    try {
-      await _getDB();
-      List<Map<String, dynamic>> result = await selectRawQuery("""
-        SELECT user_id, name, image_url 
-        FROM user 
-        WHERE user_id = 1;
-      """);
+//   Future<void> getUser() async {
+//     try {
+//       await _getDB();
+//       List<Map<String, dynamic>> result = await selectRawQuery("""
+//         SELECT user_id, name, image_url 
+//         FROM user 
+//         WHERE user_id = 1;
+//       """);
 
-      if (result.isNotEmpty) {
-        userId.value = result[0]['user_id'];
-        userName.value = result[0]['name'];
-        profileImage.value = result[0]['image_url'];
-      } else {
-        print("No User Found");
-        userId.value = 1;
-        userName.value = 'No User';
-        profileImage.value = '';
-      }
-    } catch (e) {
-      print("Error fetching user: $e");
-    }
-  }
+//       if (result.isNotEmpty) {
+//         userId.value = result[0]['user_id'];
+//         userName.value = result[0]['name'];
+//         profileImage.value = result[0]['image_url'];
+//       } else {
+//         print("No User Found");
+//         userId.value = 1;
+//         userName.value = 'No User';
+//         profileImage.value = '';
+//       }
+//     } catch (e) {
+//       print("Error fetching user: $e");
+//     }
+//   }
 
-  void login(String username, String password) async {
-    try {
-      await _getDB();
-      localUser user = await userApi.login(username, password);
-      print('Login successful! User ID: ${user.userId}, Name: ${user.name}');
-      await updateLocalUser(user.userId, user.name, user.imageUrl);
-      await getUser();
-      Get.offAllNamed('/home');
-    } catch (e) {
-      loginFail();
-      print('Login failed: $e');
-    }
-  }
+//   void login(String username, String password) async {
+//     try {
+//       await _getDB();
+//       localUser user = await userApi.login(username, password);
+//       print('Login successful! User ID: ${user.userId}, Name: ${user.name}');
+//       await updateLocalUser(user.userId, user.name, user.imageUrl);
+//       await getUser();
+//       Get.offAllNamed('/home');
+//     } catch (e) {
+//       loginFail();
+//       print('Login failed: $e');
+//     }
+//   }
 
-  void loginFail() {
-    Get.defaultDialog(
-      title: 'เข้าสู่ระบบไม่สำเร็จ',
-      middleText: 'Email หรือ Password ไม่ถูกต้อง',
-      textConfirm: 'OK',
-      onConfirm: () {
-        Get.back();
-      },
-      barrierDismissible: false,
-      backgroundColor: Colors.yellow,
-      titleStyle: TextStyle(color: Colors.black),
-      middleTextStyle: TextStyle(color: Colors.black),
-      confirmTextColor: Colors.black,
-      buttonColor: Colors.white,
-    );
-  }
+//   void loginFail() {
+//     Get.defaultDialog(
+//       title: 'เข้าสู่ระบบไม่สำเร็จ',
+//       middleText: 'Email หรือ Password ไม่ถูกต้อง',
+//       textConfirm: 'OK',
+//       onConfirm: () {
+//         Get.back();
+//       },
+//       barrierDismissible: false,
+//       backgroundColor: Colors.yellow,
+//       titleStyle: TextStyle(color: Colors.black),
+//       middleTextStyle: TextStyle(color: Colors.black),
+//       confirmTextColor: Colors.black,
+//       buttonColor: Colors.white,
+//     );
+//   }
 
-  Future<void> updateLocalUser(
-      int userId, String userName, String imgUrl) async {
-    await executeRawQuery("""
-      UPDATE user
-      SET name = '${userName}' ,image_url = '${imgUrl}'
-      WHERE user_id = 1;
-    """);
-  }
+//   Future<void> updateLocalUser(
+//       int userId, String userName, String imgUrl) async {
+//     await executeRawQuery("""
+//       UPDATE user
+//       SET name = '${userName}' ,image_url = '${imgUrl}'
+//       WHERE user_id = 1;
+//     """);
+//   }
 
-  Future<void> resetToDefaultUser() async {
-    await executeRawQuery("""
-      UPDATE user
-      SET name = '' ,image_url = ''
-      WHERE user_id = 1;
-    """);
-  }
-}
-
-// @override
-// void onInit() {
-//   super.onInit();
+//   Future<void> resetToDefaultUser() async {
+//     await executeRawQuery("""
+//       UPDATE user
+//       SET name = '' ,image_url = ''
+//       WHERE user_id = 1;
+//     """);
+//   }
 // }
 
-// @override
-// void onReady() {
-//   super.onReady();
-// }
+// // @override
+// // void onInit() {
+// //   super.onInit();
+// // }
 
-// @override
-// void onClose() {
-//   super.onClose();
-// }
+// // @override
+// // void onReady() {
+// //   super.onReady();
+// // }
+
+// // @override
+// // void onClose() {
+// //   super.onClose();
+// // }
