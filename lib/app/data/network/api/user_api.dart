@@ -1,43 +1,68 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:newlife_app/app/data/models/local_user.dart';
+import 'package:newlife_app/app/constants/app_url.dart';
+import 'package:newlife_app/app/data/models/login_model.dart';
+import 'package:newlife_app/app/data/models/register_model.dart';
+import 'package:newlife_app/app/data/models/user_profile_model.dart';
+import 'package:newlife_app/app/data/network/services/api_service.dart';
 
 class UserApi {
-  final Dio dio = Dio(); // Create an instance of Dio
-Future<localUser> login(String username, String password) async {
+  final ApiService _apiService = ApiService();
+
+// Register
+  Future<RegisterModel> register(
+      RegisterModel registerModel, File? profilePicFile) async {
     try {
-      // Send the username and password as query parameters
-      final response = await dio.post(
-        "http://10.0.2.2:5296/User/login",
-        queryParameters: {
-          'email': username,
-          'password': password,
-        },
-      );
-      print(response.statusCode);
-      print(response.statusMessage);
-      print(response.data);
-      if (response.statusCode == 200) {
-        return localUser.fromJson(response.data);
-      } else {
-        throw Exception('Failed to login: ${response.data['message']}');
+      FormData formData = FormData.fromMap(registerModel.toJson());
+
+      if (profilePicFile != null) {
+        formData.files.add(MapEntry(
+          'ProfilePic',
+          await MultipartFile.fromFile(profilePicFile.path,
+              filename: 'profile_pic.jpg'),
+        ));
       }
+
+      // ส่งข้อมูลไปยัง API
+      final response =
+          await _apiService.post('${AppUrl.user}/register', data: formData);
+      return RegisterModel.fromJson(response.data);
     } catch (e) {
-      // Optional: Print error details for debugging
-      if (e is DioError) {
-        print('DioError: ${e.response?.data}');
-        print('Status code: ${e.response?.statusCode}');
-        print('Request data: ${e.requestOptions.data}');
-      }
-      rethrow; // Re-throw the error for further handling
+      print('Error in register: $e');
+      rethrow;
     }
   }
 
-  // Post method for making the HTTP request
-  Future<Response> post(String url, {dynamic data}) async {
+// Login
+  Future<LoginResponseModel> login(String email, String password) async {
     try {
-      return await dio.post(url, data: data);
+      final response = await _apiService.post(
+        '${AppUrl.user}/login',
+        data: {
+          'Email': email,
+          'Password': password,
+        },
+      );
+      return LoginResponseModel.fromJson(response.data);
     } catch (e) {
-      rethrow; // Re-throw the error for handling in the calling function
+      print('Error in login: $e');
+      rethrow;
+    }
+  }
+
+  // User Profile get by userId
+  Future<UserProfileModel> getUserProfile(int userId) async {
+    try {
+      final response = await _apiService.get('${AppUrl.user}/$userId');
+      if (response.statusCode == 200) {
+        return UserProfileModel.fromJson(response.data);
+      } else {
+        throw Exception('Failed to load user profile');
+      }
+    } catch (e) {
+      print('Error fetching user profile: $e');
+      rethrow;
     }
   }
 }

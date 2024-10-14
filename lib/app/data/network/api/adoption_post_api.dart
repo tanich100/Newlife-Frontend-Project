@@ -38,6 +38,19 @@ class AdoptionPostApi {
     }
   }
 
+  // Future<List<AdoptionPost>> getUserPosts(int userId) async {
+  //   try {
+  //     final response =
+  //         await _apiService.get('${AppUrl.adoptionPosts}/user/$userId');
+  //     return (response.data as List)
+  //         .map((json) => AdoptionPost.fromJson(json))
+  //         .toList();
+  //   } catch (e) {
+  //     print('Error in getUserPosts: $e');
+  //     rethrow;
+  //   }
+  // }
+
   Future<List<AdoptionPost>> getDogPosts() async {
     try {
       final response = await _apiService.get('${AppUrl.adoptionPosts}/Dogs');
