@@ -13,7 +13,9 @@ class NewPostPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final _descriptionController = TextEditingController();
   final _phoneController = TextEditingController();
-  final _lineIdController = TextEditingController();
+  // final _lineIdController = TextEditingController();
+
+  bool hasImages = false; // ตัวแปรนี้ใช้ในการเก็บสถานะภาพ
 
   NewPostPage({Key? key, required this.postType}) : super(key: key);
 
@@ -103,7 +105,12 @@ class NewPostPage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 16),
-                    AddImages(maxImages: 5),
+                    AddImages(
+                      maxImages: 5,
+                      onUpdateStatus: (hasImages) {
+                        this.hasImages = hasImages; // อัปเดตสถานะใน NewPostPage
+                      },
+                    ),
                     SizedBox(height: 16),
                     Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -193,13 +200,13 @@ class NewPostPage extends StatelessWidget {
                   ),
                   onPressed: () {
                     // ตรวจสอบการ validate ของฟอร์มก่อนเปลี่ยนหน้า
-                    if (_formKey.currentState!.validate()) {
+                    if (_formKey.currentState!.validate() && hasImages) {
                       Get.to(() => NewPostPageDetail(selectedType: postType));
+                    } else if (!hasImages) {
+                      Get.snackbar(
+                          'ข้อผิดพลาด', 'กรุณาเพิ่มรูปภาพก่อนดำเนินการต่อ');
                     }
-                  }
-
-                  // Get.to(() => NewPostPageDetail(selectedType: postType)),
-                  ),
+                  }),
             ),
           ],
         ),
