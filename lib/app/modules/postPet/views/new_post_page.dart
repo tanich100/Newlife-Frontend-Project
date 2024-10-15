@@ -187,40 +187,30 @@ class NewPostPage extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.all(16.0),
               child: ElevatedButton(
-                  child: Text('ขั้นตอนต่อไป',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      )),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFFFFD54F),
-                    padding: EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
+                child: Text('ขั้นตอนต่อไป',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    )),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFFFFD54F),
+                  padding: EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      if (hasImages) {
-                        // สร้าง PostModel
-                        PostModel postData = PostModel(
-                          postType: postType,
-                          description: _descriptionController.text,
-                          phoneNumber: _phoneController.text,
-                          lineId: _lineIdController.text,
-                        );
-
-                        // ส่งข้อมูลไปยังหน้า NewPostPageDetail
-                        Get.to(() => NewPostPageDetail(selectedPost: postData));
-                      } else {
-                        Get.snackbar(
-                          'ข้อผิดพลาด',
-                          'กรุณาเพิ่มรูปภาพก่อนดำเนินการต่อ',
-                        );
-                      }
-                    }
-                  }),
+                ),
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    controller.createPost(
+                      postType, // ต้องกำหนดค่า postType
+                      _descriptionController.text,
+                      _phoneController.text,
+                      _lineIdController.text,
+                    ); // เรียกใช้ฟังก์ชันสร้างโพสต์
+                  }
+                },
+              ),
             ),
           ],
         ),

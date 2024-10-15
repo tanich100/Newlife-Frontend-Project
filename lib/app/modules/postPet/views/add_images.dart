@@ -9,7 +9,8 @@ class AddImages extends StatelessWidget {
   final PostPetController controller = Get.find<PostPetController>();
   final Function(bool) onUpdateStatus;
 
-  AddImages({Key? key, this.maxImages = 10, required this.onUpdateStatus}) : super(key: key);
+  AddImages({Key? key, this.maxImages = 10, required this.onUpdateStatus})
+      : super(key: key);
 
   void _showImagePickerDialog(BuildContext context) {
     showDialog(
@@ -47,7 +48,6 @@ class AddImages extends StatelessWidget {
                         },
                       )),
                 ),
-                
                 TextButton(
                   child: Text('บันทึก'),
                   onPressed: () async {
@@ -93,10 +93,14 @@ class AddImages extends StatelessWidget {
           top: 0,
           right: 0,
           child: GestureDetector(
-           onTap: () {
-              controller.removeImage(index);
-              // ตรวจสอบว่ามีภาพเหลืออยู่หรือไม่
-              onUpdateStatus(controller.selectedImages.isNotEmpty);
+            onTap: () {
+               controller.removeImage(index);
+            // ตรวจสอบว่ามีภาพเหลืออยู่หรือไม่
+            if (controller.selectedImages.isEmpty) {
+              onUpdateStatus(false); // อัปเดตสถานะให้ไม่มีภาพ
+            } else {
+              onUpdateStatus(true); // อัปเดตสถานะว่ามีภาพอยู่
+            }
             }, // เรียกใช้ฟังก์
             child: Container(
               color: Colors.black.withOpacity(0.5),
@@ -122,14 +126,14 @@ class AddImages extends StatelessWidget {
         //     backgroundColor: Colors.white,
         //     side: BorderSide(color: Colors.grey),
         //     padding:
-        //         EdgeInsets.all(12), 
+        //         EdgeInsets.all(12),
         //   ),
         //   onPressed: controller.isMaxImagesSelected
         //       ? null
         //       : () => _showImagePickerDialog(context),
         //   child: Icon(
-        //     Icons.add_photo_alternate, 
-        //     color: Colors.black, 
+        //     Icons.add_photo_alternate,
+        //     color: Colors.black,
         //   ),
         // ),
         // SizedBox(height: 8),

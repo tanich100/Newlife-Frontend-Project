@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:newlife_app/app/data/models/adoption_post_model.dart';
+import 'package:newlife_app/app/data/models/post_model.dart';
 import 'package:newlife_app/app/data/network/api/adoption_post_api.dart';
+import 'package:newlife_app/app/modules/postPet/views/new_post_detail_page.dart';
 import 'package:path_provider/path_provider.dart';
 
 class PostPetController extends GetxController {
@@ -85,24 +87,47 @@ class PostPetController extends GetxController {
     }
   }
 
-  Future<void> uploadImages() async {
-    for (var image in selectedImages) {
-      // Simulating upload process
-      await Future.delayed(Duration(seconds: 1));
-      print('Uploading image: ${image.path}');
+ Future<void> uploadImages() async {
+  for (var image in selectedImages) {
+    // แทนที่จะอัปโหลดให้พิมพ์ชื่อไฟล์
+    print('Image selected for upload: ${image.path}');
+    
+    // คุณสามารถจำลองการอัปโหลดโดยการหน่วงเวลา
+    await Future.delayed(Duration(seconds: 1));
+  }
+  print('All images processed successfully');
+  
+  // หลังจากการประมวลผลเสร็จสิ้น คุณอาจต้องการล้างรายการภาพที่เลือก
+  selectedImages.clear();
+}
+
+
+  Future<void> createPost(String postType, String description, String phoneNumber, String lineId) async {
+    // ตรวจสอบว่ามีภาพหรือไม่
+    if (selectedImages.isEmpty) {
+      Get.snackbar('ข้อผิดพลาด', 'กรุณาเพิ่มรูปภาพก่อนดำเนินการต่อ');
+      return;
     }
-    print('All images uploaded successfully');
-    // After successful upload, you might want to clear the selected images
+
+    // สร้าง PostModel โดยใช้ข้อมูลที่ส่งมา
+    PostModel postData = PostModel(
+      postType: postType,
+      description: description,
+      phoneNumber: phoneNumber,
+      lineId: lineId,
+      images: selectedImages.toList(),
+    );
+
+    // แสดงผลข้อมูลโพสต์ในคอนโซล (สำหรับทดสอบ)
+    print('Creating new adoption post: ${postData.toString()}');
+
+    // เปลี่ยนไปยังหน้าถัดไป
+    Get.to(() => NewPostPageDetail(selectedPost: postData));
+
+    // ล้าง selectedImages หลังจากสร้างโพสต์
     selectedImages.clear();
   }
 
-  Future<void> createAdoptionPost(AdoptionPost newPost) async {
-    await uploadImages(); // Upload images first
-    // Then create the post with image URLs
-    print('Creating new adoption post: ${newPost.toString()}');
-    // After successful creation, you might want to refresh the list
-    await getNewPet();
-  }
 
   // ฟังก์ชันบันทึกภาพ
   Future<void> saveImages() async {

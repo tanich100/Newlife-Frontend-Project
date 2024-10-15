@@ -14,6 +14,8 @@ class NewPostPageDetail extends StatefulWidget {
 }
 
 class _PostPageDetailState extends State<NewPostPageDetail> {
+  final _formKey = GlobalKey<FormState>();
+  final _addressWidgetKey = GlobalKey<_AddressWidgetState>();
   String _animalType = 'สุนัข';
   bool _isSpecialCareSelected = false;
 
@@ -58,6 +60,8 @@ class _PostPageDetailState extends State<NewPostPageDetail> {
         centerTitle: true,
       ),
       body: SafeArea(
+          child: Form(
+        key: _formKey,
         child: Column(
           children: [
             Expanded(
@@ -103,7 +107,7 @@ class _PostPageDetailState extends State<NewPostPageDetail> {
                       ),
                     _DetailsWidget(isLookingForAdoption: isLookingForAdoption),
                     SizedBox(height: 8),
-                    _AddressWidget(),
+                    _AddressWidget(key: _addressWidgetKey),
                   ],
                 ),
               ),
@@ -111,28 +115,42 @@ class _PostPageDetailState extends State<NewPostPageDetail> {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: ElevatedButton(
-                child: Text('โพสต์',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    )),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFFFFD54F),
-                  padding: EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+                  child: Text('โพสต์',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      )),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFFFFD54F),
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    minimumSize: Size(double.infinity, 48),
                   ),
-                  minimumSize: Size(double.infinity, 48),
-                ),
-                onPressed: () {
-                  Get.toNamed('/profile');
-                },
-              ),
+                  onPressed: () {
+                    bool isMainFormValid = _formKey.currentState!.validate();
+                    bool isAddressValid =
+                        _addressWidgetKey.currentState!.validate();
+
+                    if (isMainFormValid && isAddressValid) {
+                      // ถ้าข้อมูลถูกต้องทั้งหมด ทำการโพสต์
+                      print('โพสต์สำเร็จ');
+                      // ไปที่หน้าโปรไฟล์หลังจากโพสต์เสร็จ
+                      Get.toNamed('/profile');
+                    } else {
+                      print('กรุณากรอกข้อมูลให้ครบถ้วน');
+                      // อาจจะแสดง SnackBar หรือ Dialog เพื่อแจ้งเตือนผู้ใช้
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('กรุณากรอกข้อมูลให้ครบถ้วน')),
+                      );
+                    }
+                  }),
             ),
           ],
         ),
-      ),
+      )),
     );
   }
 
@@ -244,7 +262,8 @@ class _DetailsWidget extends StatelessWidget {
                   DropdownMenuItem(value: '', child: Text('เลือกเพศ')),
                   DropdownMenuItem(value: 'ผู้', child: Text('ผู้')),
                   DropdownMenuItem(value: 'เมีย', child: Text('เมีย')),
-                  DropdownMenuItem(value: 'ไม่ทราบ', child: Text('ไม่ทราบ')),
+                  DropdownMenuItem(
+                      value: 'ไม่ทราบเพศ', child: Text('ไม่ทราบเพศ')),
                 ],
                 onChanged: (value) {},
               ),
@@ -269,68 +288,105 @@ class _DetailsWidget extends StatelessWidget {
   }
 }
 
-class _AddressWidget extends StatelessWidget {
+class _AddressWidget extends StatefulWidget {
+  const _AddressWidget({Key? key}) : super(key: key);
+
+  @override
+  _AddressWidgetState createState() => _AddressWidgetState();
+}
+
+class _AddressWidgetState extends State<_AddressWidget> {
+  final _addressFormKey = GlobalKey<FormState>();
+
+  bool validate() {
+    return _addressFormKey.currentState!.validate();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('ที่อยู่', style: TextStyle(fontWeight: FontWeight.bold)),
-        SizedBox(height: 8),
-        Row(
+    return Form(
+        key: _addressFormKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              child: DropdownButtonFormField(
-                decoration: InputDecoration(
-                  labelText: 'จังหวัด',
-                  border: OutlineInputBorder(),
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 12, horizontal: 10),
-                  labelStyle: TextStyle(fontSize: 15),
+            Text('ที่อยู่', style: TextStyle(fontWeight: FontWeight.bold)),
+            SizedBox(height: 8),
+            Row(
+              children: [
+                Expanded(
+                  child: DropdownButtonFormField(
+                    decoration: InputDecoration(
+                      labelText: 'จังหวัด',
+                      border: OutlineInputBorder(),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                      labelStyle: TextStyle(fontSize: 15),
+                    ),
+                    items: [
+                      DropdownMenuItem(value: '', child: Text('จังหวัด'))
+                    ],
+                    onChanged: (value) {},
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'กรุณาเลือกจังหวัด';
+                      }
+                      return null;
+                    },
+                  ),
                 ),
-                items: [DropdownMenuItem(value: '', child: Text('จังหวัด'))],
-                onChanged: (value) {},
-              ),
+                SizedBox(width: 16),
+                Expanded(
+                  child: DropdownButtonFormField(
+                    decoration: InputDecoration(
+                      labelText: 'อำเภอ',
+                      border: OutlineInputBorder(),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                      labelStyle: TextStyle(fontSize: 15),
+                    ),
+                    items: [DropdownMenuItem(value: '', child: Text('อำเภอ'))],
+                    style: TextStyle(fontSize: 16),
+                    onChanged: (value) {},
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'กรุณาเลือกอำเภอ';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+              ],
             ),
-            SizedBox(width: 16),
-            Expanded(
-              child: DropdownButtonFormField(
-                decoration: InputDecoration(
-                  labelText: 'อำเภอ',
-                  border: OutlineInputBorder(),
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 12, horizontal: 10),
-                  labelStyle: TextStyle(fontSize: 15),
-                ),
-                items: [DropdownMenuItem(value: '', child: Text('อำเภอ'))],
-                style: TextStyle(fontSize: 16),
-                onChanged: (value) {},
+            SizedBox(height: 16),
+            DropdownButtonFormField(
+              decoration: InputDecoration(
+                labelText: 'ตำบล',
+                border: OutlineInputBorder(),
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                labelStyle: TextStyle(fontSize: 15),
               ),
+              items: [DropdownMenuItem(value: '', child: Text('ตำบล'))],
+              onChanged: (value) {},
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'กรุณาเลือกตำบล';
+                }
+                return null;
+              },
+            ),
+            SizedBox(height: 16),
+            TextField(
+              decoration: InputDecoration(
+                labelText: 'รายละเอียดที่อยู่เพิ่มเติม',
+                border: OutlineInputBorder(),
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                labelStyle: TextStyle(fontSize: 15),
+              ),
+              maxLines: 2,
             ),
           ],
-        ),
-        SizedBox(height: 16),
-        DropdownButtonFormField(
-          decoration: InputDecoration(
-            labelText: 'ตำบล',
-            border: OutlineInputBorder(),
-            contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 10),
-            labelStyle: TextStyle(fontSize: 15),
-          ),
-          items: [DropdownMenuItem(value: '', child: Text('ตำบล'))],
-          onChanged: (value) {},
-        ),
-        SizedBox(height: 16),
-        TextField(
-          decoration: InputDecoration(
-            labelText: 'รายละเอียดที่อยู่เพิ่มเติม',
-            border: OutlineInputBorder(),
-            contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 10),
-            labelStyle: TextStyle(fontSize: 15),
-          ),
-          maxLines: 2,
-        ),
-      ],
-    );
+        ));
   }
 }
