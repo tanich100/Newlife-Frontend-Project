@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:newlife_app/app/data/models/post_model.dart';
 import 'package:newlife_app/app/modules/postPet/controllers/post_pet_controller.dart';
 
 class NewPostPageDetail extends StatefulWidget {
-  final String selectedType;
+  final PostModel selectedPost;
   final PostPetController controller = Get.find<PostPetController>();
 
-  NewPostPageDetail({Key? key, required this.selectedType}) : super(key: key);
+  NewPostPageDetail({Key? key, required this.selectedPost}) : super(key: key);
 
   @override
   _PostPageDetailState createState() => _PostPageDetailState();
@@ -17,7 +18,7 @@ class _PostPageDetailState extends State<NewPostPageDetail> {
   bool _isSpecialCareSelected = false;
 
   bool get isLookingForAdoption =>
-      widget.selectedType == 'ประกาศหาผู้รับเลี้ยง';
+      widget.selectedPost == 'ประกาศหาผู้รับเลี้ยง';
 
   void _handleAnimalTypeChange(String value) {
     setState(() {
@@ -48,7 +49,7 @@ class _PostPageDetailState extends State<NewPostPageDetail> {
           ),
         ),
         title: Text(
-          widget.selectedType,
+          widget.selectedPost.postType,
           style: TextStyle(
               color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
         ),

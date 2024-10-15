@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:newlife_app/app/data/models/post_model.dart';
 import 'package:newlife_app/app/modules/postPet/controllers/post_pet_controller.dart';
 import 'package:newlife_app/app/modules/postPet/views/add_images.dart';
 import 'package:newlife_app/app/modules/postPet/views/new_post_detail_page.dart';
@@ -13,7 +14,7 @@ class NewPostPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final _descriptionController = TextEditingController();
   final _phoneController = TextEditingController();
-  // final _lineIdController = TextEditingController();
+  final _lineIdController = TextEditingController();
 
   bool hasImages = false; // ตัวแปรนี้ใช้ในการเก็บสถานะภาพ
 
@@ -169,6 +170,7 @@ class NewPostPage extends StatelessWidget {
                               ),
                               SizedBox(height: 15),
                               TextFormField(
+                                controller: _lineIdController,
                                 decoration: InputDecoration(
                                   hintText: '@ID Line',
                                   border: OutlineInputBorder(),
@@ -199,12 +201,24 @@ class NewPostPage extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    // ตรวจสอบการ validate ของฟอร์มก่อนเปลี่ยนหน้า
-                    if (_formKey.currentState!.validate() && hasImages) {
-                      Get.to(() => NewPostPageDetail(selectedType: postType));
-                    } else if (!hasImages) {
-                      Get.snackbar(
-                          'ข้อผิดพลาด', 'กรุณาเพิ่มรูปภาพก่อนดำเนินการต่อ');
+                    if (_formKey.currentState!.validate()) {
+                      if (hasImages) {
+                        // สร้าง PostModel
+                        PostModel postData = PostModel(
+                          postType: postType,
+                          description: _descriptionController.text,
+                          phoneNumber: _phoneController.text,
+                          lineId: _lineIdController.text,
+                        );
+
+                        // ส่งข้อมูลไปยังหน้า NewPostPageDetail
+                        Get.to(() => NewPostPageDetail(selectedPost: postData));
+                      } else {
+                        Get.snackbar(
+                          'ข้อผิดพลาด',
+                          'กรุณาเพิ่มรูปภาพก่อนดำเนินการต่อ',
+                        );
+                      }
                     }
                   }),
             ),
