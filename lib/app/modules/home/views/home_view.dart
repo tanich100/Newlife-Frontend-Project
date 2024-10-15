@@ -207,13 +207,13 @@ class HomeView extends GetView<HomeController> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          postPetController.getNewPet(); // Fetch new pets on button press
-        },
-        child: Icon(Icons.refresh), // Icon for the button
-        tooltip: 'Refresh Pets', // Tooltip for accessibility
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     postPetController.getNewPet(); 
+      //   },
+      //   child: Icon(Icons.refresh), // Icon for the button
+      //   tooltip: 'Refresh Pets', // Tooltip for accessibility
+      // ),
       bottomNavigationBar: CustomBottomNavBar(),
     );
   }
