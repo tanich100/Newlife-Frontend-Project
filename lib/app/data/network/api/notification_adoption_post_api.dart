@@ -20,9 +20,9 @@ class NotificationAdoptionPostApi {
           .map((json) => NotificationAdoptionPost.fromJson(json))
           .toList();
 
-      notifications.forEach((notifications) {
-        print('Post: ${notifications.toJson()}');
-      });
+      // notifications.forEach((notifications) {
+      //   print('Post: ${notifications.toJson()}');
+      // });
 
       return notifications;
     } catch (e) {

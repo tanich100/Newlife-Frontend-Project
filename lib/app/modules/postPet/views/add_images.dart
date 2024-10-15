@@ -7,8 +7,9 @@ import 'package:newlife_app/app/modules/postPet/controllers/post_pet_controller.
 class AddImages extends StatelessWidget {
   final int maxImages;
   final PostPetController controller = Get.find<PostPetController>();
+  final Function(bool) onUpdateStatus;
 
-  AddImages({Key? key, this.maxImages = 10}) : super(key: key);
+  AddImages({Key? key, this.maxImages = 10, required this.onUpdateStatus}) : super(key: key);
 
   void _showImagePickerDialog(BuildContext context) {
     showDialog(
@@ -92,8 +93,11 @@ class AddImages extends StatelessWidget {
           top: 0,
           right: 0,
           child: GestureDetector(
-            onTap: () => controller
-                .removeImage(index), // เรียกใช้ฟังก์ชันลบภาพจาก controller
+           onTap: () {
+              controller.removeImage(index);
+              // ตรวจสอบว่ามีภาพเหลืออยู่หรือไม่
+              onUpdateStatus(controller.selectedImages.isNotEmpty);
+            }, // เรียกใช้ฟังก์
             child: Container(
               color: Colors.black.withOpacity(0.5),
               child: Icon(

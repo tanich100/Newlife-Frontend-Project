@@ -1,9 +1,14 @@
 import 'package:get/get.dart';
+import 'package:newlife_app/app/data/models/notification_adoption_request_model.dart';
+
+import '../../../data/network/api/notification_adoption_request_api.dart';
 
 class NotificationController extends GetxController {
-  //TODO: Implement NotificationController
+  NotificationAdoptionRequestApi notificationAdoptionRequestApi =
+      NotificationAdoptionRequestApi();
+  RxList<NotificationAdoptionRequest> notificationRequests =
+      <NotificationAdoptionRequest>[].obs;
 
-  final count = 0.obs;
   @override
   void onInit() {
     super.onInit();
@@ -19,5 +24,16 @@ class NotificationController extends GetxController {
     super.onClose();
   }
 
-  void increment() => count.value++;
+  Future<void> getAdoptionRequestNotifications() async {
+    try {
+      List<NotificationAdoptionRequest> fetchedNotifications =
+          await notificationAdoptionRequestApi.getNotifications();
+      notificationRequests.value = fetchedNotifications;
+      for (int i = 0; i < notificationRequests.length; i++) {
+        print('Notification #${i + 1}: ${notificationRequests[i]}');
+      }
+    } catch (e) {
+      print('Error fetching notifications: $e');
+    }
+  }
 }

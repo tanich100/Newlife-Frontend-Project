@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newlife_app/app/modules/home/views/custom_bottom_nav_bar.dart';
+import 'package:newlife_app/app/modules/notification/controllers/notification_controller.dart';
 import 'package:newlife_app/app/modules/notification/views/adoptionRequest.dart';
 
 class NotificationView extends StatefulWidget {
@@ -13,11 +14,13 @@ class NotificationView extends StatefulWidget {
 class _NotificationViewState extends State<NotificationView>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-
+  NotificationController notificationController =
+      Get.put(NotificationController());
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
+    notificationController.getAdoptionRequestNotifications();
   }
 
   @override
@@ -48,6 +51,25 @@ class _NotificationViewState extends State<NotificationView>
               indicatorColor: Color(0xFFFFD54F),
               indicatorSize: TabBarIndicatorSize.label,
               labelPadding: EdgeInsets.symmetric(horizontal: 16),
+              onTap: (index) async {
+                print('Tab $index selected');
+                switch (index) {
+                  case 0:
+                    print('แจ้งเตือน tapped');
+                    break;
+                  case 1:
+                    print('คำขอรับเลี้ยง tapped');
+                    // await notificationController.getAdoptionRequestNotifications();
+                    _buildTabContent('คำขอรับเลี้ยง');
+                    // _buildNotificationCard(
+                    //   name: "Test",
+                    // );
+                    break;
+                  case 2:
+                    print('การขอรับเลี้ยง tapped');
+                    break;
+                }
+              },
               tabs: [
                 Tab(text: 'แจ้งเตือน'),
                 Tab(text: 'คำขอรับเลี้ยง'),
@@ -70,21 +92,6 @@ class _NotificationViewState extends State<NotificationView>
                 ],
               ),
             ),
-            // Padding(
-            //   padding: EdgeInsets.all(16.0),
-            //   child: ElevatedButton(
-            //     child: Text('กลับไปที่หน้าหลัก',
-            //         style: TextStyle(color: Colors.black, fontSize: 16)),
-            //     onPressed: () => Get.offNamed('/home'),
-            //     style: ElevatedButton.styleFrom(
-            //       backgroundColor: Color(0xFFFFD54F),
-            //       minimumSize: Size(double.infinity, 50),
-            //       shape: RoundedRectangleBorder(
-            //         borderRadius: BorderRadius.circular(8),
-            //       ),
-            //     ),
-            //   ),
-            // ),
           ],
         ),
       ),
@@ -93,19 +100,52 @@ class _NotificationViewState extends State<NotificationView>
   }
 
   Widget _buildTabContent(String tabName) {
-    return ListView(
-      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      children: [
-        if (tabName == 'แจ้งเตือน')
-          _buildNotificationCard(
-            name: 'แจ้งเตือน:',
-          ),
-        if (tabName == 'คำขอรับเลี้ยง')
-          _buildAdoptionReq(
-            name: 'คำขอรับเลี้ยง:',
-          ),
-      ],
-    );
+    if (tabName == 'แจ้งเตือน') {
+      return ListView(
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        children: List.generate(
+          3,
+          (index) {
+            return _buildNotificationCard(
+              name: 'แจ้งเตือน:',
+            );
+          },
+        ),
+      );
+    } else if (tabName == 'คำขอรับเลี้ยง') {
+      // Use FutureBuilder to fetch data asynchronously
+      return FutureBuilder(
+        future: notificationController.getAdoptionRequestNotifications(),
+        builder: (context, snapshot) {
+          // Check the status of the Future
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            // Display a loading indicator while fetching data
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            // Handle any errors that might occur
+            return Center(child: Text('Error fetching data'));
+          } else {
+            // Data has been successfully fetched, display the list
+            return Obx(
+              () => ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: notificationController.notificationRequests.length,
+                itemBuilder: (context, index) {
+                  final notification =
+                      notificationController.notificationRequests[index];
+                  return _buildNotificationCard(
+                    name: notification.description,
+                  );
+                },
+              ),
+            );
+          }
+        },
+      );
+    } else {
+      return Center(child: Text('No content available'));
+    }
   }
 
   Widget _buildNotificationCard({
