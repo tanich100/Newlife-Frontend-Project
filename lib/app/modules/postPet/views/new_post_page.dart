@@ -8,6 +8,12 @@ class NewPostPage extends StatelessWidget {
   final String postType;
   final PostPetController controller = Get.find<PostPetController>();
 
+  //สร้าง GlobalKey สำหรับควบคุมสถานะของ Form
+  final _formKey = GlobalKey<FormState>();
+  final _descriptionController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _lineIdController = TextEditingController();
+
   NewPostPage({Key? key, required this.postType}) : super(key: key);
 
   @override
@@ -57,7 +63,7 @@ class NewPostPage extends StatelessWidget {
                             style: TextStyle(fontSize: 18)),
                       ],
                     ),
-                     SizedBox(height: 6),
+                    SizedBox(height: 6),
                     Padding(
                       padding: const EdgeInsets.only(left: 49),
                       child: Row(
@@ -65,7 +71,8 @@ class NewPostPage extends StatelessWidget {
                           Container(
                             width: 240,
                             height: 40,
-                            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 8),
                             decoration: BoxDecoration(
                               border: Border.all(color: Colors.grey),
                               borderRadius: BorderRadius.circular(4),
@@ -97,13 +104,30 @@ class NewPostPage extends StatelessWidget {
                     SizedBox(height: 16),
                     AddImages(maxImages: 5),
                     SizedBox(height: 16),
-                    TextField(
-                      maxLines: 8,
-                      decoration: InputDecoration(
-                        hintText: 'คุณกำลังคิดอะไร',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
+                    Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            children: [
+                              TextFormField(
+                                controller: _descriptionController,
+                                maxLines: 8,
+                                maxLength: 100, // จำกัดไม่เกิน 500 ตัวอักษร
+                                decoration: InputDecoration(
+                                  hintText: 'คุณกำลังคิดอะไร',
+                                  border: OutlineInputBorder(),
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'กรุณากรอกรายละเอียดของโพสต์'; // ถ้าไม่กรอกอะไร ให้แสดงข้อความแจ้งเตือน
+                                  }
+                                  return null; // ถ้าข้อมูลถูกต้อง ให้คืนค่า null
+                                },
+                              ),
+                            ],
+                          ),
+                        )),
                     SizedBox(height: 20),
                     Text('ช่องทางการติดต่อ', style: TextStyle(fontSize: 17)),
                     SizedBox(height: 8),
@@ -128,22 +152,28 @@ class NewPostPage extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.all(16.0),
               child: ElevatedButton(
-                child: Text('ขั้นตอนต่อไป',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    )),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFFFFD54F),
-                  padding: EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+                  child: Text('ขั้นตอนต่อไป',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      )),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFFFFD54F),
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                   ),
-                ),
-                onPressed: () =>
-                    Get.to(() => NewPostPageDetail(selectedType: postType)),
-              ),
+                  onPressed: () {
+                    // ตรวจสอบการ validate ของฟอร์มก่อนเปลี่ยนหน้า
+                    if (_formKey.currentState!.validate()) {
+                      Get.to(() => NewPostPageDetail(selectedType: postType));
+                    }
+                  }
+
+                  // Get.to(() => NewPostPageDetail(selectedType: postType)),
+                  ),
             ),
           ],
         ),

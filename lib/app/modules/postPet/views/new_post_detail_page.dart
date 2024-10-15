@@ -239,7 +239,12 @@ class _DetailsWidget extends StatelessWidget {
                       EdgeInsets.symmetric(vertical: 12, horizontal: 10),
                   labelStyle: TextStyle(fontSize: 15),
                 ),
-                items: [DropdownMenuItem(value: '', child: Text('เพศ'))],
+                items: [
+                  DropdownMenuItem(value: '', child: Text('เลือกเพศ')),
+                  DropdownMenuItem(value: 'ผู้', child: Text('ผู้')),
+                  DropdownMenuItem(value: 'เมีย', child: Text('เมีย')),
+                  DropdownMenuItem(value: 'ไม่ทราบ', child: Text('ไม่ทราบ')),
+                ],
                 onChanged: (value) {},
               ),
             ),
