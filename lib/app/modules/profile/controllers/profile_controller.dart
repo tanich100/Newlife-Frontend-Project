@@ -1,19 +1,17 @@
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:newlife_app/app/data/models/adoption_post_model.dart';
 import 'package:newlife_app/app/data/models/find_owner_post_model.dart';
 import 'package:newlife_app/app/data/network/api/adoption_post_api.dart';
 import 'package:newlife_app/app/data/network/api/breed_api.dart';
 import 'package:newlife_app/app/data/network/api/find_owner_post_api.dart';
 import 'package:newlife_app/app/data/network/api/user_api.dart';
+import 'package:newlife_app/app/data/network/services/user_storage_service.dart';
 import 'package:newlife_app/app/routes/app_pages.dart';
 
 class ProfileController extends GetxController {
   final RxBool isLoading = false.obs;
 
   final UserApi _userApi = UserApi();
-  final GetStorage storage = GetStorage();
-
   final AdoptionPostApi _adoptionPostApi = AdoptionPostApi();
   final FindOwnerPostApi _findOwnerPostApi = FindOwnerPostApi();
   final BreedApi _breedApi = BreedApi();
@@ -35,22 +33,24 @@ class ProfileController extends GetxController {
     fetchUserPosts();
   }
 
-//  ดึงข้อมูลชื่อผู้ใช้และรูปโปรไฟล์จาก local storage
   void fetchUserProfile() {
     try {
-      userName.value = storage.read('userName') ?? '';
-      profileImage.value = storage.read('profilePic') ?? '';
+      userName.value = UserStorageService.getUserName() ?? '';
+      profileImage.value = UserStorageService.getProfilePic() ?? '';
     } catch (e) {
       print('Error fetching user profile: $e');
     }
   }
 
   Future<void> fetchUserPosts() async {
-    isLoading.value = true; // เริ่มโหลดข้อมูล
+    isLoading.value = true;
     try {
-      int userId = storage.read('userId'); // ดึง userId จาก local storage
+      int? userId = UserStorageService.getUserId();
 
-      // เรียก API เพื่อดึงโพสต์ทั้งหมดของ AdoptionPost และ FindOwnerPost
+      if (userId == null) {
+        throw Exception('User ID not found in storage');
+      }
+
       List<AdoptionPost> adoptionPosts = await _adoptionPostApi.getPosts();
       List<FindOwnerPost> findOwnerPosts = await _findOwnerPostApi.getPosts();
 
@@ -60,7 +60,12 @@ class ProfileController extends GetxController {
         ...findOwnerPosts.where((post) => post.userId == userId)
       ];
 
-      userPosts.sort((a, b) => b.createAt!.compareTo(a.createAt!));
+      // ตรวจสอบและเรียงลำดับตาม createAt โดยตรวจสอบ null ก่อน
+      userPosts.sort((a, b) {
+        final dateA = a.createAt ?? DateTime.now();
+        final dateB = b.createAt ?? DateTime.now();
+        return dateB.compareTo(dateA);
+      });
     } catch (e) {
       print('Error fetching user posts: $e');
     } finally {
@@ -163,7 +168,7 @@ class ProfileController extends GetxController {
   }
 
   void logout() {
-    storage.erase();
+    UserStorageService.clearUserData();
     Get.offAllNamed(Routes.LOGIN);
   }
 }

@@ -21,11 +21,15 @@ class UserStorageService {
   }
 
   static void clearUserData() {
-    storage.remove('userId');
-    storage.remove('userName');
-    storage.remove('userEmail');
-    storage.remove('profilePic');
-    storage.remove('token');
-    storage.remove('selectedBreedIds');
+    storage.erase();
   }
+
+  // Getter สำหรับดึงข้อมูลผู้ใช้ที่ login แล้ว
+  static int? getUserId() => storage.read('userId') as int?;
+  static String? getUserName() => storage.read('userName') as String?;
+  static String? getUserEmail() => storage.read('userEmail') as String?;
+  static String? getProfilePic() => storage.read('profilePic') as String?;
+  static String? getToken() => storage.read('token') as String?;
+  static List<int> getSelectedBreedIds() =>
+      List<int>.from(storage.read('selectedBreedIds') ?? []);
 }
