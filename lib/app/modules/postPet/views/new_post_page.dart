@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:newlife_app/app/modules/postPet/controllers/post_pet_controller.dart';
 import 'package:newlife_app/app/modules/postPet/views/add_images.dart';
@@ -125,25 +126,50 @@ class NewPostPage extends StatelessWidget {
                                   return null; // ถ้าข้อมูลถูกต้อง ให้คืนค่า null
                                 },
                               ),
+                              SizedBox(height: 20),
+                              Container(
+                                alignment:
+                                    Alignment.centerLeft, // จัดให้อยู่ซ้ายสุด
+                                child: Text('ช่องทางการติดต่อ',
+                                    style: TextStyle(fontSize: 17)),
+                              ),
+                              SizedBox(height: 8),
+                              Column(
+                                children: [
+                                  TextFormField(
+                                    controller: _phoneController,
+                                    keyboardType: TextInputType.number,
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter
+                                          .digitsOnly, // จำกัดให้กรอกเฉพาะตัวเลข
+                                    ],
+                                    decoration: InputDecoration(
+                                      hintText: 'เบอร์โทรศัพท์',
+                                      border: OutlineInputBorder(),
+                                    ),
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'กรุณากรอกเบอร์โทรศัพท์';
+                                      } else if (value.length != 10 ||
+                                          !RegExp(r'^[0-9]+$')
+                                              .hasMatch(value)) {
+                                        return 'กรุณากรอกเบอร์โทร 10 หลักให้ถูกต้อง';
+                                      }
+                                      return null; // ถ้าข้อมูลถูกต้อง ให้คืนค่า null
+                                    },
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 15),
+                              TextFormField(
+                                decoration: InputDecoration(
+                                  hintText: '@ID Line',
+                                  border: OutlineInputBorder(),
+                                ),
+                              ),
                             ],
                           ),
                         )),
-                    SizedBox(height: 20),
-                    Text('ช่องทางการติดต่อ', style: TextStyle(fontSize: 17)),
-                    SizedBox(height: 8),
-                    TextField(
-                      decoration: InputDecoration(
-                        hintText: 'เบอร์โทรศัพท์',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                    SizedBox(height: 15),
-                    TextField(
-                      decoration: InputDecoration(
-                        hintText: '@ID Line',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
                   ],
                 ),
               ),
