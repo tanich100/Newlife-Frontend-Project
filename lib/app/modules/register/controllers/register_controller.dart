@@ -23,10 +23,11 @@ class RegisterController extends GetxController {
   final addressController = TextEditingController();
   final careerController = TextEditingController();
   final numOfFamMembersController = TextEditingController();
-  final experienceController = TextEditingController();
   final sizeOfResidenceController = TextEditingController();
   final typeOfResidenceController = TextEditingController();
   final freeTimePerDayController = TextEditingController();
+  final monthlyIncomeController = TextEditingController();
+  var isHaveExperience = false.obs;
   final reasonForAdoptionController = TextEditingController();
 
   RxList<int> selectedBreedIds = <int>[].obs;
@@ -59,9 +60,6 @@ class RegisterController extends GetxController {
             addressController.text.isNotEmpty ? addressController.text : null,
         career: careerController.text.isNotEmpty ? careerController.text : null,
         numOfFamMembers: int.tryParse(numOfFamMembersController.text) ?? 0,
-        experience: experienceController.text.isNotEmpty
-            ? experienceController.text
-            : null,
         sizeOfResidence: sizeOfResidenceController.text.isNotEmpty
             ? sizeOfResidenceController.text
             : null,
@@ -72,6 +70,8 @@ class RegisterController extends GetxController {
         reasonForAdoption: reasonForAdoptionController.text.isNotEmpty
             ? reasonForAdoptionController.text
             : null,
+        monthlyIncome: int.tryParse(monthlyIncomeController.text) ?? 0,
+        isHaveExperience: isHaveExperience.value,
         interestedBreedIds: selectedBreedIds,
       );
 
@@ -121,7 +121,7 @@ class RegisterController extends GetxController {
     addressController.dispose();
     careerController.dispose();
     numOfFamMembersController.dispose();
-    experienceController.dispose();
+
     sizeOfResidenceController.dispose();
     typeOfResidenceController.dispose();
     freeTimePerDayController.dispose();

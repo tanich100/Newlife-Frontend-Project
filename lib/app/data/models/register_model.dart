@@ -9,11 +9,12 @@ class RegisterModel {
   final String? address;
   final String? career;
   final int? numOfFamMembers;
-  final String? experience;
   final String? sizeOfResidence;
   final String? typeOfResidence;
   final int? freeTimePerDay;
   final String? reasonForAdoption;
+  final int? monthlyIncome;
+  final bool? isHaveExperience;
   final List<int> interestedBreedIds;
 
   RegisterModel({
@@ -27,11 +28,12 @@ class RegisterModel {
     this.address,
     this.career,
     this.numOfFamMembers,
-    this.experience,
     this.sizeOfResidence,
     this.typeOfResidence,
     this.freeTimePerDay,
     this.reasonForAdoption,
+    this.monthlyIncome,
+    this.isHaveExperience,
     required this.interestedBreedIds,
   });
 
@@ -53,7 +55,6 @@ class RegisterModel {
       address: json['address'] ?? '',
       career: json['career'] ?? '',
       numOfFamMembers: json['numOfFamMembers'] ?? 0,
-      experience: json['experience'] ?? '',
       sizeOfResidence: json['sizeOfResidence'] ?? '',
       typeOfResidence: json['typeOfResidence'] ?? '',
       freeTimePerDay: json['freeTimePerDay'] ?? 0,
@@ -74,12 +75,13 @@ class RegisterModel {
       'Address': address ?? '', // กำหนดค่าเริ่มต้นหากเป็น null
       'Career': career ?? '', // กำหนดค่าเริ่มต้นหากเป็น null
       'NumOfFamMembers': numOfFamMembers ?? 0, // กำหนดค่าเริ่มต้นหากเป็น null
-      'Experience': experience ?? '', // กำหนดค่าเริ่มต้นหากเป็น null
       'SizeOfResidence': sizeOfResidence ?? '', // กำหนดค่าเริ่มต้นหากเป็น null
       'TypeOfResidence': typeOfResidence ?? '', // กำหนดค่าเริ่มต้นหากเป็น null
       'FreeTimePerDay': freeTimePerDay ?? 0,
       'ReasonForAdoption':
           reasonForAdoption ?? '', // กำหนดค่าเริ่มต้นหากเป็น null
+      'MonthlyIncome': monthlyIncome ?? 0,
+      'IsHaveExperience': isHaveExperience ?? false,
       'InterestedBreedIds': interestedBreedIds,
     };
   }

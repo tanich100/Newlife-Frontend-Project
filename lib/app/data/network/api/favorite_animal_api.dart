@@ -6,47 +6,69 @@ import '../services/api_service.dart';
 class FavoriteAnimalApi {
   final ApiService _apiService = ApiService();
 
-  Future<List<FavoriteAnimal>> getFavoriteAnimals() async {
-    try {
-      final response = await _apiService.get(AppUrl.favoriteAnimals);
-      print('Raw API Response: ${response.data}');
-      final List<FavoriteAnimal> favorites =
-          (response.data as List).map((json) {
-        print('Processing JSON: $json');
-        return FavoriteAnimal.fromJson(json);
-      }).toList();
-      return favorites;
-    } catch (e) {
-      print('Error in getFavoriteAnimals: $e');
-      rethrow;
-    }
-  }
+  // Future<List<FavoriteAnimal>> getFavoriteAnimals() async {
+  //   try {
+  //     final response = await _apiService.get(AppUrl.favoriteAnimals);
+  //     return (response.data as List)
+  //         .map((json) => FavoriteAnimal.fromJson(json))
+  //         .toList();
+  //   } catch (e) {
+  //     print('Error in getFavoriteAnimals: $e');
+  //     rethrow;
+  //   }
+  // }
 
-  Future<AdoptionPost?> getAdoptionPostById(int id) async {
+  Future<AdoptionPost?> getAdoptionPostById(int postId) async {
     try {
-      final response = await _apiService.get('${AppUrl.adoptionPosts}/$id');
+      final response = await _apiService.get('${AppUrl.adoptionPosts}/$postId');
       return AdoptionPost.fromJson(response.data);
     } catch (e) {
       print('Error in getAdoptionPostById: $e');
-      return null;
+      return null; // Return null if there's an error
     }
   }
 
-  Future<void> createFavoriteAnimal(FavoriteAnimal favoriteAnimal) async {
+  Future<List<FavoriteAnimal>> getUserFavorites(int userId) async {
     try {
-      await _apiService.post(AppUrl.favoriteAnimals,
-          data: favoriteAnimal.toJson());
+      final response =
+          await _apiService.get('${AppUrl.favoriteAnimals}/user/$userId');
+      return (response.data as List)
+          .map((json) => FavoriteAnimal.fromJson(json))
+          .toList();
     } catch (e) {
-      print('Error in createFavoriteAnimal: $e');
+      print('Error in getUserFavorites: $e');
       rethrow;
     }
   }
 
-  Future<void> deleteFavoriteAnimal(int id) async {
+  Future<FavoriteAnimal> createFavorite(FavoriteAnimal favoriteAnimal) async {
+    try {
+      final response = await _apiService.post(AppUrl.favoriteAnimals,
+          data: favoriteAnimal.toJson());
+      return FavoriteAnimal.fromJson(response.data);
+    } catch (e) {
+      print('Error in createFavorite: $e');
+      rethrow;
+    }
+  }
+
+  Future<FavoriteAnimal> updateFavorite(
+      int id, FavoriteAnimal favoriteAnimal) async {
+    try {
+      final response = await _apiService.put('${AppUrl.favoriteAnimals}/$id',
+          data: favoriteAnimal.toJson());
+      return FavoriteAnimal.fromJson(response.data);
+    } catch (e) {
+      print('Error in updateFavorite: $e');
+      rethrow;
+    }
+  }
+
+  Future<void> deleteFavorite(int id) async {
     try {
       await _apiService.delete('${AppUrl.favoriteAnimals}/$id');
     } catch (e) {
-      print('Error in deleteFavoriteAnimal: $e');
+      print('Error in deleteFavorite: $e');
       rethrow;
     }
   }

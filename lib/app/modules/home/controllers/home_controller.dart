@@ -50,11 +50,24 @@ class HomeController extends GetxController
       final findOwnerPosts = await findOwnerPostApi.getPosts();
       pets = [...adoptionPosts, ...findOwnerPosts];
 
-      allPets.value = pets;
+      final userId = UserStorageService.getUserId();
 
-      filterPetsByCategory();
+      // กรองโพสต์ที่เป็นของตัวเองออก
+      if (userId != null) {
+        pets = pets.where((pet) {
+          if (pet is AdoptionPost) {
+            return pet.userId != userId;
+          } else if (pet is FindOwnerPost) {
+            return pet.userId != userId;
+          }
+          return true;
+        }).toList();
+      }
 
-      print('Fetched ${allPets.length} total pets');
+      filteredAllPets.value = pets;
+
+      print(
+          'Fetched ${filteredAllPets.length} total pets excluding user\'s own posts');
     } catch (e) {
       print('Error fetching pets: $e');
     }
@@ -64,10 +77,16 @@ class HomeController extends GetxController
     try {
       final userId = UserStorageService.getUserId();
       if (userId != null) {
-        final recommendedPosts =
+        List<AdoptionPost> recommendedPosts =
             await adoptionPostApi.getRecommendedPosts(userId);
+
+        // กรองโพสต์ที่เป็นของตัวเองออก
+        recommendedPosts =
+            recommendedPosts.where((post) => post.userId != userId).toList();
+
         recommendedPets.value = recommendedPosts;
-        print('Fetched ${recommendedPets.length} recommended pets');
+        print(
+            'Fetched ${recommendedPets.length} recommended pets excluding user\'s own posts');
       }
     } catch (e) {
       print('Error fetching recommended pets: $e');

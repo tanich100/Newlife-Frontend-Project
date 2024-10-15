@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:newlife_app/app/data/models/adoption_post_model.dart';
 import 'package:newlife_app/app/modules/home/views/custom_bottom_nav_bar.dart';
 import '../controllers/favorite_controller.dart';
-import '../../../data/models/favorite_pets_model.dart';
 
 class FavoriteView extends GetView<FavoriteController> {
   const FavoriteView({Key? key}) : super(key: key);
@@ -44,12 +44,12 @@ class FavoriteView extends GetView<FavoriteController> {
             ),
             Expanded(
               child: Obx(() => ListView.builder(
-                    itemCount: controller.favoritePets.length,
+                    itemCount: controller.favoritePosts.length,
                     itemBuilder: (context, index) {
-                      final favorite = controller.favoritePets[index];
+                      final post = controller.favoritePosts[index];
                       return FavoriteItemCard(
-                        favorite: favorite,
-                        onRemove: () => controller.removePet(favorite),
+                        post: post,
+                        onRemove: () => controller.removeFavorite(post),
                       );
                     },
                   )),
@@ -63,12 +63,12 @@ class FavoriteView extends GetView<FavoriteController> {
 }
 
 class FavoriteItemCard extends StatelessWidget {
-  final FavoriteAnimal favorite;
+  final AdoptionPost post;
   final VoidCallback onRemove;
 
   const FavoriteItemCard({
     Key? key,
-    required this.favorite,
+    required this.post,
     required this.onRemove,
   }) : super(key: key);
 
@@ -97,15 +97,11 @@ class FavoriteItemCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Name',
+                    post.name ?? 'Unknown',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    'AdoptionPost ID: ${favorite.adoptionPostId}',
-                    style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-                  ),
-                  Text(
-                    'เพิ่มเมื่อ: ${_formatDate(favorite.dateAdded)}',
+                    'Post ID: ${post.adoptionPostId}',
                     style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                   ),
                 ],
@@ -119,9 +115,5 @@ class FavoriteItemCard extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  String _formatDate(DateTime date) {
-    return '${date.day}/${date.month}/${date.year}';
   }
 }

@@ -1,13 +1,17 @@
 import 'package:get/get.dart';
 import 'package:newlife_app/app/data/models/adoption_post_model.dart';
+import 'package:newlife_app/app/data/models/favorite_pets_model.dart';
 import 'package:newlife_app/app/data/models/find_owner_post_model.dart';
 import 'package:newlife_app/app/data/network/api/adoption_post_api.dart';
 import 'package:newlife_app/app/data/network/api/breed_api.dart';
+import 'package:newlife_app/app/data/network/api/favorite_animal_api.dart';
 import 'package:newlife_app/app/data/network/api/find_owner_post_api.dart';
+import 'package:newlife_app/app/data/network/services/user_storage_service.dart';
 
 class PetsDetailController extends GetxController {
   final AdoptionPostApi adoptionPostApi = AdoptionPostApi();
   final FindOwnerPostApi findOwnerPostApi = FindOwnerPostApi();
+  final FavoriteAnimalApi favoriteAnimalApi = FavoriteAnimalApi();
   final BreedApi breedApi = BreedApi();
 
   final isFavorite = false.obs;
@@ -40,10 +44,24 @@ class PetsDetailController extends GetxController {
         await fetchBreedInfo(fetchedPost.breedId);
       }
       updateImages();
+      checkFavoriteStatus();
     } catch (e) {
       print('Error fetching post details: $e');
       Get.snackbar(
           'Error', 'ไม่สามารถโหลดข้อมูลสัตว์เลี้ยงได้ กรุณาลองใหม่อีกครั้ง');
+    }
+  }
+
+  void checkFavoriteStatus() async {
+    try {
+      final userId = UserStorageService.getUserId();
+      if (userId != null) {
+        final favorites = await favoriteAnimalApi.getUserFavorites(userId);
+        isFavorite.value = favorites.any(
+            (favorite) => favorite.adoptionPostId == post.value.adoptionPostId);
+      }
+    } catch (e) {
+      print('Error checking favorite status: $e');
     }
   }
 
@@ -98,8 +116,26 @@ class PetsDetailController extends GetxController {
     }
   }
 
-  void toggleFavorite() {
-    isFavorite.value = !isFavorite.value;
+  void toggleFavorite() async {
+    try {
+      final userId = UserStorageService.getUserId();
+      if (userId == null) return;
+
+      if (isFavorite.value) {
+        await favoriteAnimalApi.deleteFavorite(post.value.adoptionPostId!);
+        isFavorite.value = false;
+      } else {
+        final newFavorite = FavoriteAnimal(
+          userId: userId,
+          adoptionPostId: post.value.adoptionPostId,
+          dateAdded: DateTime.now(),
+        );
+        await favoriteAnimalApi.createFavorite(newFavorite);
+        isFavorite.value = true;
+      }
+    } catch (e) {
+      print('Error toggling favorite: $e');
+    }
   }
 
   void sendAdoptionRequest() {

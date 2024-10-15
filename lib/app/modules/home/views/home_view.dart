@@ -209,7 +209,7 @@ class HomeView extends GetView<HomeController> {
       ),
       // floatingActionButton: FloatingActionButton(
       //   onPressed: () {
-      //     postPetController.getNewPet(); 
+      //     postPetController.getNewPet();
       //   },
       //   child: Icon(Icons.refresh), // Icon for the button
       //   tooltip: 'Refresh Pets', // Tooltip for accessibility

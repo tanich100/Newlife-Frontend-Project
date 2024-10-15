@@ -39,9 +39,6 @@ class AdoptView extends GetView<RegisterController> {
                 _buildTextField('จำนวนสมาชิกในครอบครัว',
                     controller.numOfFamMembersController),
                 SizedBox(height: 16),
-                _buildTextField('ประสบการณ์การดูแลสัตว์เลี้ยง',
-                    controller.experienceController),
-                SizedBox(height: 16),
                 _buildTextField('ขนาดที่อยู่อาศัย (ตารางเมตร)',
                     controller.sizeOfResidenceController),
                 SizedBox(height: 16),
@@ -53,6 +50,23 @@ class AdoptView extends GetView<RegisterController> {
                 SizedBox(height: 16),
                 _buildTextField('เหตุผลในการรับเลี้ยงสัตว์',
                     controller.reasonForAdoptionController),
+                SizedBox(height: 16),
+                // เพิ่มช่องกรอก MonthlyIncome
+                _buildTextField(
+                    'รายได้ต่อเดือน (บาท)', controller.monthlyIncomeController),
+                SizedBox(height: 16),
+                // เพิ่ม Checkbox สำหรับ isHaveExperience
+                Row(
+                  children: [
+                    Text("มีประสบการณ์ในการดูแลสัตว์หรือไม่"),
+                    Obx(() => Checkbox(
+                          value: controller.isHaveExperience.value,
+                          onChanged: (value) {
+                            controller.isHaveExperience.value = value ?? false;
+                          },
+                        )),
+                  ],
+                ),
                 SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () => Get.to(() => InterestView()),

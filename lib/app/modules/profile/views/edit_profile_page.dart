@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:newlife_app/app/modules/register/controllers/register_controller.dart';
+import 'package:newlife_app/app/modules/register/views/detail_adopt.dart';
 
 class EditProfilePage extends StatefulWidget {
   @override
@@ -7,6 +9,7 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
+  final RegisterController registerController = Get.put(RegisterController());
   final _nameController = TextEditingController(text: 'คาริน่า');
   final _surnameController = TextEditingController(text: 'ถนอมญาติ');
   final _phoneController = TextEditingController(text: '0911111111');
@@ -20,10 +23,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
       appBar: AppBar(
         leading: Container(
           margin: EdgeInsets.all(8),
-          // decoration: BoxDecoration(
-          //   color: Color(0xFFFFD54F),
-          //   shape: BoxShape.circle,
-          // ),
           child: IconButton(
             icon: Icon(Icons.arrow_back_ios_new, color: Colors.black),
             onPressed: () => Get.back(),
@@ -99,6 +98,24 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   ),
                   onPressed: () {
                     Get.toNamed('/profile');
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: ElevatedButton(
+                  child: Text('แก้ไขข้อมูลการรับเลี้ยง',
+                      style: TextStyle(color: Colors.black, fontSize: 16)),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF64B5F6),
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    minimumSize: Size(double.infinity, 48),
+                  ),
+                  onPressed: () {
+                    Get.to(() => AdoptView());
                   },
                 ),
               ),
