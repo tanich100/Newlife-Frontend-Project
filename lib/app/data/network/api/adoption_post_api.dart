@@ -100,6 +100,19 @@ class AdoptionPostApi {
     }
   }
 
+  Future<List<AdoptionPost>> getRecommendedPosts(int userId) async {
+    try {
+      final response =
+          await _apiService.get('${AppUrl.adoptionPosts}/recommended/$userId');
+      return (response.data as List)
+          .map((json) => AdoptionPost.fromJson(json))
+          .toList();
+    } catch (e) {
+      print('Error in getRecommendedPosts: $e');
+      rethrow;
+    }
+  }
+
   Future<AdoptionPost> createPost(AdoptionPost post) async {
     try {
       final response = await _apiService

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:newlife_app/app/modules/home/controllers/home_controller.dart';
-import 'package:newlife_app/app/modules/petsDetail/views/pets_detail_view.dart';
 import 'package:newlife_app/app/constants/app_url.dart';
 import 'package:newlife_app/app/data/models/adoption_post_model.dart';
-import 'package:newlife_app/app/data/models/find_owner_post_model.dart';
+import 'package:newlife_app/app/modules/home/controllers/home_controller.dart';
 
 class RecommendedPets extends StatelessWidget {
   @override
@@ -15,26 +13,19 @@ class RecommendedPets extends StatelessWidget {
       child: Obx(() {
         return ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount:
-              controller.recommendedPets.length, // แสดงผลจาก recommendedPets
+          itemCount: controller
+              .recommendedPets.length, // แสดงผลจาก recommendedPets ที่ถูกกรอง
           itemBuilder: (context, index) {
             final pet = controller.recommendedPets[index];
             String name = '';
             String? imageUrl;
-            String imageEndpoint = '';
             String gender = '';
 
+            // กำหนดค่าให้กับชื่อและรูปภาพของสัตว์
             if (pet is AdoptionPost) {
               name = pet.name ?? 'Unknown';
               imageUrl = pet.image1;
               gender = pet.sex ?? '';
-
-              imageEndpoint = AppUrl.image; //  endpoint สำหรับ AdoptionPost
-            } else if (pet is FindOwnerPost) {
-              name = pet.name ?? 'Unknown';
-              imageUrl = pet.image1;
-              imageEndpoint =
-                  AppUrl.findOwnerPostImage; //  endpoint สำหรับ FindOwnerPost
             }
 
             return Padding(
@@ -61,7 +52,7 @@ class RecommendedPets extends StatelessWidget {
                           width: 150,
                           child: imageUrl != null
                               ? Image.network(
-                                  '${AppUrl.baseUrl}${pet is AdoptionPost ? AppUrl.adoptionPosts : AppUrl.findOwnerPosts}$imageEndpoint/$imageUrl',
+                                  '${AppUrl.baseUrl}${AppUrl.adoptionPosts}${AppUrl.image}/$imageUrl',
                                   fit: BoxFit.cover,
                                   errorBuilder: (context, error, stackTrace) {
                                     print(

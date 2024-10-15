@@ -4,6 +4,8 @@ import 'package:newlife_app/app/data/models/adoption_post_model.dart';
 import 'package:newlife_app/app/data/models/find_owner_post_model.dart';
 import 'package:newlife_app/app/data/network/api/adoption_post_api.dart';
 import 'package:newlife_app/app/data/network/api/find_owner_post_api.dart';
+import 'package:newlife_app/app/data/network/services/user_storage_service.dart';
+import 'package:newlife_app/app/modules/home/views/recommended_pets.dart';
 
 class HomeController extends GetxController
     with GetSingleTickerProviderStateMixin {
@@ -12,8 +14,8 @@ class HomeController extends GetxController
 
   RxList<dynamic> allPets = <dynamic>[].obs;
   RxList<dynamic> filteredAllPets = <dynamic>[].obs;
-
   RxList<dynamic> recommendedPets = <dynamic>[].obs;
+
   var selectedTag = 'All'.obs;
   final RxString location = ''.obs;
 
@@ -31,6 +33,7 @@ class HomeController extends GetxController
   void onInit() {
     super.onInit();
     fetchAllPets();
+    fetchRecommendedPets();
     tabController = TabController(length: categories.length, vsync: this);
     tabController.addListener(() {
       if (!tabController.indexIsChanging) {
@@ -48,13 +51,26 @@ class HomeController extends GetxController
       pets = [...adoptionPosts, ...findOwnerPosts];
 
       allPets.value = pets;
-      recommendedPets.value = pets; // RecommendedPets fetch all pet
 
       filterPetsByCategory();
 
       print('Fetched ${allPets.length} total pets');
     } catch (e) {
       print('Error fetching pets: $e');
+    }
+  }
+
+  Future<void> fetchRecommendedPets() async {
+    try {
+      final userId = UserStorageService.getUserId();
+      if (userId != null) {
+        final recommendedPosts =
+            await adoptionPostApi.getRecommendedPosts(userId);
+        recommendedPets.value = recommendedPosts;
+        print('Fetched ${recommendedPets.length} recommended pets');
+      }
+    } catch (e) {
+      print('Error fetching recommended pets: $e');
     }
   }
 
