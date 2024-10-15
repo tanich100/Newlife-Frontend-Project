@@ -10,7 +10,8 @@ class NotificationAdoptionRequestApi {
     try {
       final GetStorage storage = GetStorage();
       String userId = storage.read('userId').toString();
-      final response = await _apiService.get(AppUrl.notificationAdoptionRequestByUserId+userId);
+      final response = await _apiService
+          .get(AppUrl.notificationAdoptionRequestByUserId + userId);
       print('API Response: ${response.data}');
       List<NotificationAdoptionRequest> notifications = (response.data as List)
           .map((json) => NotificationAdoptionRequest.fromJson(json))
@@ -25,5 +26,4 @@ class NotificationAdoptionRequestApi {
       rethrow;
     }
   }
-
 }

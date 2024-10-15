@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:newlife_app/app/modules/register/views/interest_view.dart';
 import '../controllers/register_controller.dart';
 
 class AdoptView extends GetView<RegisterController> {
@@ -54,8 +55,8 @@ class AdoptView extends GetView<RegisterController> {
                     controller.reasonForAdoptionController),
                 SizedBox(height: 16),
                 ElevatedButton(
-                  onPressed: controller.register, // บันทึกข้อมูลและไปหน้า login
-                  child: Text('บันทึกข้อมูลและไปที่หน้าเข้าสู่ระบบ'),
+                  onPressed: () => Get.to(() => InterestView()),
+                  child: Text('บันทึกข้อมูล'),
                 ),
               ],
             ),

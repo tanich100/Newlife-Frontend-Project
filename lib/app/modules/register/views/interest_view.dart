@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:newlife_app/app/modules/register/controllers/register_controller.dart';
+import 'package:newlife_app/app/data/models/breed_model.dart';
 
 class InterestView extends StatefulWidget {
   @override
-  AddDetailPageState createState() => AddDetailPageState();
+  _InterestViewState createState() => _InterestViewState();
 }
 
-class AddDetailPageState extends State<InterestView> {
-  List<String> selectedDogCategories = [];
-  List<String> selectedCatCategories = [];
-  bool isIncome = true;
-  bool isConfirmed = false;
-  String searchQuery = '';
+class _InterestViewState extends State<InterestView> {
+  final RegisterController controller = Get.find<RegisterController>();
+  RxList<String> selectedDogCategories = <String>[].obs;
+  RxList<String> selectedCatCategories = <String>[].obs;
+  RxBool isIncome = true.obs;
+  RxString searchQuery = ''.obs;
   final int maxSelections = 5;
 
-  // Categories data with image paths for expenses
   final List<Category> expenseCategories = [
     Category('มอลติพู', 'images/dogs/dog1.png'),
     Category('ปั๊ก', 'images/dogs/dog2.png'),
@@ -40,6 +41,23 @@ class AddDetailPageState extends State<InterestView> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    controller.fetchBreeds();
+  }
+
+  void _registerWithSelectedBreeds() {
+    List<String> selectedBreeds = _getAllSelectedCategories();
+    List<int> selectedBreedIds = controller.allBreeds
+        .where((breed) => selectedBreeds.contains(breed.breedName))
+        .map((breed) => breed.breedId!)
+        .toList();
+
+    controller.setSelectedBreeds(selectedBreedIds);
+    controller.register();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -48,14 +66,14 @@ class AddDetailPageState extends State<InterestView> {
         child: AppBar(
           leading: IconButton(
             icon: Icon(Icons.arrow_back, color: Colors.black),
-            onPressed: () {
-              Get.back();
-            },
+            onPressed: () => Get.back(),
           ),
           title: Text(
             'เลือกสัตว์เลี้ยงที่คุณชื่นชอบ 5 รายการ',
             style: TextStyle(
-                fontWeight: FontWeight.bold, fontSize: 19.5, color: Colors.black),
+                fontWeight: FontWeight.bold,
+                fontSize: 19.5,
+                color: Colors.black),
           ),
           centerTitle: true,
           backgroundColor: Colors.white,
@@ -67,18 +85,12 @@ class AddDetailPageState extends State<InterestView> {
         child: Column(
           children: [
             TextField(
-              onChanged: (query) {
-                setState(() {
-                  searchQuery = query;
-                });
-              },
+              onChanged: (query) => searchQuery.value = query,
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.search, color: Colors.black),
                 suffixIcon: IconButton(
                   icon: Icon(Icons.camera_alt_outlined),
-                  onPressed: () {
-                    Get.toNamed('/camera');
-                  },
+                  onPressed: () => Get.toNamed('/camera'),
                 ),
                 hintText: 'ค้นหาสัตว์เลี้ยง...',
                 border: OutlineInputBorder(
@@ -88,8 +100,6 @@ class AddDetailPageState extends State<InterestView> {
               ),
             ),
             SizedBox(height: 20),
-
-            // Toggle Buttons
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -99,55 +109,32 @@ class AddDetailPageState extends State<InterestView> {
               ],
             ),
             SizedBox(height: 20),
-
             Expanded(
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 30,
-                ),
-                itemCount: _filteredCategories().length,
-                itemBuilder: (context, index) {
-                  final category = _filteredCategories()[index];
-                  final isSelected =
-                      _getSelectedCategories().contains(category.name);
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        if (isSelected) {
-                          _getSelectedCategories().remove(category.name);
-                        } else if (_getAllSelectedCategories().length <
-                            maxSelections) {
-                          _getSelectedCategories().add(category.name);
-                        }
-                        isConfirmed = _getSelectedCategories().isNotEmpty;
-                      });
+              child: Obx(() => GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 30,
+                    ),
+                    itemCount: _filteredCategories().length,
+                    itemBuilder: (context, index) {
+                      final category = _filteredCategories()[index];
+                      final isSelected =
+                          _getSelectedCategories().contains(category.name);
+                      return GestureDetector(
+                        onTap: () => _toggleCategory(category.name),
+                        child: _buildCategoryCard(category, isSelected),
+                      );
                     },
-                    child: _buildCategoryCard(category, isSelected),
-                  );
-                },
-              ),
+                  )),
             ),
-
             ElevatedButton(
               onPressed: () {
-                if (_getSelectedCategories().isNotEmpty) {
-                  List<Category> selectedCategoryObjects =
-                      _getSelectedCategories().map((categoryName) {
-                    final category =
-                        (isIncome ? incomeCategories : expenseCategories)
-                            .firstWhere((cat) => cat.name == categoryName);
-                    return category;
-                  }).toList();
-
-                  Get.toNamed('/login',arguments: selectedCategoryObjects);
+                if (_getAllSelectedCategories().isNotEmpty) {
+                  _registerWithSelectedBreeds();
                 }
               },
-              child: Text(
-                'เริ่มใช้งาน',
-                style: TextStyle(color: Colors.black),
-              ),
+              child: Text('เริ่มใช้งาน', style: TextStyle(color: Colors.black)),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.yellow,
                 padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
@@ -155,110 +142,137 @@ class AddDetailPageState extends State<InterestView> {
               ),
             ),
             TextButton(
-                      onPressed: () => Get.toNamed('/login'),
-                      child: Text('ข้าม'),
-                    ),
+              onPressed: () {
+                controller.setSelectedBreeds([]);
+                controller.register();
+              },
+              child: Text('ข้าม'),
+            ),
             SizedBox(height: 20),
-
-            if (selectedDogCategories.isNotEmpty ||
-                selectedCatCategories.isNotEmpty)
-              Text(
-                'ชนิดที่เลือก: ${selectedDogCategories.join(', ')} ${selectedCatCategories.join(', ')}',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
+            Obx(() {
+              final allSelected = _getAllSelectedCategories();
+              return allSelected.isNotEmpty
+                  ? Text(
+                      'ชนิดที่เลือก: ${allSelected.join(', ')}',
+                      textAlign: TextAlign.center,
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    )
+                  : SizedBox.shrink();
+            }),
           ],
         ),
       ),
     );
   }
 
-  // Toggle button widget
   Widget _buildToggleButton(String text, bool value) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          isIncome = value;
-          isConfirmed = false; // Reset confirmation when toggling
-        });
-      },
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        decoration: BoxDecoration(
-          color: isIncome == value ? Color(0xFFE8BC41) : Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Color(0xFFE8BC41)),
-        ),
-        child: Text(
-          text,
-          style: TextStyle(
-            color: isIncome == value ? Colors.white : Color(0xFFE8BC41),
-            fontSize: 16,
+    return Obx(() => GestureDetector(
+          onTap: () => isIncome.value = value,
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            decoration: BoxDecoration(
+              color: isIncome.value == value ? Color(0xFFE8BC41) : Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: Color(0xFFE8BC41)),
+            ),
+            child: Text(
+              text,
+              style: TextStyle(
+                color:
+                    isIncome.value == value ? Colors.white : Color(0xFFE8BC41),
+                fontSize: 16,
+              ),
+            ),
           ),
+        ));
+  }
+
+  Widget _buildCategoryCard(Category category, bool isSelected) {
+    return Container(
+      width: 120,
+      height: 150,
+      child: Card(
+        color: Color(0xFFFEF1E1),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        elevation: 3,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Stack(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: Image.asset(
+                    category.imagePath,
+                    fit: BoxFit
+                        .cover, // ใช้ BoxFit.cover เพื่อให้รูปพอดีกับพื้นที่
+                    width: double.infinity, // ให้รูปกว้างเต็มพื้นที่ของ card
+                    height: 100, // กำหนดความสูงของรูปภาพ
+                  ),
+                ),
+                if (isSelected)
+                  Positioned(
+                    top: 5,
+                    right: 5,
+                    child: Icon(
+                      Icons.check_circle,
+                      color: Colors.green,
+                      size: 24,
+                    ),
+                  ),
+              ],
+            ),
+            SizedBox(height: 8),
+            Flexible(
+              child: Text(
+                category.name,
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis, // ป้องกันการล้นของข้อความ
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  // Card for displaying categories with checkmark overlaying the image
-  Widget _buildCategoryCard(Category category, bool isSelected) {
-  return Container(
-    width: 120, // ปรับขนาดความกว้างของ Card ตามที่ต้องการ
-    height: 150, // ปรับขนาดความสูงของ Card ตามที่ต้องการ
-    child: Card(
-      color: Color(0xFFFEF1E1),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      elevation: 3,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Stack(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: Image.asset(
-                  category.imagePath,// ปรับขนาดของภาพ
-                  fit: BoxFit.cover,
-                ),
-              ),
-              if (isSelected)
-                Positioned(
-                  top: 5,
-                  right: 5,
-                  child:
-                      Icon(Icons.check_circle, color: Colors.green, size: 24),
-                ),
-            ],
-          ),
-          SizedBox(height: 8),
-          // Category name
-          Text(
-            category.name,
-            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-          ),
-        ],
-      ),
-    ),
-  );
-}
-
   List<Category> _filteredCategories() {
-    List<Category> categories = isIncome ? incomeCategories : expenseCategories;
+    List<Category> categories =
+        isIncome.value ? incomeCategories : expenseCategories;
     if (searchQuery.isEmpty) {
       return categories;
     } else {
       return categories
-          .where((category) => category.name.contains(searchQuery))
+          .where((category) => category.name
+              .toLowerCase()
+              .contains(searchQuery.value.toLowerCase()))
           .toList();
     }
   }
 
   List<String> _getSelectedCategories() {
-    return isIncome ? selectedCatCategories : selectedDogCategories;
+    return isIncome.value ? selectedCatCategories : selectedDogCategories;
   }
 
   List<String> _getAllSelectedCategories() {
-    return selectedDogCategories + selectedCatCategories;
+    return [...selectedDogCategories, ...selectedCatCategories];
+  }
+
+  void _toggleCategory(String categoryName) {
+    final selectedCategories = _getSelectedCategories();
+    if (selectedCategories.contains(categoryName)) {
+      selectedCategories.remove(categoryName);
+    } else if (_getAllSelectedCategories().length < maxSelections) {
+      selectedCategories.add(categoryName);
+    }
+    setState(() {});
   }
 }
 

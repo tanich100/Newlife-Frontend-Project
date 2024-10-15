@@ -25,6 +25,30 @@ class RegisterView extends GetView<RegisterController> {
                 SizedBox(height: 16),
                 _buildTextField('รหัสผ่าน', controller.passwordController),
                 SizedBox(height: 16),
+
+                // ปุ่มเลือกภาพโปรไฟล์
+                ElevatedButton(
+                  onPressed: () {
+                    controller.pickImage(); // เรียกฟังก์ชัน pickImage
+                  },
+                  child: Text('เลือกรูปภาพโปรไฟล์'),
+                ),
+                SizedBox(height: 16),
+
+                // แสดงภาพที่ผู้ใช้เลือก
+                Obx(() {
+                  return controller.profilePic.value != null
+                      ? Image.file(
+                          controller.profilePic.value!,
+                          height: 150,
+                          width: 150,
+                          fit: BoxFit.cover,
+                        )
+                      : Text('ยังไม่ได้เลือกรูปภาพ');
+                }),
+
+                SizedBox(height: 16),
+
                 ElevatedButton(
                   onPressed: () {
                     // เมื่อกรอกข้อมูลเสร็จแล้วให้ไปที่หน้า AdoptView

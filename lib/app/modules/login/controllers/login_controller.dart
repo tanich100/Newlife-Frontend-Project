@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:newlife_app/app/data/network/api/user_api.dart';
+import 'package:newlife_app/app/data/network/services/user_storage_service.dart';
 import 'package:newlife_app/app/routes/app_pages.dart';
 
 class LoginController extends GetxController {
@@ -20,11 +21,14 @@ class LoginController extends GetxController {
         passwordController.text,
       );
 
-      storage.write('userId', response.userId);
-      storage.write('userName', response.name);
-      storage.write('userEmail', response.email);
-      storage.write('profilePic', response.profilePic);
-      storage.write('token', response.token);
+      UserStorageService.saveUserData(
+        userId: response.userId,
+        name: response.name,
+        email: response.email,
+        profilePic: response.profilePic ?? '',
+        token: response.token,
+        interestedBreedIds: response.interestedBreedIds,
+      );
 
       print('Logged in with userId: ${response.userId}');
       Get.offAllNamed(Routes.HOME);

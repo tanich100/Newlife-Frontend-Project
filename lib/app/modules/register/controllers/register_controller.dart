@@ -1,12 +1,17 @@
 import 'dart:io';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart'; // สำหรับเลือกภาพ
+import 'package:get_storage/get_storage.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:newlife_app/app/data/models/breed_model.dart';
 import 'package:newlife_app/app/data/models/register_model.dart';
+import 'package:newlife_app/app/data/network/api/breed_api.dart';
 import 'package:newlife_app/app/data/network/api/user_api.dart';
+import 'package:newlife_app/app/data/network/services/user_storage_service.dart';
 
 class RegisterController extends GetxController {
-  final UserApi _userApi = UserApi(); // ใช้การสร้าง UserApi ภายใน class
+  final UserApi _userApi = UserApi();
+  final BreedApi breedApi = BreedApi();
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -24,15 +29,17 @@ class RegisterController extends GetxController {
   final freeTimePerDayController = TextEditingController();
   final reasonForAdoptionController = TextEditingController();
 
+  RxList<int> selectedBreedIds = <int>[].obs;
+  RxList<Breed> allBreeds = <Breed>[].obs;
+
   final isLoading = false.obs;
-  var profilePic;
+  var profilePic = Rxn<File>();
 
   Future<void> pickImage() async {
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
-      profilePic = File(pickedFile.path);
-      update(); // แจ้งให้ UI อัปเดตการแสดงผลรูป
+      profilePic.value = File(pickedFile.path);
     }
   }
 
@@ -61,15 +68,26 @@ class RegisterController extends GetxController {
         typeOfResidence: typeOfResidenceController.text.isNotEmpty
             ? typeOfResidenceController.text
             : null,
-        freeTimePerDay:
-            int.tryParse(freeTimePerDayController.text) ?? 0, // รองรับ null
+        freeTimePerDay: int.tryParse(freeTimePerDayController.text) ?? 0,
         reasonForAdoption: reasonForAdoptionController.text.isNotEmpty
             ? reasonForAdoptionController.text
             : null,
+        interestedBreedIds: selectedBreedIds,
       );
 
-      // ส่งข้อมูลและรูปไปยัง API
-      final response = await _userApi.register(registerModel, profilePic);
+      final response =
+          await _userApi.register(registerModel, profilePic.value ?? null);
+
+      // บันทึกข้อมูลผู้ใช้ลงใน GetStorage หลังจากลงทะเบียนสำเร็จ
+      UserStorageService.saveUserData(
+        userId: response.userId,
+        name: response.name,
+        email: response.email,
+        profilePic: response.profilePic ?? '',
+        token: response.token,
+        interestedBreedIds: selectedBreedIds,
+      );
+
       Get.snackbar('Success', 'Registration successful');
       Get.toNamed('/login');
     } catch (e) {
@@ -77,6 +95,18 @@ class RegisterController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  Future<void> fetchBreeds() async {
+    try {
+      allBreeds.value = await breedApi.getAllBreed();
+    } catch (e) {
+      print('Error fetching breeds: $e');
+    }
+  }
+
+  void setSelectedBreeds(List<int> breedIds) {
+    selectedBreedIds.value = breedIds;
   }
 
   @override

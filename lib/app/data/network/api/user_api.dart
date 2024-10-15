@@ -11,7 +11,7 @@ class UserApi {
   final ApiService _apiService = ApiService();
 
 // Register
-  Future<RegisterModel> register(
+  Future<LoginResponseModel> register(
       RegisterModel registerModel, File? profilePicFile) async {
     try {
       FormData formData = FormData.fromMap(registerModel.toJson());
@@ -27,7 +27,9 @@ class UserApi {
       // ส่งข้อมูลไปยัง API
       final response =
           await _apiService.post('${AppUrl.user}/register', data: formData);
-      return RegisterModel.fromJson(response.data);
+
+      // ใช้ LoginResponseModel ในการตอบกลับหลังจากการลงทะเบียนสำเร็จ
+      return LoginResponseModel.fromJson(response.data);
     } catch (e) {
       print('Error in register: $e');
       rethrow;
@@ -52,11 +54,11 @@ class UserApi {
   }
 
   // User Profile get by userId
-  Future<UserProfileModel> getUserProfile(int userId) async {
+  Future<LoginResponseModel> getUserProfile(int userId) async {
     try {
       final response = await _apiService.get('${AppUrl.user}/$userId');
       if (response.statusCode == 200) {
-        return UserProfileModel.fromJson(response.data);
+        return LoginResponseModel.fromJson(response.data);
       } else {
         throw Exception('Failed to load user profile');
       }
