@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newlife_app/app/data/models/adoption_request_post.dart';
-import 'package:newlife_app/app/modules/home/controllers/home_controller.dart';
-import 'package:newlife_app/app/modules/home/views/custom_bottom_nav_bar.dart';
-import 'package:path/path.dart';
 import '../controllers/adopted_history_controller.dart';
 
 class AdoptedHistoryView extends GetView<AdoptedHistoryController> {
@@ -65,7 +62,6 @@ class AdoptedHistoryView extends GetView<AdoptedHistoryController> {
             );
           }),
         ),
-        bottomNavigationBar: CustomBottomNavBar(),
       ),
     );
   }
