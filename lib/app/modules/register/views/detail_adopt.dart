@@ -22,38 +22,62 @@ class AdoptView extends GetView<RegisterController> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(height: 16),
-                _buildTextField('ชื่อ', controller.nameController),
+                Row(
+                  children: [
+                    Expanded(
+                        child:_buildTextField('ชื่อ', controller.nameController)),
+                    SizedBox(width: 16),
+                    Expanded(
+                        child: _buildTextField('นามสกุล', controller.lastNameController)),
+                  ],
+                ),
                 SizedBox(height: 16),
-                _buildTextField('นามสกุล', controller.lastNameController),
+                Row(
+                  children: [
+                    Expanded(
+                        child: _buildTextField('เบอร์โทรศัพท์', controller.telController)),
+                    SizedBox(width: 16),
+                    Expanded(
+                        child: _buildTextField('เพศ', controller.genderController)),
+                    SizedBox(width: 8),
+                    Expanded(
+                      child: _buildTextField('อายุ', controller.ageController),
+                    )
+                  ],
+                ),
                 SizedBox(height: 16),
-                _buildTextField('เบอร์โทรศัพท์', controller.telController),
+                Row(
+                  children: [
+                    Expanded(
+                      child:_buildTextField('อาชีพ', controller.careerController),
+                    ),
+                    SizedBox(width: 8),
+                    Expanded(
+                      child: _buildTextField('รายได้ต่อเดือน(บาท)',controller.monthlyIncomeController),
+                    )
+                  ],
+                ),
                 SizedBox(height: 16),
-                _buildTextField('เพศ', controller.genderController),
+                _buildTextField('จำนวนสมาชิกในครอบครัว',controller.numOfFamMembersController),
                 SizedBox(height: 16),
-                _buildTextField('อายุ', controller.ageController),
+                Row(
+                  children: [
+                    Expanded(
+                      child: _buildTextField('ที่อยู่', controller.addressController),),
+                    SizedBox(width: 8),
+                    Expanded(
+                      child: _buildTextField('ขนาดของที่อยู่อาศัย(ตารางเมตร)',controller.sizeOfResidenceController),)
+                  ],
+                ),
                 SizedBox(height: 16),
-                _buildTextField('ที่อยู่', controller.addressController),
-                SizedBox(height: 16),
-                _buildTextField('อาชีพ', controller.careerController),
-                SizedBox(height: 16),
-                _buildTextField('จำนวนสมาชิกในครอบครัว',
-                    controller.numOfFamMembersController),
-                SizedBox(height: 16),
-                _buildTextField('ขนาดที่อยู่อาศัย (ตารางเมตร)',
-                    controller.sizeOfResidenceController),
-                SizedBox(height: 16),
-                _buildTextField(
-                    'ประเภทที่อยู่อาศัย', controller.typeOfResidenceController),
+                _buildTextField('ประเภทที่อยู่อาศัย(ตึก/ อพาร์ทเม้นท์/ คอนโด)',
+                    controller.typeOfResidenceController),
                 SizedBox(height: 16),
                 _buildTextField('เวลาว่างต่อวัน (ชั่วโมง)',
                     controller.freeTimePerDayController),
                 SizedBox(height: 16),
                 _buildTextField('เหตุผลในการรับเลี้ยงสัตว์',
                     controller.reasonForAdoptionController),
-                SizedBox(height: 16),
-                // เพิ่มช่องกรอก MonthlyIncome
-                _buildTextField(
-                    'รายได้ต่อเดือน (บาท)', controller.monthlyIncomeController),
                 SizedBox(height: 16),
                 // เพิ่ม Checkbox สำหรับ isHaveExperience
                 Row(
@@ -68,9 +92,24 @@ class AdoptView extends GetView<RegisterController> {
                   ],
                 ),
                 SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: () => Get.to(() => InterestView()),
-                  child: Text('บันทึกข้อมูล'),
+                SizedBox(
+                  width: 300,
+                  height: 50,
+                  child: ElevatedButton(
+                    onPressed: () => Get.to(() => InterestView()),
+                    style: ButtonStyle(
+                      backgroundColor: WidgetStateProperty.all(Colors.yellow),
+                      foregroundColor: WidgetStateProperty.all(Colors.black),
+                      shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                          side: BorderSide(color: Colors.yellow),
+                        ),
+                      ),
+                    ),
+                    child: Text('บันทึกข้อมูล',
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
+                  ),
                 ),
               ],
             ),
@@ -86,7 +125,20 @@ class AdoptView extends GetView<RegisterController> {
         labelText: label,
         filled: true,
         fillColor: Colors.grey[200],
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide.none,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide.none,
+        ),
+        contentPadding: EdgeInsets.symmetric(
+            horizontal: 16, vertical: 20), // ปรับ vertical padding
       ),
       controller: controller,
     );

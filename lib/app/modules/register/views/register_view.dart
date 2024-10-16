@@ -49,13 +49,33 @@ class RegisterView extends GetView<RegisterController> {
 
                 SizedBox(height: 16),
 
-                ElevatedButton(
-                  onPressed: () {
-                    // เมื่อกรอกข้อมูลเสร็จแล้วให้ไปที่หน้า AdoptView
-                    Get.to(AdoptView());
-                  },
-                  child: Text('ต่อไป'),
-                ),
+                SizedBox(
+                    width: 300,
+                    height: 50,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => AdoptView()),
+                        );
+                        Get.to(AdoptView());
+                      },
+                      style: ButtonStyle(
+                        backgroundColor: WidgetStateProperty.all(Colors.yellow),
+                        foregroundColor: WidgetStateProperty.all(Colors.black),
+                        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                            side: BorderSide(color: Colors.yellow),
+                          ),
+                        ),
+                      ),
+                      child: Text(
+                        'ต่อไป',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 18),
+                      ),
+                    ))
               ],
             ),
           ),
@@ -70,7 +90,20 @@ class RegisterView extends GetView<RegisterController> {
         labelText: label,
         filled: true,
         fillColor: Colors.grey[200],
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide.none,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide.none,
+        ),
+        contentPadding: EdgeInsets.symmetric(
+            horizontal: 16, vertical: 20), // ปรับ vertical padding
       ),
       controller: controller,
     );
