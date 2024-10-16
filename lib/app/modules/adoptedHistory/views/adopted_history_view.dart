@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:newlife_app/app/data/models/adoption_request_post.dart';
 import 'package:newlife_app/app/modules/home/controllers/home_controller.dart';
 import 'package:newlife_app/app/modules/home/views/custom_bottom_nav_bar.dart';
+import 'package:path/path.dart';
 import '../controllers/adopted_history_controller.dart';
 
 class AdoptedHistoryView extends GetView<AdoptedHistoryController> {
@@ -47,77 +49,39 @@ class AdoptedHistoryView extends GetView<AdoptedHistoryController> {
           ),
         ),
         body: SafeArea(
-          child: TabBarView(
-            children: [
-              _buildCatList('ทั้งหมด'),
-              _buildCatList('รอดำเนินการ'),
-              _buildCatList('ผ่านเกณฑ์'),
-              _buildCatList('ไม่ผ่านเกณฑ์'),
-              _buildCatList('ยกเลิก'),
-            ],
-          ),
+          child: Obx(() {
+            if (controller.adoptionRequests.isEmpty) {
+              return Center(child: Text('ไม่มีประวัติการขอรับเลี้ยง'));
+            }
+
+            return TabBarView(
+              children: [
+                _buildRequestList('ทั้งหมด'),
+                _buildRequestList('รอดำเนินการ'),
+                _buildRequestList('ผ่านเกณฑ์'),
+                _buildRequestList('ไม่ผ่านเกณฑ์'),
+                _buildRequestList('ยกเลิก'),
+              ],
+            );
+          }),
         ),
         bottomNavigationBar: CustomBottomNavBar(),
       ),
     );
   }
 
-  Widget _buildCatList(String tabStatus) {
-    // This would typically come from your controller
-    final List<Map<String, String>> cats = [
-      {
-        'name': 'น้องดำ',
-        'age': '8 เดือน',
-        'breed': 'สายพันธุ์ อเมริกัน ช็อตแฮร์',
-        'status': 'รอดำเนินการ',
-        'imageUrl':
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwuTO62uMD8fBBR9B2Eb1B1ABGDoZM9z680uYlkRL-FVxoy3Bk',
-        'date': '26/06/67',
-      },
-      {
-        'name': 'ไอร่า',
-        'age': '8 เดือน',
-        'breed': 'สายพันธุ์ อเมริกัน ช็อตแฮร์',
-        'status': 'ผ่านเกณฑ์',
-        'imageUrl':
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV8in7G9Lie9O5hnZoa5h1Ose-HGXTv0zMjWobwsQUQmX6MJtd',
-        'date': '26/06/67',
-      },
-    ];
-
-    return ListView(
+  Widget _buildRequestList(String tabStatus) {
+    return ListView.builder(
       padding: EdgeInsets.all(16),
-      children: cats
-          .where((cat) =>
-              tabStatus == 'ทั้งหมด' ||
-              cat['status'] == tabStatus ||
-              (tabStatus == 'รอดำเนินการ' && cat['status'] == 'รอดำเนินการ') ||
-              (tabStatus == 'ผ่านเกณฑ์' && cat['status'] == 'ผ่านเกณฑ์'))
-          .map((cat) => Column(
-                children: [
-                  _buildCatCard(
-                    name: cat['name']!,
-                    age: cat['age']!,
-                    breed: cat['breed']!,
-                    status: cat['status']!,
-                    imageUrl: cat['imageUrl']!,
-                    date: cat['date']!,
-                  ),
-                  SizedBox(height: 16),
-                ],
-              ))
-          .toList(),
+      itemCount: controller.getFilteredRequests(tabStatus).length,
+      itemBuilder: (context, index) {
+        final request = controller.getFilteredRequests(tabStatus)[index];
+        return _buildRequestCard(request);
+      },
     );
   }
 
-  Widget _buildCatCard({
-    required String name,
-    required String age,
-    required String breed,
-    required String status,
-    required String imageUrl,
-    required String date,
-  }) {
+  Widget _buildRequestCard(AdoptionRequestModel request) {
     return Card(
       color: Color(0xFFFFD54F),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -127,7 +91,7 @@ class AdoptedHistoryView extends GetView<AdoptedHistoryController> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             CircleAvatar(
-              backgroundImage: NetworkImage(imageUrl),
+              backgroundImage: NetworkImage(request.adoptionPost?.image1 ?? ''),
               radius: 30,
             ),
             SizedBox(width: 16),
@@ -136,22 +100,26 @@ class AdoptedHistoryView extends GetView<AdoptedHistoryController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '$name ($age)',
+                    '${request.adoptionPost?.name ?? 'Unknown'} (${request.adoptionPost?.age ?? 'Unknown'})',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                  Text(breed),
-                  Text('วัคซีน ได้รับแล้ว'),
+                  Text(
+                      'สายพันธุ์ ${request.adoptionPost?.breedId ?? 'Unknown'}'),
+                  Text(request.reasonForAdoption ?? 'No reason provided'),
+                  Text('เหตุผล ${request.reasonForAdoption ?? 'Unknown'}'),
                 ],
               ),
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text(date),
+                Text(request.dateAdded.toString().substring(0, 10)),
                 Text(
-                  status,
+                  _getStatusText(request.status),
                   style: TextStyle(
-                    color: status == 'ผ่านเกณฑ์' ? Colors.green : Colors.black,
+                    color: request.status == 'accepted'
+                        ? Colors.green
+                        : const Color.fromARGB(255, 235, 44, 44),
                   ),
                 ),
               ],
@@ -160,5 +128,20 @@ class AdoptedHistoryView extends GetView<AdoptedHistoryController> {
         ),
       ),
     );
+  }
+
+  String _getStatusText(String status) {
+    switch (status) {
+      case 'waiting':
+        return 'รอดำเนินการ';
+      case 'accepted':
+        return 'ผ่านเกณฑ์';
+      case 'declined':
+        return 'ไม่ผ่านเกณฑ์';
+      case 'cancelled':
+        return 'ยกเลิก';
+      default:
+        return status;
+    }
   }
 }
