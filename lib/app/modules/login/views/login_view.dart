@@ -10,7 +10,8 @@ class LoginView extends GetView<LoginController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      backgroundColor: Colors.white,
+      appBar: AppBar(backgroundColor: Colors.white,),
       body: ListView(
         padding: EdgeInsets.all(16.0),
         children: [
