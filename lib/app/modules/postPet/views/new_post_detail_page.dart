@@ -2,18 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newlife_app/app/data/models/post_model.dart';
 import 'package:newlife_app/app/modules/postPet/controllers/post_pet_controller.dart';
+import 'package:newlife_app/app/modules/postPet/controllers/provinces_controller.dart';
 
 class NewPostPageDetail extends StatefulWidget {
   final PostModel selectedPost;
   final PostPetController controller = Get.find<PostPetController>();
-
   NewPostPageDetail({Key? key, required this.selectedPost}) : super(key: key);
 
   @override
   _PostPageDetailState createState() => _PostPageDetailState();
+
+  
 }
 
 class _PostPageDetailState extends State<NewPostPageDetail> {
+  final ProvinceController provinceController = Get.put(ProvinceController());
+
+  void initState() {
+    super.initState();
+    print("Init ");
+    provinceController.fetchProvinces();
+    
+  }
   final _formKey = GlobalKey<FormState>();
   final _addressWidgetKey = GlobalKey<_AddressWidgetState>();
   String _animalType = 'สุนัข';
@@ -297,6 +307,7 @@ class _AddressWidget extends StatefulWidget {
 
 class _AddressWidgetState extends State<_AddressWidget> {
   final _addressFormKey = GlobalKey<FormState>();
+  final ProvinceController provinceController = Get.find<ProvinceController>();
 
   bool validate() {
     return _addressFormKey.currentState!.validate();
@@ -305,88 +316,71 @@ class _AddressWidgetState extends State<_AddressWidget> {
   @override
   Widget build(BuildContext context) {
     return Form(
-        key: _addressFormKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('ที่อยู่', style: TextStyle(fontWeight: FontWeight.bold)),
-            SizedBox(height: 8),
-            Row(
-              children: [
-                Expanded(
-                  child: DropdownButtonFormField(
-                    decoration: InputDecoration(
-                      labelText: 'จังหวัด',
-                      border: OutlineInputBorder(),
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 12, horizontal: 10),
-                      labelStyle: TextStyle(fontSize: 15),
-                    ),
-                    items: [
-                      DropdownMenuItem(value: '', child: Text('จังหวัด'))
-                    ],
-                    onChanged: (value) {},
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'กรุณาเลือกจังหวัด';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                SizedBox(width: 16),
-                Expanded(
-                  child: DropdownButtonFormField(
-                    decoration: InputDecoration(
-                      labelText: 'อำเภอ',
-                      border: OutlineInputBorder(),
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 12, horizontal: 10),
-                      labelStyle: TextStyle(fontSize: 15),
-                    ),
-                    items: [DropdownMenuItem(value: '', child: Text('อำเภอ'))],
-                    style: TextStyle(fontSize: 16),
-                    onChanged: (value) {},
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'กรุณาเลือกอำเภอ';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 16),
-            DropdownButtonFormField(
-              decoration: InputDecoration(
-                labelText: 'ตำบล',
-                border: OutlineInputBorder(),
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 12, horizontal: 10),
-                labelStyle: TextStyle(fontSize: 15),
+      key: _addressFormKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('ที่อยู่', style: TextStyle(fontWeight: FontWeight.bold)),
+          SizedBox(height: 8),
+          Row(
+            children: [
+              Expanded(
+                child: provinceController.buildProvinceDropdown(),
               ),
-              items: [DropdownMenuItem(value: '', child: Text('ตำบล'))],
-              onChanged: (value) {},
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'กรุณาเลือกตำบล';
-                }
-                return null;
-              },
-            ),
-            SizedBox(height: 16),
-            TextField(
-              decoration: InputDecoration(
-                labelText: 'รายละเอียดที่อยู่เพิ่มเติม',
-                border: OutlineInputBorder(),
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 12, horizontal: 10),
-                labelStyle: TextStyle(fontSize: 15),
+              SizedBox(width: 16),
+              Expanded(
+                child: DropdownButtonFormField(
+                  decoration: InputDecoration(
+                    labelText: 'อำเภอ',
+                    border: OutlineInputBorder(),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                    labelStyle: TextStyle(fontSize: 15),
+                  ),
+                  items: [DropdownMenuItem(value: '', child: Text('อำเภอ'))],
+                  style: TextStyle(fontSize: 16),
+                  onChanged: (value) {},
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'กรุณาเลือกอำเภอ';
+                    }
+                    return null;
+                  },
+                ),
               ),
-              maxLines: 2,
+            ],
+          ),
+          SizedBox(height: 16),
+          DropdownButtonFormField(
+            decoration: InputDecoration(
+              labelText: 'ตำบล',
+              border: OutlineInputBorder(),
+              contentPadding:
+                  EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+              labelStyle: TextStyle(fontSize: 15),
             ),
-          ],
-        ));
+            items: [DropdownMenuItem(value: '', child: Text('ตำบล'))],
+            onChanged: (value) {},
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'กรุณาเลือกตำบล';
+              }
+              return null;
+            },
+          ),
+          SizedBox(height: 16),
+          TextField(
+            decoration: InputDecoration(
+              labelText: 'รายละเอียดที่อยู่เพิ่มเติม',
+              border: OutlineInputBorder(),
+              contentPadding:
+                  EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+              labelStyle: TextStyle(fontSize: 15),
+            ),
+            maxLines: 2,
+          ),
+        ],
+      ),
+    );
   }
 }

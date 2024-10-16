@@ -23,6 +23,7 @@ class PostPetController extends GetxController {
   void onInit() {
     super.onInit();
     getNewPet(); 
+
   }
 
   @override
