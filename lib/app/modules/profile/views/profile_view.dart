@@ -228,7 +228,7 @@ class SettingsMenu extends StatelessWidget {
               Icons.edit, 'แก้ไขโปรไฟล์', () => Get.to(EditProfilePage())),
           SizedBox(height: 10),
           _buildMenuItem(Icons.pets, 'ประวัติการขอรับอุปการะ',
-              () => Get.toNamed('/adoption-history')),
+              () => Get.toNamed('/adoption-request-history')),
           SizedBox(height: 10),
           _buildMenuItem(Icons.house, 'ประวัติการอุปการะ',
               () => Get.toNamed('/adopted-history')),

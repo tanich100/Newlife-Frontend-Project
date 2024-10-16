@@ -6,6 +6,7 @@ import 'package:newlife_app/app/data/network/services/api_service.dart';
 class AdoptionRequestApi {
   final ApiService _apiService = ApiService();
 
+  //ประวัติการไปขออุปการะจากpostคนอื่น
   Future<List<AdoptionRequestModel>> getUserAdoptionHistory(int userId) async {
     try {
       final response = await _apiService

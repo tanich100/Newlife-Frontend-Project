@@ -16,16 +16,17 @@ class NotificationAdoptionRequest {
   });
 
   factory NotificationAdoptionRequest.fromJson(Map<String, dynamic> json) {
-  return NotificationAdoptionRequest(
-    notiAdopReqId: json['notiAdopReqId'] as int,
-    requestId: json['requestId'] as int,
-    userId: json['userId'] as int,
-    description: json['description'] as String,
-    isRead: json['isRead'] == 1, // Convert 1 to true, 0 to false
-    notiDate: DateTime.parse(json['notiDate']),
-  );
-}
-
+    return NotificationAdoptionRequest(
+      notiAdopReqId: json['notiAdopReqId'] as int,
+      requestId: json['requestId'] as int,
+      userId: json['userId'] != null
+          ? json['userId'] as int
+          : 0, // Handle null case
+      description: json['description'] as String,
+      isRead: json['isRead'] == 1, // Convert 1 to true, 0 to false
+      notiDate: DateTime.parse(json['notiDate']),
+    );
+  }
 
   Map<String, dynamic> toJson() {
     return {

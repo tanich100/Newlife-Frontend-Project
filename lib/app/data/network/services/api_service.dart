@@ -77,4 +77,13 @@ class ApiService {
       rethrow;
     }
   }
+
+  Future<Response> patch(String url, {dynamic data}) async {
+    try {
+      return await dio.patch(url, data: data);
+    } catch (e) {
+      print('PATCH request error: $e');
+      rethrow;
+    }
+  }
 }

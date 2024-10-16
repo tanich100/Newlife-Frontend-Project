@@ -104,12 +104,7 @@ class AppPages {
       binding: FavoriteBinding(),
       middlewares: [AuthMiddleware()],
     ),
-    GetPage(
-      name: _Paths.ADOPTED_HISTORY,
-      page: () => AdoptedHistoryView(),
-      binding: AdoptedHistoryBinding(),
-      middlewares: [AuthMiddleware()],
-    ),
+
     GetPage(
       name: _Paths.RANKING,
       page: () => const RankingView(),

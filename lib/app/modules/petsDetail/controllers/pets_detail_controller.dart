@@ -1,8 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:newlife_app/app/data/models/adoption_post_model.dart';
+import 'package:newlife_app/app/data/models/adoption_request_dto.dart';
 import 'package:newlife_app/app/data/models/favorite_pets_model.dart';
 import 'package:newlife_app/app/data/models/find_owner_post_model.dart';
 import 'package:newlife_app/app/data/network/api/adoption_post_api.dart';
+import 'package:newlife_app/app/data/network/api/adoption_request_post.dart';
 import 'package:newlife_app/app/data/network/api/breed_api.dart';
 import 'package:newlife_app/app/data/network/api/favorite_animal_api.dart';
 import 'package:newlife_app/app/data/network/api/find_owner_post_api.dart';
@@ -12,6 +15,7 @@ class PetsDetailController extends GetxController {
   final AdoptionPostApi adoptionPostApi = AdoptionPostApi();
   final FindOwnerPostApi findOwnerPostApi = FindOwnerPostApi();
   final FavoriteAnimalApi favoriteAnimalApi = FavoriteAnimalApi();
+  final AdoptionRequestApi adoptionRequestApi = AdoptionRequestApi();
   final BreedApi breedApi = BreedApi();
 
   final isFavorite = false.obs;
@@ -21,6 +25,8 @@ class PetsDetailController extends GetxController {
 
   final animalType = ''.obs;
   final breedName = ''.obs;
+
+  final isRequestButtonEnabled = true.obs;
 
   @override
   void onInit() {
@@ -49,6 +55,78 @@ class PetsDetailController extends GetxController {
       print('Error fetching post details: $e');
       Get.snackbar(
           'Error', 'ไม่สามารถโหลดข้อมูลสัตว์เลี้ยงได้ กรุณาลองใหม่อีกครั้ง');
+    }
+  }
+
+  void disableRequestButton() {
+    isRequestButtonEnabled.value = false;
+  }
+
+  void enableRequestButton() {
+    isRequestButtonEnabled.value = true;
+  }
+
+  void sendAdoptionRequest() async {
+    final userId = UserStorageService.getUserId();
+    if (userId == null) {
+      Get.snackbar('Error', 'ไม่สามารถดึงข้อมูลผู้ใช้งานได้');
+      return;
+    }
+
+    if (!isRequestButtonEnabled.value) {
+      return;
+    }
+
+    disableRequestButton();
+
+    try {
+      final isDuplicate =
+          await checkDuplicateRequest(userId, post.value.adoptionPostId);
+      if (isDuplicate) {
+        Get.snackbar(
+          'คำขอซ้ำ',
+          'คุณได้ส่งคำขออุปการะสำหรับโพสต์นี้ไปแล้ว',
+          snackPosition: SnackPosition.BOTTOM,
+          duration: Duration(seconds: 3),
+        );
+        return;
+      }
+
+      // Create DTO for the adoption request
+      final requestDto = AdoptionRequestDto(
+        userId: userId,
+        adoptionPostId: post.value.adoptionPostId,
+        reasonForAdoption: 'ต้องการอุปการะน้อง ${post.value.name}',
+      );
+
+      await adoptionRequestApi.createAdoptionRequest(requestDto);
+
+      Get.snackbar(
+        'สำเร็จ',
+        'คุณได้ส่งคำขออุปการะน้อง ${post.value.name} แล้ว',
+        snackPosition: SnackPosition.BOTTOM,
+        duration: Duration(seconds: 3),
+      );
+    } on DioError catch (e) {
+      if (e.response?.statusCode != 409) {
+        Get.snackbar('Error', 'ไม่สามารถส่งคำขออุปการะได้');
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'ไม่สามารถส่งคำขออุปการะได้');
+    } finally {
+      // Re-enable the button after the request is completed (success or failure)
+      enableRequestButton();
+    }
+  }
+
+  Future<bool> checkDuplicateRequest(int userId, int adoptionPostId) async {
+    try {
+      final response = await adoptionRequestApi.getUserAdoptionHistory(userId);
+      return response
+          .any((request) => request.adoptionPostId == adoptionPostId);
+    } catch (e) {
+      print('Error checking duplicate request: $e');
+      return false;
     }
   }
 
@@ -136,13 +214,6 @@ class PetsDetailController extends GetxController {
     } catch (e) {
       print('Error toggling favorite: $e');
     }
-  }
-
-  void sendAdoptionRequest() {
-    // Implement the logic for sending an adoption request
-    print('Adoption request sent for ${post.value.name}');
-    Get.snackbar(
-        'สำเร็จ', 'คุณได้ยืนยันการอุปการะน้อง ${post.value.name} แล้ว');
   }
 
   void nextImage() {

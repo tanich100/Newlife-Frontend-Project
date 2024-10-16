@@ -21,11 +21,6 @@ class AppUrl {
 
   //Notification
   static const String notificationAdoptionPost = '/NotificationAdoptionPost';
-  static const String notificationAdoptionPostByUserId =
-      '/NotificationAdoptionPost/GetList/';
-
-  static const String notificationAdoptionRequestByUserId =
-      '/NotificationAdoptionRequest/GetList/';
 
   // Province url
   static const String provinces = '/Provinces';
