@@ -81,9 +81,9 @@ class BreedController extends GetxController {
     // กรองพันธุ์ตามประเภทสัตว์ที่เลือก
     List<Breed> filteredBreeds = getBreedsByAnimalType();
 
-    if (filteredBreeds.isEmpty) {
-      return Center(child: Text('ไม่พบข้อมูลสายพันธุ์สำหรับสัตว์ชนิดนี้'));
-    }
+    // if (filteredBreeds.isEmpty) {
+    //   return Center(child: Text('ไม่พบข้อมูลสายพันธุ์สำหรับสัตว์ชนิดนี้'));
+    // }
 
     return DropdownButtonFormField<Breed>(
       decoration: InputDecoration(
