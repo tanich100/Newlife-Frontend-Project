@@ -114,7 +114,8 @@ class _InterestViewState extends State<InterestView> {
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
                       crossAxisSpacing: 10,
-                      mainAxisSpacing: 30,
+                      mainAxisSpacing: 10,
+                      childAspectRatio: 0.8,
                     ),
                     itemCount: _filteredCategories().length,
                     itemBuilder: (context, index) {
@@ -128,17 +129,26 @@ class _InterestViewState extends State<InterestView> {
                     },
                   )),
             ),
-            ElevatedButton(
-              onPressed: () {
-                if (_getAllSelectedCategories().isNotEmpty) {
-                  _registerWithSelectedBreeds();
-                }
-              },
-              child: Text('เริ่มใช้งาน', style: TextStyle(color: Colors.black)),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.yellow,
-                padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                textStyle: TextStyle(fontSize: 18),
+            Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: ElevatedButton(
+                onPressed: () {
+                  if (_getAllSelectedCategories().isNotEmpty) {
+                    _registerWithSelectedBreeds();
+                  }
+                },
+                child: Text(
+                  'เริ่มใช้งาน',
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xfffdcf09),
+                  padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                ),
               ),
             ),
             TextButton(
@@ -148,18 +158,18 @@ class _InterestViewState extends State<InterestView> {
               },
               child: Text('ข้าม'),
             ),
-            SizedBox(height: 20),
-            Obx(() {
-              final allSelected = _getAllSelectedCategories();
-              return allSelected.isNotEmpty
-                  ? Text(
-                      'ชนิดที่เลือก: ${allSelected.join(', ')}',
-                      textAlign: TextAlign.center,
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    )
-                  : SizedBox.shrink();
-            }),
+            // SizedBox(height: 20),
+            // Obx(() {
+            //   final allSelected = _getAllSelectedCategories();
+            //   return allSelected.isNotEmpty
+            //       ? Text(
+            //           'ชนิดที่เลือก: ${allSelected.join(', ')}',
+            //           textAlign: TextAlign.center,
+            //           style:
+            //               TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            //         )
+            //       : SizedBox.shrink();
+            // }),
           ],
         ),
       ),
@@ -190,8 +200,8 @@ class _InterestViewState extends State<InterestView> {
 
   Widget _buildCategoryCard(Category category, bool isSelected) {
     return Container(
-      width: 120,
-      height: 150,
+      width: 150,
+      height: 180,
       child: Card(
         color: Color(0xFFFEF1E1),
         shape: RoundedRectangleBorder(
@@ -209,8 +219,7 @@ class _InterestViewState extends State<InterestView> {
                     category.imagePath,
                     fit: BoxFit
                         .cover, // ใช้ BoxFit.cover เพื่อให้รูปพอดีกับพื้นที่
-                    width: double.infinity, // ให้รูปกว้างเต็มพื้นที่ของ card
-                    height: 100, // กำหนดความสูงของรูปภาพ
+                    height: 85, // กำหนดความสูงของรูปภาพ
                   ),
                 ),
                 if (isSelected)
@@ -230,7 +239,7 @@ class _InterestViewState extends State<InterestView> {
               child: Text(
                 category.name,
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
                 textAlign: TextAlign.center,

@@ -9,9 +9,11 @@ class AdoptView extends GetView<RegisterController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Text('บันทึกรายละเอียดเพิ่มเติม',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28)),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -25,20 +27,24 @@ class AdoptView extends GetView<RegisterController> {
                 Row(
                   children: [
                     Expanded(
-                        child:_buildTextField('ชื่อ', controller.nameController)),
+                        child:
+                            _buildTextField('ชื่อ', controller.nameController)),
                     SizedBox(width: 16),
                     Expanded(
-                        child: _buildTextField('นามสกุล', controller.lastNameController)),
+                        child: _buildTextField(
+                            'นามสกุล', controller.lastNameController)),
                   ],
                 ),
                 SizedBox(height: 16),
                 Row(
                   children: [
                     Expanded(
-                        child: _buildTextField('เบอร์โทรศัพท์', controller.telController)),
+                        child: _buildTextField(
+                            'เบอร์โทรศัพท์', controller.telController)),
                     SizedBox(width: 16),
                     Expanded(
-                        child: _buildTextField('เพศ', controller.genderController)),
+                        child: _buildTextField(
+                            'เพศ', controller.genderController)),
                     SizedBox(width: 8),
                     Expanded(
                       child: _buildTextField('อายุ', controller.ageController),
@@ -49,24 +55,31 @@ class AdoptView extends GetView<RegisterController> {
                 Row(
                   children: [
                     Expanded(
-                      child:_buildTextField('อาชีพ', controller.careerController),
+                      child:
+                          _buildTextField('อาชีพ', controller.careerController),
                     ),
                     SizedBox(width: 8),
                     Expanded(
-                      child: _buildTextField('รายได้ต่อเดือน(บาท)',controller.monthlyIncomeController),
+                      child: _buildTextField('รายได้ต่อเดือน(บาท)',
+                          controller.monthlyIncomeController),
                     )
                   ],
                 ),
                 SizedBox(height: 16),
-                _buildTextField('จำนวนสมาชิกในครอบครัว',controller.numOfFamMembersController),
+                _buildTextField('จำนวนสมาชิกในครอบครัว',
+                    controller.numOfFamMembersController),
                 SizedBox(height: 16),
                 Row(
                   children: [
                     Expanded(
-                      child: _buildTextField('ที่อยู่', controller.addressController),),
+                      child: _buildTextField(
+                          'ที่อยู่', controller.addressController),
+                    ),
                     SizedBox(width: 8),
                     Expanded(
-                      child: _buildTextField('ขนาดของที่อยู่อาศัย(ตารางเมตร)',controller.sizeOfResidenceController),)
+                      child: _buildTextField('ขนาดของที่อยู่อาศัย(ตารางเมตร)',
+                          controller.sizeOfResidenceController),
+                    )
                   ],
                 ),
                 SizedBox(height: 16),
@@ -98,17 +111,21 @@ class AdoptView extends GetView<RegisterController> {
                   child: ElevatedButton(
                     onPressed: _validateAndSubmit,
                     style: ButtonStyle(
-                      backgroundColor: WidgetStateProperty.all(Colors.yellow),
+                      backgroundColor:
+                          WidgetStateProperty.all(Color(0xfffdcf09)),
                       foregroundColor: WidgetStateProperty.all(Colors.black),
                       shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15.0),
-                          side: BorderSide(color: Colors.yellow),
+                          side: BorderSide(color: Color(0xfffdcf09)),
                         ),
                       ),
                     ),
-                    child: Text('บันทึกข้อมูล',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
+                    child: Text(
+                      'บันทึกข้อมูล',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    ),
                   ),
                 ),
               ],
@@ -147,7 +164,6 @@ class AdoptView extends GetView<RegisterController> {
       Get.to(() => InterestView());
     }
   }
-
 
   Widget _buildTextField(String label, TextEditingController controller) {
     return TextFormField(

@@ -254,15 +254,10 @@ class HomeView extends GetView<HomeController> {
     return Container(
       color: Colors.white,
       height: 55,
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        children: [
-          CategorySelector(
-            onTagSelected: (tag) {
-              controller.updateTag(tag);
-            },
-          ),
-        ],
+      child: CategorySelector(
+        onTagSelected: (tag) {
+          controller.updateTag(tag);
+        },
       ),
     );
   }

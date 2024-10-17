@@ -185,7 +185,7 @@ class PetsDetailView extends GetView<PetsDetailController> {
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
                 text: TextSpan(
-                  style: TextStyle(
+                  style: Theme.of(Get.context!).textTheme.bodyLarge?.copyWith(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                       color: Colors.black),
@@ -193,13 +193,18 @@ class PetsDetailView extends GetView<PetsDetailController> {
                     TextSpan(text: '$name $age '),
                     TextSpan(
                       text: 'สถานะ: ',
-                      style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                      style: Theme.of(Get.context!)
+                          .textTheme
+                          .bodyLarge
+                          ?.copyWith(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
                     TextSpan(
                       text: status,
-                      style: TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.normal),
+                      style: Theme.of(Get.context!)
+                          .textTheme
+                          .bodyLarge
+                          ?.copyWith(
+                              fontSize: 18, fontWeight: FontWeight.normal),
                     ),
                   ],
                 ),
@@ -214,9 +219,14 @@ class PetsDetailView extends GetView<PetsDetailController> {
             children: [
               TextSpan(
                 text: 'สายพันธุ์: ',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: Theme.of(Get.context!)
+                    .textTheme
+                    .bodyLarge
+                    ?.copyWith(fontWeight: FontWeight.bold),
               ),
-              TextSpan(text: controller.breedName.value),
+              TextSpan(
+                  text: controller.breedName.value,
+                  style: Theme.of(Get.context!).textTheme.bodyLarge),
             ],
           ),
         ),

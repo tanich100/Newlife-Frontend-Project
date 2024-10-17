@@ -32,6 +32,9 @@ class DonateView extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                 textStyle: TextStyle(fontSize: 18),
+                backgroundColor: Color.fromARGB(255, 255, 240, 174),
+                foregroundColor: Colors.black,
+                side: BorderSide(color: Color(0xfffdcf09), width: 1),
               ),
             ),
           ),

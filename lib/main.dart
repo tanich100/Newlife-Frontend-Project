@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'app/routes/app_pages.dart';
 
 class MyHttpOverrides extends HttpOverrides {
@@ -24,6 +25,13 @@ void main() async {
       initialRoute: determineInitialRoute(),
       getPages: AppPages.routes,
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(textTheme: GoogleFonts.notoSansThaiTextTheme()),
+      builder: (context, child) {
+        return Theme(
+          data: ThemeData(textTheme: GoogleFonts.notoSansThaiTextTheme()),
+          child: child!,
+        );
+      },
     ),
   );
 }
