@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newlife_app/app/data/models/post_model.dart';
+import 'package:newlife_app/app/modules/postPet/controllers/breed_controller.dart';
 import 'package:newlife_app/app/modules/postPet/controllers/district_controller.dart';
 import 'package:newlife_app/app/modules/postPet/controllers/post_pet_controller.dart';
 import 'package:newlife_app/app/modules/postPet/controllers/postal_code_controller.dart';
@@ -22,7 +23,10 @@ class _PostPageDetailState extends State<NewPostPageDetail> {
   final SubDistrictController subDistrictController =
       Get.put(SubDistrictController());
    final PostalCodeController postalCodeController =
-      Get.put(PostalCodeController());    
+      Get.put(PostalCodeController());   
+
+   final BreedController breedController = Get.put(BreedController());     
+
 
  @override
 void initState() {
@@ -36,6 +40,7 @@ Future<void> fetchAllData() async {
       districtController.fetchDistricts(),
       provinceController.fetchProvinces(),
       subDistrictController.fetchSubDistricts(),
+      breedController.fetchBreeds(),
     ]);
     postalCodeController.initializeZipCodes();
   } catch (e) {
@@ -215,8 +220,9 @@ Future<void> fetchAllData() async {
 
 class _DetailsWidget extends StatelessWidget {
   final bool isLookingForAdoption;
+  final BreedController breedController = Get.find<BreedController>();
 
-  const _DetailsWidget({
+   _DetailsWidget({
     Key? key,
     required this.isLookingForAdoption,
   }) : super(key: key);
@@ -248,17 +254,7 @@ class _DetailsWidget extends StatelessWidget {
             ),
             SizedBox(width: 16),
             Expanded(
-              child: DropdownButtonFormField(
-                decoration: InputDecoration(
-                  labelText: 'สายพันธุ์:',
-                  border: OutlineInputBorder(),
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 12, horizontal: 10),
-                  labelStyle: TextStyle(fontSize: 15),
-                ),
-                items: [DropdownMenuItem(value: '', child: Text('สายพันธุ์'))],
-                onChanged: (value) {},
-              ),
+              child: breedController.buildBreedDropdown(),
             ),
           ],
         ),

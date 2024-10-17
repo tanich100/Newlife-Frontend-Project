@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:newlife_app/app/modules/postPet/controllers/breed_controller.dart';
 import 'package:newlife_app/app/modules/postPet/controllers/district_controller.dart';
 import 'package:newlife_app/app/modules/postPet/controllers/postal_code_controller.dart';
 import 'package:newlife_app/app/modules/postPet/controllers/provinces_controller.dart';
@@ -25,6 +26,9 @@ class PostPetBinding extends Bindings {
     );
     Get.lazyPut<PostalCodeController>(
       () => PostalCodeController(),
+    );
+    Get.lazyPut<BreedController>(
+      () => BreedController(),
     );
   }
 }
