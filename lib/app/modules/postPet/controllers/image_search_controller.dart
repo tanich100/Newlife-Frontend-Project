@@ -19,7 +19,7 @@ class ImageSearchController extends GetxController {
     // เริ่มค้นหา
     isSearching.value = true;
     Get.to(SearchingView());
-    var Idlist = await adoptionPostApi.searchByImage("dog", file);
+    var Idlist = await adoptionPostApi.searchByImage(petType, file);
     print(Idlist);
     await fetchFromImageResult(Idlist);
     isSearching.value = false;
