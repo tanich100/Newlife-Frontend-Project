@@ -85,14 +85,13 @@ class PetsDetailController extends GetxController {
       if (isDuplicate) {
         Get.snackbar(
           'คำขอซ้ำ',
-          'คุณได้ส่งคำขออุปการะสำหรับโพสต์นี้ไปแล้ว',
+          'คุณได้ส่งคำขออุปการะสำหรับโพสต์นี้ไปแล้ว กรุณารอการตอบกลับจากเจ้าของโพสต์',
           snackPosition: SnackPosition.BOTTOM,
           duration: Duration(seconds: 3),
         );
         return;
       }
 
-      // Create DTO for the adoption request
       final requestDto = AdoptionRequestDto(
         userId: userId,
         adoptionPostId: post.value.adoptionPostId,
@@ -108,13 +107,18 @@ class PetsDetailController extends GetxController {
         duration: Duration(seconds: 3),
       );
     } on DioError catch (e) {
-      if (e.response?.statusCode != 409) {
-        Get.snackbar('Error', 'ไม่สามารถส่งคำขออุปการะได้');
+      // ถ้ามี error 409 ให้แสดงข้อความคำขอซ้ำ
+      if (e.response?.statusCode == 409) {
+        Get.snackbar(
+          'คำขอซ้ำ',
+          'คุณได้ส่งคำขออุปการะสำหรับโพสต์นี้ไปแล้ว กรุณารอการตอบกลับจากเจ้าของโพสต์',
+          snackPosition: SnackPosition.BOTTOM,
+          duration: Duration(seconds: 3),
+        );
       }
     } catch (e) {
       Get.snackbar('Error', 'ไม่สามารถส่งคำขออุปการะได้');
     } finally {
-      // Re-enable the button after the request is completed (success or failure)
       enableRequestButton();
     }
   }

@@ -1,10 +1,10 @@
 import 'package:get/get.dart';
-import 'package:newlife_app/app/middleware/auth_middleware.dart';
-import 'package:newlife_app/app/modules/profile/controllers/profile_controller.dart';
-import '../modules/adoptedHistory/bindings/adopted_history_binding.dart';
-import '../modules/adoptedHistory/views/adopted_history_view.dart';
-import '../modules/adoptionHistory/bindings/adoption_history_binding.dart';
-import '../modules/adoptionHistory/views/adoption_history_view.dart';
+
+import '../middleware/auth_middleware.dart';
+import '../modules/adopted_history/bindings/adopted_history_binding.dart';
+import '../modules/adopted_history/views/adopted_history_view.dart';
+import '../modules/adoption_history/bindings/adoption_history_binding.dart';
+import '../modules/adoption_history/views/adoption_history_view.dart';
 import '../modules/camera/bindings/camera_binding.dart';
 import '../modules/camera/views/camera_view.dart';
 import '../modules/donate/bindings/donate_binding.dart';
@@ -22,6 +22,7 @@ import '../modules/petsDetail/views/pets_detail_view.dart';
 import '../modules/postPet/bindings/post_pet_binding.dart';
 import '../modules/postPet/views/new_post_cate_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
+import '../modules/profile/controllers/profile_controller.dart';
 import '../modules/profile/views/profile_view.dart';
 import '../modules/promote/bindings/promote_binding.dart';
 import '../modules/promote/views/promote_view.dart';
@@ -92,12 +93,7 @@ class AppPages {
       binding: CameraBinding(),
       middlewares: [AuthMiddleware()],
     ),
-    GetPage(
-      name: _Paths.ADOPTION_HISTORY,
-      page: () => AdoptionHistoryView(),
-      binding: AdoptionHistoryBinding(),
-      middlewares: [AuthMiddleware()],
-    ),
+
     GetPage(
       name: _Paths.FAVORITE,
       page: () => FavoriteView(),
@@ -123,5 +119,15 @@ class AppPages {
     //   binding: UserBinding(),
     //   middlewares: [AuthMiddleware()],
     // ),
+    GetPage(
+        name: _Paths.ADOPTED_HISTORY,
+        page: () => AdoptedHistoryView(),
+        binding: AdoptedHistoryBinding(),
+        middlewares: [AuthMiddleware()]),
+    GetPage(
+        name: _Paths.ADOPTION_HISTORY,
+        page: () => AdoptionHistoryView(),
+        binding: AdoptionHistoryBinding(),
+        middlewares: [AuthMiddleware()]),
   ];
 }

@@ -21,6 +21,20 @@ class AdoptionRequestApi {
     }
   }
 
+  Future<List<AdoptionRequestModel>> getPostAdoptionRequests(int postId) async {
+    try {
+      final response = await _apiService
+          .get('${AppUrl.adoptionRequests}/post-adoption-requests/$postId');
+      List<AdoptionRequestModel> adoptionRequests = (response.data as List)
+          .map((json) => AdoptionRequestModel.fromJson(json))
+          .toList();
+      return adoptionRequests;
+    } catch (e) {
+      print("Error fetching post adoption requests: $e");
+      rethrow;
+    }
+  }
+
   Future<void> createAdoptionRequest(AdoptionRequestDto requestDto) async {
     try {
       await _apiService.post(AppUrl.adoptionRequests,

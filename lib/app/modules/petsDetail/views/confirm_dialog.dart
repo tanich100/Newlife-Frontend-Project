@@ -45,11 +45,10 @@ class ConfirmDialogView extends StatelessWidget {
                         Text('ยืนยัน', style: TextStyle(color: Colors.black)),
                     onPressed: controller.isRequestButtonEnabled.value
                         ? () {
-                            Get.back(result: true); // ปิด Dialog
-                            controller
-                                .sendAdoptionRequest(); // เรียกฟังก์ชันส่งคำขออุปการะ
+                            Get.back(result: true);
+                            controller.sendAdoptionRequest();
                           }
-                        : null, // ปิดการกดหากปุ่มถูก disable
+                        : null,
                     style: TextButton.styleFrom(
                       padding:
                           EdgeInsets.symmetric(horizontal: 16, vertical: 8),

@@ -12,12 +12,12 @@ abstract class Routes {
   static const REGISTER = _Paths.REGISTER;
   static const POST_PET = _Paths.POST_PET;
   static const CAMERA = _Paths.CAMERA;
-  static const HISTORY = _Paths.HISTORY;
-  static const ADOPTION_HISTORY = _Paths.ADOPTION_HISTORY;
   static const FAVORITE = _Paths.FAVORITE;
   static const RANKING = _Paths.RANKING;
   static const PROMOTE = _Paths.PROMOTE;
   static const USER = _Paths.USER;
+  static const ADOPTED_HISTORY = _Paths.ADOPTED_HISTORY;
+  static const ADOPTION_HISTORY = _Paths.ADOPTION_HISTORY;
 }
 
 abstract class _Paths {
@@ -31,10 +31,10 @@ abstract class _Paths {
   static const REGISTER = '/register';
   static const POST_PET = '/post-pet';
   static const CAMERA = '/camera';
-  static const HISTORY = '/history';
-  static const ADOPTION_HISTORY = '/adoption-history';
   static const FAVORITE = '/favorite';
   static const RANKING = '/ranking';
   static const PROMOTE = '/promote';
   static const USER = '/user';
+  static const ADOPTED_HISTORY = '/adopted-history';
+  static const ADOPTION_HISTORY = '/adoption-history';
 }

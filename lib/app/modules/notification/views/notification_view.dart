@@ -65,6 +65,7 @@ class _NotificationViewState extends State<NotificationView>
                     await notificationController.getRequesterNotifications();
                     break;
                 }
+                Get.delete<NotificationController>();
               },
               tabs: [
                 Tab(text: 'แจ้งเตือน'),
@@ -115,6 +116,7 @@ class _NotificationViewState extends State<NotificationView>
       {required String name, required int requestId}) {
     return GestureDetector(
       onTap: () {
+        Get.delete<NotificationController>();
         Get.to(() => DetailAdoption(notiAdopReqId: requestId));
       },
       child: Card(
