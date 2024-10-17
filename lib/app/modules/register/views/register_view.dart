@@ -9,9 +9,11 @@ class RegisterView extends GetView<RegisterController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Text('สมัครสมาชิก',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28)),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -25,14 +27,24 @@ class RegisterView extends GetView<RegisterController> {
                 SizedBox(height: 16),
                 _buildTextField('รหัสผ่าน', controller.passwordController),
                 SizedBox(height: 16),
-
                 // ปุ่มเลือกภาพโปรไฟล์
                 ElevatedButton(
                   onPressed: () {
-                    controller.pickImage(); // เรียกฟังก์ชัน pickImage
+                    controller.pickImage();
                   },
-                  child: Text('เลือกรูปภาพโปรไฟล์'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 255, 240, 174),
+                    foregroundColor: Colors.black,
+                    side: BorderSide(color: Color(0xfffdcf09), width: 1),
+                  ),
+                  child: Text(
+                    'เลือกรูปภาพโปรไฟล์',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold, // ปรับความหนาของข้อความ
+                    ),
+                  ),
                 ),
+
                 SizedBox(height: 16),
 
                 // แสดงภาพที่ผู้ใช้เลือก
@@ -61,12 +73,13 @@ class RegisterView extends GetView<RegisterController> {
                         Get.to(AdoptView());
                       },
                       style: ButtonStyle(
-                        backgroundColor: WidgetStateProperty.all(Colors.yellow),
+                        backgroundColor:
+                            WidgetStateProperty.all(Color(0xfffdcf09)),
                         foregroundColor: WidgetStateProperty.all(Colors.black),
                         shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15.0),
-                            side: BorderSide(color: Colors.yellow),
+                            side: BorderSide(color: Color(0xfffdcf09)),
                           ),
                         ),
                       ),
