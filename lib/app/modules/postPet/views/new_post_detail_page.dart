@@ -3,7 +3,9 @@ import 'package:get/get.dart';
 import 'package:newlife_app/app/data/models/post_model.dart';
 import 'package:newlife_app/app/modules/postPet/controllers/district_controller.dart';
 import 'package:newlife_app/app/modules/postPet/controllers/post_pet_controller.dart';
+import 'package:newlife_app/app/modules/postPet/controllers/postal_code_controller.dart';
 import 'package:newlife_app/app/modules/postPet/controllers/provinces_controller.dart';
+import 'package:newlife_app/app/modules/postPet/controllers/sub_district_controller.dart';
 
 class NewPostPageDetail extends StatefulWidget {
   final PostModel selectedPost;
@@ -12,21 +14,35 @@ class NewPostPageDetail extends StatefulWidget {
 
   @override
   _PostPageDetailState createState() => _PostPageDetailState();
-
-  
 }
 
 class _PostPageDetailState extends State<NewPostPageDetail> {
   final ProvinceController provinceController = Get.put(ProvinceController());
   final DistrictController districtController = Get.put(DistrictController());
+  final SubDistrictController subDistrictController =
+      Get.put(SubDistrictController());
+   final PostalCodeController postalCodeController =
+      Get.put(PostalCodeController());    
 
-  void initState() {
-    super.initState();
-    districtController.fetchDistricts();
-    provinceController.fetchProvinces();
-  
-    
+ @override
+void initState() {
+  super.initState();
+  fetchAllData();
+}
+
+Future<void> fetchAllData() async {
+  try {
+    await Future.wait([
+      districtController.fetchDistricts(),
+      provinceController.fetchProvinces(),
+      subDistrictController.fetchSubDistricts(),
+    ]);
+    postalCodeController.initializeZipCodes();
+  } catch (e) {
+    print('Error fetching data: $e');
+    // จัดการข้อผิดพลาดตามที่เหมาะสม เช่น แสดง SnackBar หรือ Dialog
   }
+}
   final _formKey = GlobalKey<FormState>();
   final _addressWidgetKey = GlobalKey<_AddressWidgetState>();
   String _animalType = 'สุนัข';
@@ -311,7 +327,9 @@ class _AddressWidget extends StatefulWidget {
 class _AddressWidgetState extends State<_AddressWidget> {
   final _addressFormKey = GlobalKey<FormState>();
   final ProvinceController provinceController = Get.find<ProvinceController>();
-   final DistrictController districtController = Get.find<DistrictController>();
+  final DistrictController districtController = Get.find<DistrictController>();
+  final SubDistrictController subDistrictController = Get.find<SubDistrictController>();
+  final PostalCodeController postalCodeController =Get.find<PostalCodeController>();
 
   bool validate() {
     return _addressFormKey.currentState!.validate();
@@ -333,27 +351,21 @@ class _AddressWidgetState extends State<_AddressWidget> {
               ),
               SizedBox(width: 16),
               Expanded(
-              child: districtController.buildDistrictDropdown() ,
+                child: districtController.buildDistrictDropdown(),
               ),
             ],
           ),
           SizedBox(height: 16),
-          DropdownButtonFormField(
-            decoration: InputDecoration(
-              labelText: 'ตำบล',
-              border: OutlineInputBorder(),
-              contentPadding:
-                  EdgeInsets.symmetric(vertical: 12, horizontal: 10),
-              labelStyle: TextStyle(fontSize: 15),
-            ),
-            items: [DropdownMenuItem(value: '', child: Text('ตำบล'))],
-            onChanged: (value) {},
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'กรุณาเลือกตำบล';
-              }
-              return null;
-            },
+         Row(
+            children: [
+              Expanded(
+                child: subDistrictController.buildSubDistrictDropdown(),
+              ),
+              SizedBox(width: 16),
+              Expanded(
+                child: postalCodeController.buildZipCodeInput(),
+              ),
+            ],
           ),
           SizedBox(height: 16),
           TextField(
