@@ -22,6 +22,8 @@ class BreedController extends GetxController {
     fetchBreeds();
   }
 
+  
+
   Future<void> fetchBreeds() async {
     try {
       isLoadingBreeds.value = true;
@@ -66,55 +68,54 @@ class BreedController extends GetxController {
         .toList();
   }
 
-  Widget buildBreedDropdown() {
-    return Obx(() {
-      if (isLoadingBreeds.value) {
-        return Center(child: CircularProgressIndicator());
-      }
+ Widget buildBreedDropdown() {
+  return Obx(() {
+    if (isLoadingBreeds.value) {
+      return Center(child: CircularProgressIndicator());
+    }
 
-      if (errorMessage.isNotEmpty) {
-        return Center(child: Text(errorMessage.value));
-      }
-      // ปอนแก้ตรงนี้
-      // List<Breed> filteredBreeds = getBreedsByAnimalType();
+    if (errorMessage.isNotEmpty) {
+      return Center(child: Text(errorMessage.value));
+    }
 
-      List<Breed> filteredBreeds = breeds;
+    // กรองพันธุ์ตามประเภทสัตว์ที่เลือก
+    List<Breed> filteredBreeds = getBreedsByAnimalType();
 
-      if (filteredBreeds.isEmpty) {
-        return Center(child: Text('ไม่พบข้อมูลสายพันธุ์สำหรับสัตว์ชนิดนี้'));
-      }
+    if (filteredBreeds.isEmpty) {
+      return Center(child: Text('ไม่พบข้อมูลสายพันธุ์สำหรับสัตว์ชนิดนี้'));
+    }
 
-      return DropdownButtonFormField<Breed>(
-        decoration: InputDecoration(
-          labelText: 'สายพันธุ์',
-          border: OutlineInputBorder(),
-          contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 10),
-          labelStyle: TextStyle(fontSize: 15),
+    return DropdownButtonFormField<Breed>(
+      decoration: InputDecoration(
+        labelText: 'สายพันธุ์',
+        border: OutlineInputBorder(),
+        contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+        labelStyle: TextStyle(fontSize: 15),
+      ),
+      items: [
+        DropdownMenuItem<Breed>(
+          value: null,
+          child: Text('เลือกสายพันธุ์'),
         ),
-        items: [
-          DropdownMenuItem<Breed>(
-            value: null,
-            child: Text('เลือกสายพันธุ์'),
-          ),
-          ...filteredBreeds.map((Breed breed) {
-            return DropdownMenuItem<Breed>(
-              value: breed,
-              child: Text(breed.breedName),
-            );
-          }).toList(),
-        ],
-        style: TextStyle(fontSize: 16, color: Colors.black),
-        value: selectedBreed.value,
-        onChanged: (Breed? newValue) {
-          setSelectedBreed(newValue);
-        },
-        validator: (value) {
-          if (value == null) {
-            return 'กรุณาเลือกสายพันธุ์';
-          }
-          return null;
-        },
-      );
-    });
-  }
+        ...filteredBreeds.map((Breed breed) {
+          return DropdownMenuItem<Breed>(
+            value: breed,
+            child: Text(breed.breedName),
+          );
+        }).toList(),
+      ],
+      style: TextStyle(fontSize: 16, color: Colors.black),
+      value: selectedBreed.value,
+      onChanged: (Breed? newValue) {
+        setSelectedBreed(newValue); // อัปเดตพันธุ์ที่เลือก
+      },
+      validator: (value) {
+        if (value == null) {
+          return 'กรุณาเลือกสายพันธุ์';
+        }
+        return null;
+      },
+    );
+  });
+}
 }

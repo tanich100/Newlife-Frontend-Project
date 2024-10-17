@@ -119,6 +119,7 @@ class _PostPageDetailState extends State<NewPostPageDetail> {
                     _buildRadioListTile(
                       title: 'แมว',
                       value: 'แมว',
+                      
                     ),
                     SizedBox(height: 5),
                     Text(
@@ -196,30 +197,62 @@ class _PostPageDetailState extends State<NewPostPageDetail> {
     required String title,
     required String value,
   }) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 8),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey[300]!),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: RadioListTile<String>(
-        title: Row(
-          children: [
-            Expanded(child: Text(title, style: TextStyle(fontSize: 15))),
-          ],
+    return Obx(() {
+      return Container(
+        margin: EdgeInsets.only(bottom: 8),
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey[300]!),
+          borderRadius: BorderRadius.circular(8),
         ),
-        value: value,
-        groupValue: _animalType,
-        onChanged: (String? newValue) {
-          setState(() {
-            _animalType = newValue!;
-          });
-        },
-        controlAffinity: ListTileControlAffinity.trailing,
-        activeColor: Color(0xFFFFD54F),
-      ),
-    );
+        child: RadioListTile<String>(
+          title: Row(
+            children: [
+              Expanded(child: Text(title, style: TextStyle(fontSize: 15))),
+            ],
+          ),
+          value: value,
+          groupValue: breedController.selectedAnimalType.value,
+          onChanged: (String? newValue) {
+            if (newValue != null) {
+              breedController.setSelectedAnimalType(newValue);
+            }
+          },
+          controlAffinity: ListTileControlAffinity.trailing,
+          activeColor: Color(0xFFFFD54F),
+        ),
+      );
+    });
   }
+
+
+  // Widget _buildRadioListTile({
+  //   required String title,
+  //   required String value,
+  // }) {
+  //   return Container(
+  //     margin: EdgeInsets.only(bottom: 8),
+  //     decoration: BoxDecoration(
+  //       border: Border.all(color: Colors.grey[300]!),
+  //       borderRadius: BorderRadius.circular(8),
+  //     ),
+  //     child: RadioListTile<String>(
+  //       title: Row(
+  //         children: [
+  //           Expanded(child: Text(title, style: TextStyle(fontSize: 15))),
+  //         ],
+  //       ),
+  //       value: value,
+  //       groupValue: _animalType,
+  //       onChanged: (String? newValue) {
+  //         setState(() {
+  //           _animalType = newValue!;
+  //         });
+  //       },
+  //       controlAffinity: ListTileControlAffinity.trailing,
+  //       activeColor: Color(0xFFFFD54F),
+  //     ),
+  //   );
+  // }
 }
 
 class _DetailsWidget extends StatelessWidget {
