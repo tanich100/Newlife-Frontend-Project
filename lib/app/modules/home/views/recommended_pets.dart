@@ -75,11 +75,15 @@ class RecommendedPets extends StatelessWidget {
                             ),
                           ),
                           Icon(
-                            gender.toLowerCase() == 'male'
+                            (gender.toLowerCase() == 'male' ||
+                                    gender.toLowerCase() == 'm' ||
+                                    gender.toLowerCase() == 'man')
                                 ? Icons.male
                                 : Icons.female,
                             size: 24,
-                            color: gender.toLowerCase() == 'male'
+                            color: (gender.toLowerCase() == 'male' ||
+                                    gender.toLowerCase() == 'm' ||
+                                    gender.toLowerCase() == 'man')
                                 ? Colors.blue
                                 : Colors.pink,
                           ),

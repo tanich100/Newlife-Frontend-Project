@@ -74,11 +74,15 @@ class NewArrivals extends StatelessWidget {
                           ),
                           SizedBox(width: 4),
                           Icon(
-                            pet.sex?.toLowerCase() == 'male'
+                            (pet.sex?.toLowerCase() == 'male' ||
+                                    pet.sex?.toLowerCase() == 'm' ||
+                                    pet.sex?.toLowerCase() == 'men')
                                 ? Icons.male
                                 : Icons.female,
                             size: 24,
-                            color: pet.sex?.toLowerCase() == 'male'
+                            color: (pet.sex?.toLowerCase() == 'male' ||
+                                    pet.sex?.toLowerCase() == 'm' ||
+                                    pet.sex?.toLowerCase() == 'men')
                                 ? Colors.blue
                                 : Colors.pink,
                           ),
