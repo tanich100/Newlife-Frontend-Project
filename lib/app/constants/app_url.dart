@@ -25,6 +25,9 @@ class AppUrl {
   // Province url
   static const String provinces = '/Provinces';
 
+  // Province url
+  static const String districts = '/District';
+
   static const String adoptionRequests = '/AdoptionRequest';
 
   static const String notificationAdoptionRequest =

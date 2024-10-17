@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newlife_app/app/data/models/post_model.dart';
+import 'package:newlife_app/app/modules/postPet/controllers/district_controller.dart';
 import 'package:newlife_app/app/modules/postPet/controllers/post_pet_controller.dart';
 import 'package:newlife_app/app/modules/postPet/controllers/provinces_controller.dart';
 
@@ -17,11 +18,13 @@ class NewPostPageDetail extends StatefulWidget {
 
 class _PostPageDetailState extends State<NewPostPageDetail> {
   final ProvinceController provinceController = Get.put(ProvinceController());
+  final DistrictController districtController = Get.put(DistrictController());
 
   void initState() {
     super.initState();
-    print("Init ");
+    districtController.fetchDistricts();
     provinceController.fetchProvinces();
+  
     
   }
   final _formKey = GlobalKey<FormState>();
@@ -308,6 +311,7 @@ class _AddressWidget extends StatefulWidget {
 class _AddressWidgetState extends State<_AddressWidget> {
   final _addressFormKey = GlobalKey<FormState>();
   final ProvinceController provinceController = Get.find<ProvinceController>();
+   final DistrictController districtController = Get.find<DistrictController>();
 
   bool validate() {
     return _addressFormKey.currentState!.validate();
@@ -329,24 +333,7 @@ class _AddressWidgetState extends State<_AddressWidget> {
               ),
               SizedBox(width: 16),
               Expanded(
-                child: DropdownButtonFormField(
-                  decoration: InputDecoration(
-                    labelText: 'อำเภอ',
-                    border: OutlineInputBorder(),
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 12, horizontal: 10),
-                    labelStyle: TextStyle(fontSize: 15),
-                  ),
-                  items: [DropdownMenuItem(value: '', child: Text('อำเภอ'))],
-                  style: TextStyle(fontSize: 16),
-                  onChanged: (value) {},
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'กรุณาเลือกอำเภอ';
-                    }
-                    return null;
-                  },
-                ),
+              child: districtController.buildDistrictDropdown() ,
               ),
             ],
           ),
