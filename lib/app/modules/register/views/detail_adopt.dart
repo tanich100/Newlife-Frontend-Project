@@ -111,12 +111,13 @@ class AdoptView extends GetView<RegisterController> {
                   child: ElevatedButton(
                     onPressed: _validateAndSubmit,
                     style: ButtonStyle(
-                      backgroundColor: WidgetStateProperty.all(Colors.yellow),
+                      backgroundColor:
+                          WidgetStateProperty.all(Color(0xfffdcf09)),
                       foregroundColor: WidgetStateProperty.all(Colors.black),
                       shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15.0),
-                          side: BorderSide(color: Colors.yellow),
+                          side: BorderSide(color: Color(0xfffdcf09)),
                         ),
                       ),
                     ),
