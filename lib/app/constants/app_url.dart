@@ -11,6 +11,9 @@ class AppUrl {
   static const String image = '/getImage';
 
   static const String findOwnerPosts = '/FindOwnerPosts';
+
+  static const String missingPosts = '/MissingPost';
+
   static const String findOwnerPostImage = '/getFindOwnerPostImage';
 
 //Fav url

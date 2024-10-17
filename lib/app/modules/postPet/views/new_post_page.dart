@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:newlife_app/app/data/models/post_model.dart';
+
 import 'package:newlife_app/app/modules/postPet/controllers/post_pet_controller.dart';
 import 'package:newlife_app/app/modules/postPet/views/add_images.dart';
 import 'package:newlife_app/app/modules/postPet/views/new_post_detail_page.dart';

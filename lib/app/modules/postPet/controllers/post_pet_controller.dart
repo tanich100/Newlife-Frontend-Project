@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:newlife_app/app/data/models/adoption_post_model.dart';
-import 'package:newlife_app/app/data/models/post_model.dart';
+
 import 'package:newlife_app/app/data/network/api/adoption_post_api.dart';
 import 'package:newlife_app/app/modules/postPet/views/new_post_detail_page.dart';
 import 'package:path_provider/path_provider.dart';
@@ -125,23 +125,24 @@ class PostPetController extends GetxController {
       return;
     }
 
-    // สร้าง PostModel โดยใช้ข้อมูลที่ส่งมา
-    PostModel postData = PostModel(
-      postType: postType,
-      description: description,
-      phoneNumber: phoneNumber,
-      lineId: lineId,
-      images: selectedImages.toList(),
-    );
+    // // สร้าง PostModel โดยใช้ข้อมูลที่ส่งมา
+    // PostModel postData = PostModel(
+    //   postType: postType,
+    //   description: description,
+    //   phoneNumber: phoneNumber,
+    //   lineId: lineId,
+    //   images: selectedImages.toList(),
+    // );
 
-    // แสดงผลข้อมูลโพสต์ในคอนโซล (สำหรับทดสอบ)
-    print('Creating new adoption post: ${postData.toString()}');
+  //   // แสดงผลข้อมูลโพสต์ในคอนโซล (สำหรับทดสอบ)
+  //   print('Creating new adoption post: ${postData.toString()}');
 
-    // เปลี่ยนไปยังหน้าถัดไป
-    Get.to(() => NewPostPageDetail(selectedPost: postData));
+  //   // เปลี่ยนไปยังหน้าถัดไป
+  //   Get.to(() => NewPostPageDetail(selectedPost: postData));
 
-    // ล้าง selectedImages หลังจากสร้างโพสต์
-    selectedImages.clear();
+  //   // ล้าง selectedImages หลังจากสร้างโพสต์
+  //   selectedImages.clear();
+  // }
   }
 
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:newlife_app/app/data/models/post_model.dart';
+
 import 'package:newlife_app/app/data/network/api/adoption_post_api.dart';
 import 'package:newlife_app/app/modules/postPet/controllers/breed_controller.dart';
 import 'package:newlife_app/app/modules/postPet/controllers/district_controller.dart';
@@ -10,9 +10,9 @@ import 'package:newlife_app/app/modules/postPet/controllers/provinces_controller
 import 'package:newlife_app/app/modules/postPet/controllers/sub_district_controller.dart';
 
 class NewPostPageDetail extends StatefulWidget {
-  final PostModel selectedPost;
+  // final PostModel selectedPost;
   final PostPetController controller = Get.find<PostPetController>();
-  NewPostPageDetail({Key? key, required this.selectedPost}) : super(key: key);
+  // NewPostPageDetail({Key? key, required this.selectedPost}) : super(key: key);
 
   @override
   _PostPageDetailState createState() => _PostPageDetailState();
@@ -57,20 +57,20 @@ class _PostPageDetailState extends State<NewPostPageDetail> {
   String _animalType = 'สุนัข';
   bool _isSpecialCareSelected = false;
 
-  bool get isLookingForAdoption =>
-      widget.selectedPost == 'ประกาศหาผู้รับเลี้ยง';
+  // bool get isLookingForAdoption =>
+      // widget.selectedPost == 'ประกาศหาผู้รับเลี้ยง';
 
-  void _handleAnimalTypeChange(String value) {
-    setState(() {
-      _animalType = value;
-    });
-  }
+  // void _handleAnimalTypeChange(String value) {
+  //   setState(() {
+  //     _animalType = value;
+  //   });
+  // }
 
-  void _handleSpecialCareChange(bool? value) {
-    setState(() {
-      _isSpecialCareSelected = value ?? false;
-    });
-  }
+  // void _handleSpecialCareChange(bool? value) {
+  //   setState(() {
+  //     _isSpecialCareSelected = value ?? false;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -88,11 +88,11 @@ class _PostPageDetailState extends State<NewPostPageDetail> {
             onPressed: () => Get.back(),
           ),
         ),
-        title: Text(
-          widget.selectedPost.postType,
-          style: TextStyle(
-              color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
-        ),
+        // title: Text(
+        //   widget.selectedPost.postType,
+        //   style: TextStyle(
+        //       color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
+        // ),
         backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
@@ -127,15 +127,15 @@ class _PostPageDetailState extends State<NewPostPageDetail> {
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
                     ),
-                    CheckboxListTile(
-                      title: Text(
-                        'ต้องการความดูแลเป็นพิเศษ',
-                        style: TextStyle(fontSize: 15), // Adjust font size here
-                      ),
-                      value: _isSpecialCareSelected,
-                      onChanged: _handleSpecialCareChange,
-                      activeColor: Color(0xFFFFD54F),
-                    ),
+                    // CheckboxListTile(
+                    //   title: Text(
+                    //     'ต้องการความดูแลเป็นพิเศษ',
+                    //     style: TextStyle(fontSize: 15), // Adjust font size here
+                    //   ),
+                    //   value: _isSpecialCareSelected,
+                    //   // onChanged: _handleSpecialCareChange,
+                    //   activeColor: Color(0xFFFFD54F),
+                    // ),
                     if (_isSpecialCareSelected)
                       Padding(
                         padding: const EdgeInsets.only(bottom: 10),
@@ -144,7 +144,7 @@ class _PostPageDetailState extends State<NewPostPageDetail> {
                           style: TextStyle(color: Colors.red, fontSize: 11.5),
                         ),
                       ),
-                    _DetailsWidget(isLookingForAdoption: isLookingForAdoption),
+                    // _DetailsWidget(isLookingForAdoption: isLookingForAdoption),
                     SizedBox(height: 8),
                     _AddressWidget(key: _addressWidgetKey),
                   ],
