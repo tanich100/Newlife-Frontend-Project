@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:newlife_app/app/modules/postPet/controllers/district_controller.dart';
+import 'package:newlife_app/app/modules/postPet/controllers/provinces_controller.dart';
 import 'package:newlife_app/app/modules/postPet/controllers/sub_district_controller.dart';
 
 class PostalCodeController extends GetxController {
   final SubDistrictController subDistrictController = Get.find<SubDistrictController>();
+  final DistrictController districtController = Get.find<DistrictController>();
+  final ProvinceController provinceController = Get.find<ProvinceController>();
 
   final TextEditingController textEditingController = TextEditingController();
   RxList<String> uniqueZipCodes = <String>[].obs;
@@ -31,22 +35,40 @@ class PostalCodeController extends GetxController {
 
   void setSelectedZipCode(String? zipCode) {
     selectedZipCode.value = zipCode;
-    updateSubDistrictFromZipCode(zipCode);
+    updateLocationFromZipCode(zipCode);
   }
 
-  void updateSubDistrictFromZipCode(String? zipCode) {
+   void updateLocationFromZipCode(String? zipCode) {
     if (zipCode == null || zipCode.isEmpty) {
       subDistrictController.setSelectedSubDistrict(null);
+      districtController.setSelectedDistrict(null);
+      provinceController.setSelectedProvince(null);
       return;
     }
 
     var matchingSubDistrict = subDistrictController.subDistricts
-        .firstWhereOrNull((subDistrict) => subDistrict.zipCode.toString() == zipCode);
+        .firstWhereOrNull((subDistrict) => subDistrict.zipCode?.toString() == zipCode);
 
     if (matchingSubDistrict != null) {
       subDistrictController.setSelectedSubDistrict(matchingSubDistrict);
+      
+      // Update district
+      var matchingDistrict = districtController.districts
+          .firstWhereOrNull((district) => district.id == matchingSubDistrict.districtId);
+      if (matchingDistrict != null) {
+        districtController.setSelectedDistrict(matchingDistrict);
+        
+        // Update province
+        var matchingProvince = provinceController.provinces
+          .firstWhereOrNull((province) => province.provinceId == matchingDistrict.provinceId);
+        if (matchingProvince != null) {
+          provinceController.setSelectedProvince(matchingProvince);
+        }
+      }
     } else {
       subDistrictController.setSelectedSubDistrict(null);
+      districtController.setSelectedDistrict(null);
+      provinceController.setSelectedProvince(null);
       Get.snackbar('ไม่พบข้อมูล', 'ไม่พบข้อมูลสำหรับรหัสไปรษณีย์นี้');
     }
   }
