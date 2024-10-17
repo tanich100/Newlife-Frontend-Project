@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newlife_app/app/data/models/post_model.dart';
+import 'package:newlife_app/app/data/network/api/adoption_post_api.dart';
 import 'package:newlife_app/app/modules/postPet/controllers/breed_controller.dart';
 import 'package:newlife_app/app/modules/postPet/controllers/district_controller.dart';
 import 'package:newlife_app/app/modules/postPet/controllers/post_pet_controller.dart';
@@ -22,32 +23,35 @@ class _PostPageDetailState extends State<NewPostPageDetail> {
   final DistrictController districtController = Get.put(DistrictController());
   final SubDistrictController subDistrictController =
       Get.put(SubDistrictController());
-   final PostalCodeController postalCodeController =
-      Get.put(PostalCodeController());   
+  final PostalCodeController postalCodeController =
+      Get.put(PostalCodeController());
 
-   final BreedController breedController = Get.put(BreedController());     
+  final BreedController breedController = Get.put(BreedController());
 
+  final PostPetController controller = Get.find<PostPetController>();
+  final AdoptionPostApi _adoptionPostApi  = AdoptionPostApi(); 
 
- @override
-void initState() {
-  super.initState();
-  fetchAllData();
-}
-
-Future<void> fetchAllData() async {
-  try {
-    await Future.wait([
-      districtController.fetchDistricts(),
-      provinceController.fetchProvinces(),
-      subDistrictController.fetchSubDistricts(),
-      breedController.fetchBreeds(),
-    ]);
-    postalCodeController.initializeZipCodes();
-  } catch (e) {
-    print('Error fetching data: $e');
-    // จัดการข้อผิดพลาดตามที่เหมาะสม เช่น แสดง SnackBar หรือ Dialog
+  @override
+  void initState() {
+    super.initState();
+    fetchAllData();
   }
-}
+
+  Future<void> fetchAllData() async {
+    try {
+      await Future.wait([
+        districtController.fetchDistricts(),
+        provinceController.fetchProvinces(),
+        subDistrictController.fetchSubDistricts(),
+        breedController.fetchBreeds(),
+      ]);
+      postalCodeController.initializeZipCodes();
+    } catch (e) {
+      print('Error fetching data: $e');
+      // จัดการข้อผิดพลาดตามที่เหมาะสม เช่น แสดง SnackBar หรือ Dialog
+    }
+  }
+
   final _formKey = GlobalKey<FormState>();
   final _addressWidgetKey = GlobalKey<_AddressWidgetState>();
   String _animalType = 'สุนัข';
@@ -221,8 +225,10 @@ Future<void> fetchAllData() async {
 class _DetailsWidget extends StatelessWidget {
   final bool isLookingForAdoption;
   final BreedController breedController = Get.find<BreedController>();
+  final PostPetController controller = Get.find<PostPetController>();
+  final AdoptionPostApi _adoptionPostApi  = AdoptionPostApi(); 
 
-   _DetailsWidget({
+  _DetailsWidget({
     Key? key,
     required this.isLookingForAdoption,
   }) : super(key: key);
@@ -285,12 +291,14 @@ class _DetailsWidget extends StatelessWidget {
                 ),
                 items: [
                   DropdownMenuItem(value: '', child: Text('เลือกเพศ')),
-                  DropdownMenuItem(value: 'ผู้', child: Text('ผู้')),
-                  DropdownMenuItem(value: 'เมีย', child: Text('เมีย')),
-                  DropdownMenuItem(
-                      value: 'ไม่ทราบเพศ', child: Text('ไม่ทราบเพศ')),
+                  DropdownMenuItem(value: 'M', child: Text('ผู้')),
+                  DropdownMenuItem(value: 'F', child: Text('เมีย')),
+                  DropdownMenuItem(value: 'Unknow', child: Text('ไม่ทราบเพศ')),
                 ],
-                onChanged: (value) {},
+                value: controller.selectedSex.value,
+                onChanged: (value) {
+                  controller.selectedSex.value = value ?? '';
+                },
               ),
             ),
           ],
@@ -324,8 +332,10 @@ class _AddressWidgetState extends State<_AddressWidget> {
   final _addressFormKey = GlobalKey<FormState>();
   final ProvinceController provinceController = Get.find<ProvinceController>();
   final DistrictController districtController = Get.find<DistrictController>();
-  final SubDistrictController subDistrictController = Get.find<SubDistrictController>();
-  final PostalCodeController postalCodeController =Get.find<PostalCodeController>();
+  final SubDistrictController subDistrictController =
+      Get.find<SubDistrictController>();
+  final PostalCodeController postalCodeController =
+      Get.find<PostalCodeController>();
 
   bool validate() {
     return _addressFormKey.currentState!.validate();
@@ -352,7 +362,7 @@ class _AddressWidgetState extends State<_AddressWidget> {
             ],
           ),
           SizedBox(height: 16),
-         Row(
+          Row(
             children: [
               Expanded(
                 child: subDistrictController.buildSubDistrictDropdown(),

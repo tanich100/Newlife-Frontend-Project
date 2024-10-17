@@ -12,6 +12,10 @@ class BreedController extends GetxController {
   RxString selectedAnimalType = ''.obs;
   RxString errorMessage = ''.obs;
 
+   
+  RxString selectedSex = ''.obs;
+  RxBool isNeedAttention = false.obs;
+
   @override
   void onInit() {
     super.onInit();

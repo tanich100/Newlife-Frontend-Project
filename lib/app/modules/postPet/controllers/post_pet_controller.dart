@@ -13,10 +13,15 @@ class PostPetController extends GetxController {
   final adoptionPostList = <AdoptionPost>[].obs;
   final RxList<File> selectedImages = <File>[].obs;
   final int maxImages = 5;
+    Rx<String> selectedSex = ''.obs;
 
   final ImagePicker _picker = ImagePicker();
 
+  final AdoptionPostApi _adoptionPostApi = AdoptionPostApi();
+
   bool get isMaxImagesSelected => selectedImages.length >= maxImages;
+
+  
 
   final count = 0.obs;
   @override
@@ -34,6 +39,16 @@ class PostPetController extends GetxController {
   @override
   void onClose() {
     super.onClose();
+  }
+
+  Future<void> createAdoptionPost(AdoptionPost post) async {
+    try {
+      final createdPost = await _adoptionPostApi.createPost(post);
+      Get.snackbar('สำเร็จ', 'บันทึกข้อมูลเรียบร้อยแล้ว');
+      // Additional logic after successful creation
+    } catch (e) {
+      Get.snackbar('ผิดพลาด', 'ไม่สามารถบันทึกข้อมูลได้: $e');
+    }
   }
 
   // ฟังก์ชันเลือกภาพ
@@ -155,6 +170,8 @@ class PostPetController extends GetxController {
       );
     }
   }
+
+  
 
   void increment() => count.value++;
 }
