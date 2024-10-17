@@ -8,17 +8,17 @@ class DistrictController extends GetxController {
 
   RxList<District> districts = <District>[].obs;
   Rx<District?> selectedDistrict = Rx<District?>(null);
-  RxBool isLoadingDistricts = true.obs;
+  // RxBool isLoadingDistricts = true.obs;
 
   Future<void> fetchDistricts() async {
     try {
-      isLoadingDistricts.value = true;
+      // isLoadingDistricts.value = true;
       districts.value = await _districtApi.getAllDistricts();
     } catch (e) {
       print('Error fetching districts: $e');
       // Handle error as needed
     } finally {
-      isLoadingDistricts.value = false;
+      // isLoadingDistricts.value = false;
     }
   }
 
@@ -28,13 +28,13 @@ class DistrictController extends GetxController {
 
   Widget buildDistrictDropdown() {
     return Obx(() {
-      if (isLoadingDistricts.value) {
-        return Center(child: CircularProgressIndicator());
-      }
+      // if (isLoadingDistricts.value) {
+      //   return Center(child: CircularProgressIndicator());
+      // }
 
-      if (districts.isEmpty) {
-        return Center(child: Text('ไม่พบข้อมูลอำเภอ'));
-      }
+      // if (districts.isEmpty) {
+      //   return Center(child: Text('ไม่พบข้อมูลอำเภอ'));
+      // }
 
       return DropdownButtonFormField<District>(
         decoration: InputDecoration(

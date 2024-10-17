@@ -9,17 +9,17 @@ class ProvinceController extends GetxController {
   
   RxList<Province> provinces = <Province>[].obs;
   Rx<Province?> selectedProvince = Rx<Province?>(null);
-  RxBool isLoadingProvinces = true.obs;
+  // RxBool isLoadingProvinces = true.obs;
 
   Future<void> fetchProvinces() async {
     try {
-      isLoadingProvinces.value = true;
+      // isLoadingProvinces.value = true;
       provinces.value = await _provinceApi.getAllProvinces();
     } catch (e) {
       print('Error fetching provinces: $e');
       // Handle error as needed
     } finally { 
-      isLoadingProvinces.value = false;
+      // isLoadingProvinces.value = false;
     }
   }
 
@@ -29,13 +29,13 @@ class ProvinceController extends GetxController {
 
   Widget buildProvinceDropdown() {
     return Obx(() {
-      if (isLoadingProvinces.value) {
-        return Center(child: CircularProgressIndicator());
-      }
+      // if (isLoadingProvinces.value) {
+      //   return Center(child: CircularProgressIndicator());
+      // }
       
-      if (provinces.isEmpty) {
-        return Center(child: Text('ไม่พบข้อมูลจังหวัด'));
-      }
+      // if (provinces.isEmpty) {
+      //   return Center(child: Text('ไม่พบข้อมูลจังหวัด'));
+      // }
 
       return DropdownButtonFormField<Province>(
         decoration: InputDecoration(

@@ -8,7 +8,7 @@ class BreedController extends GetxController {
 
   RxList<Breed> breeds = <Breed>[].obs;
   Rx<Breed?> selectedBreed = Rx<Breed?>(null);
-  RxBool isLoadingBreeds = true.obs;
+  // RxBool isLoadingBreeds = true.obs;
   RxString selectedAnimalType = ''.obs;
   RxString errorMessage = ''.obs;
 
@@ -26,7 +26,7 @@ class BreedController extends GetxController {
 
   Future<void> fetchBreeds() async {
     try {
-      isLoadingBreeds.value = true;
+      // isLoadingBreeds.value = true;
       errorMessage.value = '';
       breeds.value = await _breedApi.getAllBreed();
 
@@ -35,13 +35,13 @@ class BreedController extends GetxController {
       print('Error fetching breeds: $e');
       errorMessage.value = 'เกิดข้อผิดพลาดในการโหลดข้อมูลสายพันธุ์';
     } finally {
-      isLoadingBreeds.value = false;
+      // isLoadingBreeds.value = false;
     }
   }
 
   Future<void> fetchBreedById(int breedId) async {
     try {
-      isLoadingBreeds.value = true;
+      // isLoadingBreeds.value = true;
       errorMessage.value = '';
       Breed breed = await _breedApi.getBreed(breedId);
       selectedBreed.value = breed;
@@ -49,7 +49,7 @@ class BreedController extends GetxController {
       print('Error fetching breed by id: $e');
       errorMessage.value = 'เกิดข้อผิดพลาดในการโหลดข้อมูลสายพันธุ์';
     } finally {
-      isLoadingBreeds.value = false;
+      // isLoadingBreeds.value = false;
     }
   }
 
@@ -70,9 +70,9 @@ class BreedController extends GetxController {
 
  Widget buildBreedDropdown() {
   return Obx(() {
-    if (isLoadingBreeds.value) {
-      return Center(child: CircularProgressIndicator());
-    }
+    // if (isLoadingBreeds.value) {
+    //   return Center(child: CircularProgressIndicator());
+    // }
 
     if (errorMessage.isNotEmpty) {
       return Center(child: Text(errorMessage.value));

@@ -9,29 +9,29 @@ class SubDistrictController extends GetxController {
 
   RxList<SubDistrictModel> subDistricts = <SubDistrictModel>[].obs;
   Rx<SubDistrictModel?> selectedSubDistrict = Rx<SubDistrictModel?>(null);
-  RxBool isLoadingSubDistricts = true.obs;
+  // RxBool isLoadingSubDistricts = true.obs;
 
   Future<void> fetchSubDistricts() async {
     try {
-      isLoadingSubDistricts.value = true;
+      // isLoadingSubDistricts.value = true;
       subDistricts.value = await _subDistrictApi.getAllSubDistricts();
     } catch (e) {
       print('Error fetching sub-districts: $e');
       // Handle error as needed
     } finally {
-      isLoadingSubDistricts.value = false;
+      // isLoadingSubDistricts.value = false;
     }
   }
 
   Future<void> fetchSubDistrictsByDistrictId(int districtId) async {
     try {
-      isLoadingSubDistricts.value = true;
+      // isLoadingSubDistricts.value = true;
       subDistricts.value = await _subDistrictApi.getSubDistrictsByDistrictId(districtId);
     } catch (e) {
       print('Error fetching sub-districts for district $districtId: $e');
       // Handle error as needed
     } finally {
-      isLoadingSubDistricts.value = false;
+      // isLoadingSubDistricts.value = false;
     }
   }
 
@@ -41,13 +41,13 @@ class SubDistrictController extends GetxController {
 
   Widget buildSubDistrictDropdown() {
     return Obx(() {
-      if (isLoadingSubDistricts.value) {
-        return Center(child: CircularProgressIndicator());
-      }
+      // if (isLoadingSubDistricts.value) {
+      //   return Center(child: CircularProgressIndicator());
+      // }
 
-      if (subDistricts.isEmpty) {
-        return Center(child: Text('ไม่พบข้อมูลตำบล'));
-      }
+      // if (subDistricts.isEmpty) {
+      //   return Center(child: Text('ไม่พบข้อมูลตำบล'));
+      // }
 
       return DropdownButtonFormField<SubDistrictModel>(
         decoration: InputDecoration(
