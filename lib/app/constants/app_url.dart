@@ -35,4 +35,8 @@ class AppUrl {
 
   static const String notificationAdoptionRequest =
       '/NotificationAdoptionRequest';
+
+  // ImageSearchUrl
+  static const String imageServiceBaseUrl = "http://74.48.71.139:3000";
+  static const String searchByImage = "/posts/search-by-image";
 }

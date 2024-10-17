@@ -53,6 +53,12 @@ android {
     }
 }
 
+ dependencies {
+    // เพิ่ม dependencies ของ AndroidX Activity ที่รองรับการจัดการ back gesture
+    implementation "androidx.activity:activity:1.6.0"
+    
+}
+
 flutter {
     source = "../.."
 }

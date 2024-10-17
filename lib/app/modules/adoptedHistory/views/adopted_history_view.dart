@@ -87,7 +87,9 @@ class AdoptedHistoryView extends GetView<AdoptedHistoryController> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             CircleAvatar(
-              backgroundImage: NetworkImage(request.adoptionPost?.image1 ?? ''),
+              backgroundImage: request.adoptionPost?.image1 != null
+                  ? NetworkImage(request.adoptionPost!.image1!)
+                  : AssetImage('assets/default_image.png') as ImageProvider,
               radius: 30,
             ),
             SizedBox(width: 16),
@@ -95,14 +97,14 @@ class AdoptedHistoryView extends GetView<AdoptedHistoryController> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // ตรวจสอบก่อนใช้ name และ age
                   Text(
                     '${request.adoptionPost?.name ?? 'Unknown'} (${request.adoptionPost?.age ?? 'Unknown'})',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   Text(
                       'สายพันธุ์ ${request.adoptionPost?.breedId ?? 'Unknown'}'),
-                  Text(request.reasonForAdoption ?? 'No reason provided'),
-                  Text('เหตุผล ${request.reasonForAdoption ?? 'Unknown'}'),
+                  Text('เหตุผล ${request.reasonForAdoption ?? 'ไม่ระบุ'}'),
                 ],
               ),
             ),

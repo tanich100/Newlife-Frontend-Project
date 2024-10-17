@@ -9,21 +9,13 @@ class NotificationController extends GetxController {
   RxList<NotificationAdoptionRequest> notificationRequests =
       <NotificationAdoptionRequest>[].obs;
 
-  // ดึงข้อมูลการแจ้งเตือนสำหรับเจ้าของโพสต์
   Future<void> getPostOwnerNotifications() async {
     try {
-      final userId =
-          UserStorageService.getUserId(); // ดึง userId จาก UserStorageService
-      print("User ID: $userId"); // ตรวจสอบว่า userId ไม่เป็น null หรือผิดพลาด
-
+      final userId = UserStorageService.getUserId();
       if (userId != null) {
         List<NotificationAdoptionRequest> fetchedNotifications =
             await notificationAdoptionRequestApi
                 .getPostOwnerNotifications(userId);
-
-        print(
-            "Fetched Notifications: ${fetchedNotifications.length}"); // ตรวจสอบจำนวนข้อมูลที่ได้รับ
-
         notificationRequests.value = fetchedNotifications;
       } else {
         Get.snackbar('Error', 'ไม่สามารถดึงข้อมูลผู้ใช้ได้');
@@ -33,11 +25,9 @@ class NotificationController extends GetxController {
     }
   }
 
-  // ดึงข้อมูลการแจ้งเตือนสำหรับผู้ขอรับเลี้ยง
   Future<void> getRequesterNotifications() async {
     try {
-      final userId =
-          UserStorageService.getUserId(); // ดึง userId จาก UserStorageService
+      final userId = UserStorageService.getUserId();
       if (userId != null) {
         List<NotificationAdoptionRequest> fetchedNotifications =
             await notificationAdoptionRequestApi
@@ -51,11 +41,20 @@ class NotificationController extends GetxController {
     }
   }
 
-  // ฟังก์ชันสำหรับการอนุมัติคำขอ
-  Future<void> approveRequest(int notiAdopReqId) async {
+  Future<dynamic> fetchAdoptionRequestDetails(int requestId) async {
     try {
-      await notificationAdoptionRequestApi
-          .approveAdoptionRequest(notiAdopReqId);
+      final requestDetails = await notificationAdoptionRequestApi
+          .fetchAdoptionRequestDetails(requestId);
+      return requestDetails;
+    } catch (e) {
+      print('Error fetching adoption request details: $e');
+      rethrow;
+    }
+  }
+
+  Future<void> approveRequest(int requestId) async {
+    try {
+      await notificationAdoptionRequestApi.approveAdoptionRequest(requestId);
       Get.snackbar('สำเร็จ', 'คำขอรับเลี้ยงได้รับการอนุมัติแล้ว');
     } catch (e) {
       print('Error approving request: $e');
@@ -63,10 +62,9 @@ class NotificationController extends GetxController {
     }
   }
 
-  // ฟังก์ชันสำหรับการปฏิเสธคำขอ
-  Future<void> denyRequest(int notiAdopReqId) async {
+  Future<void> denyRequest(int requestId) async {
     try {
-      await notificationAdoptionRequestApi.denyAdoptionRequest(notiAdopReqId);
+      await notificationAdoptionRequestApi.denyAdoptionRequest(requestId);
       Get.snackbar('สำเร็จ', 'คำขอรับเลี้ยงถูกปฏิเสธแล้ว');
     } catch (e) {
       print('Error denying request: $e');

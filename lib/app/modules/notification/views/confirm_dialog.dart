@@ -23,7 +23,6 @@ class ConfirmDialog extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             backgroundColor: Color.fromARGB(255, 250, 250, 250),
             foregroundColor: Colors.black,
-            
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),
@@ -35,13 +34,12 @@ class ConfirmDialog extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             backgroundColor: Color.fromARGB(255, 234, 212, 110),
             foregroundColor: Colors.black,
-            
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),
           ),
           onPressed: () {
-            onConfirm();
+            onConfirm(); // เรียกใช้ฟังก์ชันอนุมัติ
             Navigator.of(context).pop(true);
           },
         ),

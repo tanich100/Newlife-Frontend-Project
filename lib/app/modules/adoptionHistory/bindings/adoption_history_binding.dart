@@ -8,8 +8,8 @@ class AdoptionHistoryBinding extends Bindings {
     Get.lazyPut<AdoptionHistoryController>(
       () => AdoptionHistoryController(),
     );
-    Get.lazyPut<HomeController>(
-      () => HomeController(),
-    );
+    // Get.lazyPut<HomeController>(
+    //   () => HomeController(),
+    // );
   }
 }

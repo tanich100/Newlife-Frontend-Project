@@ -1,3 +1,5 @@
+import 'package:newlife_app/app/data/models/adoption_request_post.dart';
+
 class NotificationAdoptionRequest {
   int notiAdopReqId;
   int requestId;
@@ -5,6 +7,7 @@ class NotificationAdoptionRequest {
   String description;
   bool isRead;
   DateTime notiDate;
+  AdoptionRequestModel? adoptionRequest; // Added the relationship here
 
   NotificationAdoptionRequest({
     required this.notiAdopReqId,
@@ -13,18 +16,20 @@ class NotificationAdoptionRequest {
     required this.description,
     required this.isRead,
     required this.notiDate,
+    this.adoptionRequest, // nullable, in case it's missing
   });
 
   factory NotificationAdoptionRequest.fromJson(Map<String, dynamic> json) {
     return NotificationAdoptionRequest(
       notiAdopReqId: json['notiAdopReqId'] as int,
       requestId: json['requestId'] as int,
-      userId: json['userId'] != null
-          ? json['userId'] as int
-          : 0, // Handle null case
+      userId: json['userId'] ?? 0,
       description: json['description'] as String,
-      isRead: json['isRead'] == 1, // Convert 1 to true, 0 to false
+      isRead: json['isRead'] == 1,
       notiDate: DateTime.parse(json['notiDate']),
+      adoptionRequest: json['adoptionRequest'] != null
+          ? AdoptionRequestModel.fromJson(json['adoptionRequest'])
+          : null,
     );
   }
 
@@ -36,6 +41,7 @@ class NotificationAdoptionRequest {
       'description': description,
       'isRead': isRead,
       'notiDate': notiDate.toIso8601String(),
+      'adoptionRequest': adoptionRequest?.toJson(),
     };
   }
 }
