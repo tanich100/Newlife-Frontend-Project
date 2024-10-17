@@ -105,6 +105,30 @@ class NewPostPage extends StatelessWidget {
                         ],
                       ),
                     ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 45),
+                      child: Column(
+                        crossAxisAlignment:
+                            CrossAxisAlignment.start, // เพื่อให้ข้อความชิดซ้าย
+                        children: [
+                          Text(
+                            'ช่วยกันสร้างโอกาสให้น้องได้บ้านใหม่',
+                            style: TextStyle(
+                                color: Colors.green,
+                                fontSize: 16), // กำหนดสีแดงให้กับข้อความ
+                          ),
+                          Text(
+                            'ด้วยภาพถ่ายสุดน่ารักของคุณ!',
+                            style: TextStyle(
+                                color: Colors.green,
+                                fontSize: 16), // กำหนดสีแดงให้กับข้อความ
+                          ),
+                        ],
+                      ),
+                    ),
                     SizedBox(height: 16),
                     AddImages(
                       maxImages: 5,
