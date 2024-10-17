@@ -9,12 +9,14 @@ class SubDistrictController extends GetxController {
 
   RxList<SubDistrictModel> subDistricts = <SubDistrictModel>[].obs;
   Rx<SubDistrictModel?> selectedSubDistrict = Rx<SubDistrictModel?>(null);
+  RxList<SubDistrictModel> filteredSubDistricts = <SubDistrictModel>[].obs;
   // RxBool isLoadingSubDistricts = true.obs;
 
   Future<void> fetchSubDistricts() async {
     try {
       // isLoadingSubDistricts.value = true;
       subDistricts.value = await _subDistrictApi.getAllSubDistricts();
+      filteredSubDistricts.value = subDistricts;
     } catch (e) {
       print('Error fetching sub-districts: $e');
       // Handle error as needed
@@ -23,10 +25,27 @@ class SubDistrictController extends GetxController {
     }
   }
 
+   void updateFilteredSubDistricts(String zipCode) {
+    filteredSubDistricts.value = subDistricts
+        .where((subDistrict) => subDistrict.zipCode.toString() == zipCode)
+        .toList();
+    
+    // ถ้ามีตำบลเดียว ให้เลือกอัตโนมัติ
+    if (filteredSubDistricts.length == 1) {
+      setSelectedSubDistrict(filteredSubDistricts.first);
+    } else {
+      setSelectedSubDistrict(null);
+    }
+    
+    update();
+  }
+
+
   Future<void> fetchSubDistrictsByDistrictId(int districtId) async {
     try {
       // isLoadingSubDistricts.value = true;
       subDistricts.value = await _subDistrictApi.getSubDistrictsByDistrictId(districtId);
+      filteredSubDistricts.value = subDistricts;
     } catch (e) {
       print('Error fetching sub-districts for district $districtId: $e');
       // Handle error as needed
@@ -61,7 +80,7 @@ class SubDistrictController extends GetxController {
             value: null,
             child: Text('เลือกตำบล'),
           ),
-          ...subDistricts.map((SubDistrictModel subDistrict) {
+          ...filteredSubDistricts.map((SubDistrictModel subDistrict) {
             return DropdownMenuItem<SubDistrictModel>(
               value: subDistrict,
               child: Text(subDistrict.nameTh ?? ''),

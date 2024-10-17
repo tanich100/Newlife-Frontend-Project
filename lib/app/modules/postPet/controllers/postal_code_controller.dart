@@ -38,40 +38,49 @@ class PostalCodeController extends GetxController {
     updateLocationFromZipCode(zipCode);
   }
 
-   void updateLocationFromZipCode(String? zipCode) {
+    void updateLocationFromZipCode(String? zipCode) {
     if (zipCode == null || zipCode.isEmpty) {
-      subDistrictController.setSelectedSubDistrict(null);
-      districtController.setSelectedDistrict(null);
-      provinceController.setSelectedProvince(null);
+      clearSelections();
       return;
     }
 
-    var matchingSubDistrict = subDistrictController.subDistricts
-        .firstWhereOrNull((subDistrict) => subDistrict.zipCode?.toString() == zipCode);
+    // ใช้ updateFilteredSubDistricts ของ SubDistrictController
+    subDistrictController.updateFilteredSubDistricts(zipCode);
 
-    if (matchingSubDistrict != null) {
-      subDistrictController.setSelectedSubDistrict(matchingSubDistrict);
+    if (subDistrictController.filteredSubDistricts.isNotEmpty) {
+      var firstSubDistrict = subDistrictController.filteredSubDistricts.first;
       
-      // Update district
+      // หาและเลือกอำเภอ
       var matchingDistrict = districtController.districts
-          .firstWhereOrNull((district) => district.id == matchingSubDistrict.districtId);
+          .firstWhereOrNull((district) => district.id == firstSubDistrict.districtId);
       if (matchingDistrict != null) {
         districtController.setSelectedDistrict(matchingDistrict);
         
-        // Update province
+        // หาและเลือกจังหวัด
         var matchingProvince = provinceController.provinces
           .firstWhereOrNull((province) => province.provinceId == matchingDistrict.provinceId);
         if (matchingProvince != null) {
           provinceController.setSelectedProvince(matchingProvince);
         }
       }
+
+      // ถ้ามีตำบลเดียว SubDistrictController จะเลือกให้อัตโนมัติแล้ว
+      // เราไม่ต้องทำอะไรเพิ่มเติมที่นี่
     } else {
-      subDistrictController.setSelectedSubDistrict(null);
-      districtController.setSelectedDistrict(null);
-      provinceController.setSelectedProvince(null);
+      clearSelections();
       Get.snackbar('ไม่พบข้อมูล', 'ไม่พบข้อมูลสำหรับรหัสไปรษณีย์นี้');
     }
   }
+
+  void clearSelections() {
+    subDistrictController.setSelectedSubDistrict(null);
+    subDistrictController.filteredSubDistricts.clear();
+    districtController.setSelectedDistrict(null);
+    provinceController.setSelectedProvince(null);
+  }
+
+
+
 
   void updateTextFieldValue() {
     textEditingController.text = selectedZipCode.value ?? '';
