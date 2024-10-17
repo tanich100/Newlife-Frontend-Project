@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:camera/camera.dart';
+import 'package:newlife_app/app/modules/camera/views/image_search.dart';
 import '../controllers/camera_controller.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -36,11 +37,11 @@ class CameraView extends GetView<CameraControllerX> {
             child: Padding(
               padding: EdgeInsets.all(8.0),
               child: IconButton(
-                icon: Icon(Icons.close, color: Colors.white),
-                onPressed: () {controller.disposeCamera(); Get.toNamed('/home'); }
-                
-               
-              ),
+                  icon: Icon(Icons.close, color: Colors.white),
+                  onPressed: () {
+                    controller.disposeCamera();
+                    Get.toNamed('/home');
+                  }),
             ),
           ),
           Expanded(
@@ -96,25 +97,25 @@ class CameraView extends GetView<CameraControllerX> {
 
   Widget _buildImagePicker() {
     return GestureDetector(
-      onTap: _pickImages,
+      onTap: _pickImage,
       child: Obx(() => Container(
-        width: 85,
-        height: 85,
-        decoration: BoxDecoration(
-          color: Color.fromARGB(255, 16, 15, 15),
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Colors.white),
-        ),
-        child: controller.selectedImages.isEmpty
-            ? const Icon(Icons.image, color: Colors.white)
-            : ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.file(
-                  controller.selectedImages.first,
-                  fit: BoxFit.cover,
-                ),
-              ),
-      )),
+            width: 85,
+            height: 85,
+            decoration: BoxDecoration(
+              color: Color.fromARGB(255, 16, 15, 15),
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: Colors.white),
+            ),
+            child: controller.selectedImages.isEmpty
+                ? const Icon(Icons.image, color: Colors.white)
+                : ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.file(
+                      controller.selectedImages.first,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+          )),
     );
   }
 
@@ -143,22 +144,22 @@ class CameraView extends GetView<CameraControllerX> {
     );
   }
 
- Widget _buildFlashButton() {
-  final CameraControllerX cameraController = Get.find<CameraControllerX>();
+  Widget _buildFlashButton() {
+    final CameraControllerX cameraController = Get.find<CameraControllerX>();
 
-  return Obx(() => IconButton(
-    icon: Icon(
-      cameraController.isFlashOn.value ? Icons.flash_on : Icons.flash_off,
-      color: Colors.white,
-      size: 30,
-    ),
-    onPressed: () {
-      cameraController.toggleFlash();
-    },
-  ));
-}
+    return Obx(() => IconButton(
+          icon: Icon(
+            cameraController.isFlashOn.value ? Icons.flash_on : Icons.flash_off,
+            color: Colors.white,
+            size: 30,
+          ),
+          onPressed: () {
+            cameraController.toggleFlash();
+          },
+        ));
+  }
 
-   void _takePicture() async {
+  void _takePicture() async {
     try {
       final image = await controller.cameraController.takePicture();
       Get.snackbar('Success', 'Picture saved to ${image.path}');
@@ -168,17 +169,26 @@ class CameraView extends GetView<CameraControllerX> {
     }
   }
 
-  void _pickImages() async {
+  // void _pickImages() async {
+  //   final ImagePicker _picker = ImagePicker();
+  //   final List<XFile>? images = await _picker.pickMultiImage();
+  //   if (images != null) {
+  //     if (images.length + controller.selectedImages.length > 5) {
+  //       Get.snackbar('แจ้งเตือน', 'คุณสามารถเลือกรูปได้สูงสุด 5 รูป');
+  //       return;
+  //     }
+  //     controller.addSelectedImages(images);
+  //   }
+  // }
+
+  void _pickImage() async {
     final ImagePicker _picker = ImagePicker();
-    final List<XFile>? images = await _picker.pickMultiImage();
-    if (images != null) {
-      if (images.length + controller.selectedImages.length > 5) {
-        Get.snackbar('แจ้งเตือน', 'คุณสามารถเลือกรูปได้สูงสุด 5 รูป');
-        return;
-      }
-      controller.addSelectedImages(images);
+    final XFile? image = await _picker.pickImage(
+        source: ImageSource.gallery); // Pick a single image
+    if (image != null) {
+      Get.to(() => ImageSearch(
+          imagePath: image.path)); // Pass the image path to ImageSearch
+      print("Selected");
     }
   }
 }
-
-
