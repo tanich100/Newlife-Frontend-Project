@@ -402,7 +402,7 @@ class _AddressWidgetState extends State<_AddressWidget> {
               ),
               SizedBox(width: 16),
               Expanded(
-                child: postalCodeController.buildZipCodeInput(),
+                child: postalCodeController.buildZipCodeDropdown(),
               ),
             ],
           ),

@@ -54,44 +54,41 @@ class PostalCodeController extends GetxController {
   void updateTextFieldValue() {
     textEditingController.text = selectedZipCode.value ?? '';
   }
+Widget buildZipCodeDropdown() {
+  return Obx(() {
+    return DropdownButtonFormField<String>(
+      decoration: InputDecoration(
+        labelText: 'รหัสไปรษณีย์',
+        border: OutlineInputBorder(),
+        contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+        labelStyle: TextStyle(fontSize: 15),
+      ),
+      items: [
+        DropdownMenuItem<String>(
+          value: null,
+          child: Text('เลือกรหัสไปรษณีย์'),
+        ),
+        ...uniqueZipCodes.map((String zipCode) {
+          return DropdownMenuItem<String>(
+            value: zipCode,
+            child: Text(zipCode),
+          );
+        }).toList(),
+      ],
+      style: TextStyle(fontSize: 16, color: Colors.black),
+      value: selectedZipCode.value,
+      onChanged: (String? newValue) {
+        setSelectedZipCode(newValue);
+      },
+      validator: (value) {
+        if (value == null) {
+          return 'กรุณาเลือกรหัสไปรษณีย์';
+        }
+        return null;
+      },
+    );
+  });
+}
 
-  Widget buildZipCodeInput() {
-    return Obx(() {
-      return Row(
-        children: [
-          Expanded(
-            child: TextField(
-              controller: textEditingController,
-              decoration: InputDecoration(
-                labelText: 'รหัสไปรษณีย์',
-                border: OutlineInputBorder(),
-                contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 10),
-                labelStyle: TextStyle(fontSize: 15),
-              ),
-              keyboardType: TextInputType.number,
-              onChanged: (value) {
-                if (value.length == 5) {
-                  setSelectedZipCode(value);
-                }
-              },
-            ),
-          ),
-          
-          DropdownButton<String>(
-            value: selectedZipCode.value,
-            hint: Text(''),
-            onChanged: (String? newValue) {
-              setSelectedZipCode(newValue);
-            },
-            items: uniqueZipCodes.map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
-          ),
-        ],
-      );
-    });
-  }
+
 }
