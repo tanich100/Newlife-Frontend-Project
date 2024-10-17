@@ -23,72 +23,74 @@ class NewArrivals extends StatelessWidget {
                 onTap: () {
                   postPetController.getNewPet(); // Fetch new pets on tap
                 },
-                child: Container(
-                  width: 150,
-                  height: 180,
-                  decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 240, 194, 10),
-                    borderRadius: BorderRadius.circular(6),
+                child: Card(
+                  color: Color(0xfffdcf09),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      ClipRRect(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(6)),
-                        child: Container(
-                          height: 120, // Image height
-                          width: 150,
-                          child: pet.image1 != null
-                              ? Image.network(
-                                  '${AppUrl.baseUrl}${AppUrl.adoptionPosts}/getImage/${pet.image1}',
-                                  fit: BoxFit.cover,
-                                  loadingBuilder:
-                                      (context, child, loadingProgress) {
-                                    if (loadingProgress == null) return child;
-                                    return Center(
-                                      child:
-                                          CircularProgressIndicator(), // Loading spinner
-                                    );
-                                  },
-                                  errorBuilder: (context, error, stackTrace) {
-                                    print('Error loading image: $error');
-                                    return Icon(Icons.broken_image,
-                                        size: 50,
-                                        color: Colors.red); // Error fallback
-                                  },
-                                )
-                              : Icon(Icons.pets, size: 50),
+                  child: SizedBox(
+                    width: 150,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Expanded(
+                          child: ClipRRect(
+                            borderRadius:
+                                BorderRadius.vertical(top: Radius.circular(10)),
+                            child: pet.image1 != null
+                                ? Image.network(
+                                    '${AppUrl.baseUrl}${AppUrl.adoptionPosts}/getImage/${pet.image1}',
+                                    fit: BoxFit.cover,
+                                    loadingBuilder:
+                                        (context, child, loadingProgress) {
+                                      if (loadingProgress == null) return child;
+                                      return Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    },
+                                    errorBuilder: (context, error, stackTrace) {
+                                      print('Error loading image: $error');
+                                      return Icon(Icons.broken_image,
+                                          size: 50, color: Colors.red);
+                                    },
+                                  )
+                                : Icon(Icons.pets, size: 50),
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              pet.name ?? 'Unknown', // Null check for name
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                            ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  pet.name ?? 'Unknown',
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 16.0,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 4),
+                              Icon(
+                                (pet.sex?.toLowerCase() == 'male' ||
+                                        pet.sex?.toLowerCase() == 'm' ||
+                                        pet.sex?.toLowerCase() == 'men')
+                                    ? Icons.male
+                                    : Icons.female,
+                                size: 24,
+                                color: (pet.sex?.toLowerCase() == 'male' ||
+                                        pet.sex?.toLowerCase() == 'm' ||
+                                        pet.sex?.toLowerCase() == 'men')
+                                    ? Colors.blue
+                                    : Colors.pink,
+                              ),
+                            ],
                           ),
-                          SizedBox(width: 4),
-                          Icon(
-                            (pet.sex?.toLowerCase() == 'male' ||
-                                    pet.sex?.toLowerCase() == 'm' ||
-                                    pet.sex?.toLowerCase() == 'men')
-                                ? Icons.male
-                                : Icons.female,
-                            size: 24,
-                            color: (pet.sex?.toLowerCase() == 'male' ||
-                                    pet.sex?.toLowerCase() == 'm' ||
-                                    pet.sex?.toLowerCase() == 'men')
-                                ? Colors.blue
-                                : Colors.pink,
-                          ),
-                        ],
-                      ),
-                    ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
