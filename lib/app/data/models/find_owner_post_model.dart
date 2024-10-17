@@ -95,6 +95,8 @@ class FindOwnerPost {
     );
   }
 
+  int? get adoptionPostId => null;
+
   Map<String, dynamic> toJson() {
     return {
       'find_owner_post_id': findOwnerPostId,
