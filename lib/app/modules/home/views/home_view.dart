@@ -14,6 +14,29 @@ import 'package:newlife_app/app/modules/postPet/controllers/post_pet_controller.
 
 import '../controllers/home_controller.dart';
 
+class _StickyHeaderDelegate extends SliverPersistentHeaderDelegate {
+  final Widget child;
+  final double height;
+
+  _StickyHeaderDelegate({required this.child, required this.height});
+
+  @override
+  double get minExtent => height;
+  @override
+  double get maxExtent => height;
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return child;
+  }
+
+  @override
+  bool shouldRebuild(_StickyHeaderDelegate oldDelegate) {
+    return oldDelegate.height != height || oldDelegate.child != child;
+  }
+}
+
 class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
   @override
@@ -45,15 +68,19 @@ class HomeView extends GetView<HomeController> {
                           _buildRecommendedSection(),
                           _buildNewArrivalsSection(),
                           SizedBox(height: 2),
-                          _buildCategorySelector(controller),
                         ],
                       ),
                     ),
                   ),
+                  SliverPersistentHeader(
+                    pinned: true,
+                    delegate: _StickyHeaderDelegate(
+                      height: 55,
+                      child: _buildCategorySelector(controller),
+                    ),
+                  ),
                   SliverPadding(
-                    padding: EdgeInsets.only(
-                        bottom:
-                            1), // Add padding to account for BottomNavigationBar
+                    padding: EdgeInsets.only(bottom: 1),
                     sliver: SliverToBoxAdapter(
                       child: Container(
                         color: Color.fromARGB(255, 242, 242, 242),
