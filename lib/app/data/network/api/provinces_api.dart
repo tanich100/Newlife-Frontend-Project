@@ -10,17 +10,18 @@ class ProvinceApi {
   Future<List<Province>> getAllProvinces() async {
     try {
       final response = await _apiService.get(AppUrl.provinces);
-      print('API Response: ${response.data}');
+      // print('API Response: ${response.data}');
 
       if (response.data is List) {
         List<Province> provinces = (response.data as List)
             .map((json) => Province.fromJson(json))
             .toList();
 
-        print('Parsed provinces:');
-        provinces.forEach((province) {
-          print('Province: ${province.toJson()}');
-        });
+        // print('Parsed provinces:');
+        // provinces.forEach((province) {
+        //   print('Province: ${province.toJson()}');
+        // }
+        // );
 
         return provinces;
       } else {
@@ -35,11 +36,11 @@ class ProvinceApi {
   Future<Province> getProvince(int provinceId) async {
     try {
       final response = await _apiService.get('${AppUrl.provinces}/$provinceId');
-      print('API Response: ${response.data}');
+      // print('API Response: ${response.data}');
 
       if (response.data is Map<String, dynamic>) {
         Province province = Province.fromJson(response.data);
-        print('Parsed province: ${province.toJson()}');
+        // print('Parsed province: ${province.toJson()}');
         return province;
       } else {
         throw Exception('Invalid data format received from API');
