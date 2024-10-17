@@ -83,7 +83,8 @@ class AdoptView extends GetView<RegisterController> {
                   ],
                 ),
                 SizedBox(height: 16),
-                _buildTextField('ประเภทที่อยู่อาศัย(ตึก/ อพาร์ทเม้นท์/ คอนโด)',
+                _buildTextField(
+                    'ประเภทที่อยู่อาศัย (บ้าน / คอนโด / อพาร์ทเมนท์)',
                     controller.typeOfResidenceController),
                 SizedBox(height: 16),
                 _buildTextField('เวลาว่างต่อวัน (ชั่วโมง)',

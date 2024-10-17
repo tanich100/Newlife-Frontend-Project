@@ -22,7 +22,9 @@ class _ImageSearchState extends State<ImageSearch> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Center(child: const Text('ค้นหาด้วยภาพ')),
       ),
       body: Column(
@@ -120,7 +122,9 @@ class _ImageSearchState extends State<ImageSearch> {
               }),
             ),
           ),
-          SizedBox(height: 30,)
+          SizedBox(
+            height: 30,
+          )
         ],
       ),
     );

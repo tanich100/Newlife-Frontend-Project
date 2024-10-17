@@ -11,7 +11,9 @@ class LoginView extends GetView<LoginController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(backgroundColor: Colors.white,),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+      ),
       body: ListView(
         padding: EdgeInsets.all(16.0),
         children: [
@@ -65,7 +67,7 @@ class LoginView extends GetView<LoginController> {
                   ),
                 ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(255, 232, 212, 36),
+                  backgroundColor: Color(0xfffdcf09),
                   foregroundColor: Colors.black,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(13),
