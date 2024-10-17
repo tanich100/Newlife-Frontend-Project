@@ -52,19 +52,26 @@ class PetsDisplay extends StatelessWidget {
               onTap: () => controller.navigateToPetDetail(pet),
               child: Card(
                 color: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
                 child: Column(
                   children: [
                     Expanded(
-                      child: imageUrl != null
-                          ? Image.network(
-                              '${AppUrl.baseUrl}${pet is AdoptionPost ? AppUrl.adoptionPosts : AppUrl.findOwnerPosts}$imageEndpoint/$imageUrl',
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                                print('Error loading image: $error');
-                                return Icon(Icons.error);
-                              },
-                            )
-                          : Icon(Icons.pets, size: 50),
+                      child: ClipRRect(
+                        borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(10)),
+                        child: imageUrl != null
+                            ? Image.network(
+                                '${AppUrl.baseUrl}${pet is AdoptionPost ? AppUrl.adoptionPosts : AppUrl.findOwnerPosts}$imageEndpoint/$imageUrl',
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  print('Error loading image: $error');
+                                  return Icon(Icons.error);
+                                },
+                              )
+                            : Icon(Icons.pets, size: 50),
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
