@@ -20,7 +20,9 @@ class PetsDisplay extends StatelessWidget {
           crossAxisSpacing: 8.0,
           mainAxisSpacing: 8.0,
         ),
-        itemCount: controller.filteredAllPets.length, // แสดงจาก filteredAllPets
+        itemCount: controller.filteredAllPets.length,
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
           final pet = controller.filteredAllPets[index];
           String name = '';
