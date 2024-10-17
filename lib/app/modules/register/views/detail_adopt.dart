@@ -96,7 +96,7 @@ class AdoptView extends GetView<RegisterController> {
                   width: 300,
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: () => Get.to(() => InterestView()),
+                    onPressed: _validateAndSubmit,
                     style: ButtonStyle(
                       backgroundColor: WidgetStateProperty.all(Colors.yellow),
                       foregroundColor: WidgetStateProperty.all(Colors.black),
@@ -118,6 +118,36 @@ class AdoptView extends GetView<RegisterController> {
       ),
     );
   }
+
+  void _validateAndSubmit() {
+    // Check if all fields are filled
+    if (controller.nameController.text.isEmpty ||
+        controller.lastNameController.text.isEmpty ||
+        controller.telController.text.isEmpty ||
+        controller.genderController.text.isEmpty ||
+        controller.ageController.text.isEmpty ||
+        controller.careerController.text.isEmpty ||
+        controller.monthlyIncomeController.text.isEmpty ||
+        controller.numOfFamMembersController.text.isEmpty ||
+        controller.addressController.text.isEmpty ||
+        controller.sizeOfResidenceController.text.isEmpty ||
+        controller.typeOfResidenceController.text.isEmpty ||
+        controller.freeTimePerDayController.text.isEmpty ||
+        controller.reasonForAdoptionController.text.isEmpty) {
+      // Show snackbar if validation fails
+      Get.snackbar(
+        'ข้อผิดพลาด',
+        'กรุณากรอกข้อมูลให้ครบทุกช่อง',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.redAccent,
+        colorText: Colors.white,
+      );
+    } else {
+      // Navigate to InterestView if validation passes
+      Get.to(() => InterestView());
+    }
+  }
+
 
   Widget _buildTextField(String label, TextEditingController controller) {
     return TextFormField(
