@@ -22,7 +22,6 @@ class _NotificationViewState extends State<NotificationView>
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
-    // เรียกข้อมูลสำหรับแท็บแรก
     notificationController.getPostOwnerNotifications();
   }
 
@@ -56,26 +55,21 @@ class _NotificationViewState extends State<NotificationView>
               labelPadding: EdgeInsets.symmetric(horizontal: 16),
               onTap: (index) async {
                 switch (index) {
-                  case 0: // แท็บ "แจ้งเตือน"
+                  case 0:
                     await notificationController.getRequesterNotifications();
                     break;
-                  case 1: // แท็บ "คำขอรับเลี้ยง"
-                    await notificationController
-                        .getPostOwnerNotifications(); // ตรวจสอบให้แน่ใจว่าเรียก API ถูกต้อง
+                  case 1:
+                    await notificationController.getPostOwnerNotifications();
                     break;
-                  case 2: // แท็บ "การขอรับเลี้ยง"
+                  case 2:
                     await notificationController.getRequesterNotifications();
                     break;
                 }
               },
               tabs: [
                 Tab(text: 'แจ้งเตือน'),
-                Tab(
-                    text:
-                        'คำขอรับเลี้ยง'), // ควรดึง getPostOwnerNotifications()
-                Tab(
-                    text:
-                        'การขอรับเลี้ยง'), // ควรดึง getRequesterNotifications()
+                Tab(text: 'คำขอรับเลี้ยง'),
+                Tab(text: 'การขอรับเลี้ยง'),
               ],
             ),
           ),
@@ -102,35 +96,26 @@ class _NotificationViewState extends State<NotificationView>
   }
 
   Widget _buildTabContent(String tabName) {
-    if (tabName == 'แจ้งเตือน' ||
-        tabName == 'คำขอรับเลี้ยง' ||
-        tabName == 'การขอรับเลี้ยง') {
-      return Obx(
-        () => ListView.builder(
-          itemCount: notificationController.notificationRequests.length,
-          itemBuilder: (context, index) {
-            final notification =
-                notificationController.notificationRequests[index];
-            print(
-                "Displaying notification: ${notification.description}"); // ตรวจสอบข้อมูลที่แสดงในแต่ละการ์ด
-            return _buildNotificationCard(
-              name: notification.description,
-              requestId: notification.requestId,
-            );
-          },
-        ),
-      );
-    } else {
-      return Center(child: Text('No content available'));
-    }
+    return Obx(
+      () => ListView.builder(
+        itemCount: notificationController.notificationRequests.length,
+        itemBuilder: (context, index) {
+          final notification =
+              notificationController.notificationRequests[index];
+          return _buildNotificationCard(
+            name: notification.description,
+            requestId: notification.requestId,
+          );
+        },
+      ),
+    );
   }
 
   Widget _buildNotificationCard(
       {required String name, required int requestId}) {
     return GestureDetector(
       onTap: () {
-        // เมื่อกด "ดูข้อมูลเพิ่มเติม" ให้ไปยังหน้าแสดงรายละเอียดคำขอ
-        Get.to(() => DetailAdoption(requestId: requestId));
+        Get.to(() => DetailAdoption(notiAdopReqId: requestId));
       },
       child: Card(
         color: Color(0xFFFFD54F),

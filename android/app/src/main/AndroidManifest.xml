@@ -4,11 +4,11 @@
         <uses-feature android:name="android.hardware.camera" />
         <uses-feature android:name="android.hardware.camera.autofocus" />
 
-    <application
+  <application
         android:label="newlife_app"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
-
+        android:icon="@mipmap/ic_launcher"
+        <!-- android:enableOnBackInvokedCallback="true"> -->
 
         <activity
             android:name=".MainActivity"

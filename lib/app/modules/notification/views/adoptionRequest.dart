@@ -46,15 +46,18 @@
 //               ),
 //             ),
 //             SizedBox(height: 16),
-//             ...adoptionRequests.map((userData) => Column(
-//               children: [
-//                 AdopterCard(
-//                   userData: userData,
-//                   onTap: () => Get.to(() => DetailAdoption(userData: userData)),
-//                 ),
-//                 SizedBox(height: 16),
-//               ],
-//             )).toList(),
+//             ...adoptionRequests
+//                 .map((userData) => Column(
+//                       children: [
+//                         AdopterCard(
+//                           userData: userData,
+//                           onTap: () =>
+//                               Get.to(() => DetailAdoption(userData: userData)),
+//                         ),
+//                         SizedBox(height: 16),
+//                       ],
+//                     ))
+//                 .toList(),
 //           ],
 //         ),
 //       ),
@@ -75,41 +78,43 @@
 //   @override
 //   Widget build(BuildContext context) {
 //     return GestureDetector(
-//       onTap: onTap,
-//        child:  Card(
-//       elevation: 2,
-//       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-//       child: Padding(
-//         padding: EdgeInsets.all(16),
-//         child: Row(
-//           children: [
-//             Text(
-//               '${userData.rank}',
-//               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+//         onTap: onTap,
+//         child: Card(
+//           elevation: 2,
+//           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+//           child: Padding(
+//             padding: EdgeInsets.all(16),
+//             child: Row(
+//               children: [
+//                 Text(
+//                   '${userData.rank}',
+//                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+//                 ),
+//                 SizedBox(width: 16),
+//                 CircleAvatar(
+//                   radius: 30,
+//                   backgroundImage:
+//                       NetworkImage('https://via.placeholder.com/60'),
+//                 ),
+//                 SizedBox(width: 16),
+//                 Expanded(
+//                   child: Column(
+//                     crossAxisAlignment: CrossAxisAlignment.start,
+//                     children: [
+//                       Text(userData.name,
+//                           style: TextStyle(
+//                               fontSize: 18, fontWeight: FontWeight.bold)),
+//                       SizedBox(height: 4),
+//                       Text('รายได้ต่อเดือน : ${userData.income}'),
+//                       Text('เวลาว่างต่อวัน : ${userData.free_time_per_day}'),
+//                       Text(
+//                           'ประเภทที่อยู่อาศัย : ${userData.type_of_residence}'),
+//                     ],
+//                   ),
+//                 ),
+//               ],
 //             ),
-//             SizedBox(width: 16),
-//             CircleAvatar(
-//               radius: 30,
-//               backgroundImage: NetworkImage('https://via.placeholder.com/60'),
-//             ),
-//             SizedBox(width: 16),
-//             Expanded(
-//               child: Column(
-//                 crossAxisAlignment: CrossAxisAlignment.start,
-//                 children: [
-//                   Text(userData.name,
-//                       style:
-//                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-//                   SizedBox(height: 4),
-//                   Text('รายได้ต่อเดือน : ${userData.income}'),
-//                   Text('เวลาว่างต่อวัน : ${userData.free_time_per_day}'),
-//                   Text('ประเภทที่อยู่อาศัย : ${userData.type_of_residence}'),
-//                 ],
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     ));
+//           ),
+//         ));
 //   }
 // }

@@ -39,6 +39,18 @@ class NotificationAdoptionRequestApi {
     }
   }
 
+  // ฟังก์ชันดึงรายละเอียดคำขอรับเลี้ยง
+  Future<dynamic> fetchAdoptionRequestDetails(int requestId) async {
+    try {
+      final response = await _apiService
+          .get('/NotificationAdoptionRequest/request-details/$requestId');
+      return response.data;
+    } catch (e) {
+      print('Error fetching request details: $e');
+      rethrow;
+    }
+  }
+
 // ฟังก์ชันสำหรับการอนุมัติคำขอรับเลี้ยง
   Future<void> approveAdoptionRequest(int notiAdopReqId) async {
     try {
