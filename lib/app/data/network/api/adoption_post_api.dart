@@ -51,13 +51,21 @@ class AdoptionPostApi {
       });
       final response = await _apiImageService.post('${AppUrl.searchByImage}',
           data: formData);
-          
-      print(response.data);
       return List<int>.from(response.data);
+    } catch (e) {
+      print('Error in getPost: $e');
+      rethrow;
+    }
+  }
 
-//     [
-//     59
-// ]
+  // Future<List<int>> searchByText(String text) async {
+  void searchByText(String text) async {
+    try {
+      final response = await _apiImageService.get(
+        '${AppUrl.searchByText + text}',
+      );
+      print(response);
+      // return List<int>.from(response.data);
     } catch (e) {
       print('Error in getPost: $e');
       rethrow;

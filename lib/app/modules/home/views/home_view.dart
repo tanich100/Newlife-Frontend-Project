@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:newlife_app/app/data/network/api/adoption_post_api.dart';
 import 'package:newlife_app/app/modules/home/views/camera_button.dart';
 import 'package:newlife_app/app/modules/home/views/category_selector.dart';
 import 'package:newlife_app/app/modules/home/views/custom_bottom_nav_bar.dart';
@@ -38,12 +39,13 @@ class _StickyHeaderDelegate extends SliverPersistentHeaderDelegate {
 }
 
 class HomeView extends GetView<HomeController> {
-  const HomeView({super.key});
+  HomeView({super.key});
+  String _searchText = '';
   @override
   Widget build(BuildContext context) {
     final HomeController controller = Get.find<HomeController>();
     final PostPetController postPetController = Get.put(PostPetController());
-
+    AdoptionPostApi adoptionPostApi = AdoptionPostApi();
     return Scaffold(
       backgroundColor: Color(0xfffdcf09),
       body: SafeArea(
@@ -94,13 +96,15 @@ class HomeView extends GetView<HomeController> {
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     postPetController.getNewPet();
-      //   },
-      //   child: Icon(Icons.refresh), // Icon for the button
-      //   tooltip: 'Refresh Pets', // Tooltip for accessibility
-      // ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // print(_searchText);
+          // postPetController.getNewPet();
+          adoptionPostApi.searchByText(_searchText);
+        },
+        child: Icon(Icons.search), 
+        tooltip: 'Search Pets',
+      ),
       bottomNavigationBar: CustomBottomNavBar(),
     );
   }
@@ -126,7 +130,13 @@ class HomeView extends GetView<HomeController> {
                       children: [
                         FilterDropdown(),
                         Expanded(
-                          child: TextSearch(),
+                          child: TextSearch(
+                            onTextChanged: (value) {
+                              print('Text field value: $value');
+
+                              _searchText = value;
+                            },
+                          ),
                         ),
                       ],
                     ),

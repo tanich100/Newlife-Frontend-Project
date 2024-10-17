@@ -42,4 +42,5 @@ class AppUrl {
   // ImageSearchUrl
   static const String imageServiceBaseUrl = "http://74.48.71.139:3000";
   static const String searchByImage = "/posts/search-by-image";
+  static const String searchByText = "/posts/search-TF-IDF?text=";
 }
