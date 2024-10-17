@@ -1,10 +1,14 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:newlife_app/app/data/network/services/api_service.dart';
 import '../../../constants/app_url.dart';
 import '../../models/adoption_post_model.dart';
+import '../services/api_image_service.dart';
 
 class AdoptionPostApi {
   final ApiService _apiService = ApiService();
+  final ApiImageService _apiImageService = ApiImageService();
 
   Future<List<AdoptionPost>> getPosts() async {
     try {
@@ -32,6 +36,28 @@ class AdoptionPostApi {
       final response =
           await _apiService.get('${AppUrl.adoptionPosts}/GetPost/$id');
       return AdoptionPost.fromJson(response.data);
+    } catch (e) {
+      print('Error in getPost: $e');
+      rethrow;
+    }
+  }
+
+  Future<List<int>> searchByImage(String petType, File imageFile) async {
+    try {
+      final formData = FormData.fromMap({
+        'petType': petType,
+        'file': await MultipartFile.fromFile(
+            imageFile.path), // Convert file to MultipartFile
+      });
+      final response = await _apiImageService.post('${AppUrl.searchByImage}',
+          data: formData);
+          
+      print(response.data);
+      return List<int>.from(response.data);
+
+//     [
+//     59
+// ]
     } catch (e) {
       print('Error in getPost: $e');
       rethrow;
