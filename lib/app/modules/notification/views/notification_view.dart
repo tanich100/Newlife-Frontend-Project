@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newlife_app/app/modules/home/views/custom_bottom_nav_bar.dart';
 import 'package:newlife_app/app/modules/notification/controllers/notification_controller.dart';
-import 'package:newlife_app/app/modules/notification/views/adoptionRequest.dart';
 import 'package:newlife_app/app/modules/notification/views/detail_adoption.dart';
 
 class NotificationView extends StatefulWidget {
@@ -22,7 +21,8 @@ class _NotificationViewState extends State<NotificationView>
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
-    notificationController.getPostOwnerNotifications();
+    notificationController
+        .getPostOwnerNotifications(); // Default to Post Owner Notifications
   }
 
   @override
@@ -55,17 +55,16 @@ class _NotificationViewState extends State<NotificationView>
               labelPadding: EdgeInsets.symmetric(horizontal: 16),
               onTap: (index) async {
                 switch (index) {
-                  case 0:
+                  case 0: // All Notifications
                     await notificationController.getRequesterNotifications();
                     break;
-                  case 1:
+                  case 1: // Post Owner Notifications
                     await notificationController.getPostOwnerNotifications();
                     break;
-                  case 2:
+                  case 2: // Requester Notifications
                     await notificationController.getRequesterNotifications();
                     break;
                 }
-                Get.delete<NotificationController>();
               },
               tabs: [
                 Tab(text: 'แจ้งเตือน'),
@@ -83,20 +82,24 @@ class _NotificationViewState extends State<NotificationView>
               child: TabBarView(
                 controller: _tabController,
                 children: [
-                  _buildTabContent('แจ้งเตือน'),
-                  _buildTabContent('คำขอรับเลี้ยง'),
-                  _buildTabContent('การขอรับเลี้ยง'),
+                  _buildTabContent('แจ้งเตือน',
+                      isTappable: false), // Cannot tap on this tab
+                  _buildTabContent('คำขอรับเลี้ยง',
+                      isTappable: true), // Can tap on this tab
+                  _buildTabContent('การขอรับเลี้ยง',
+                      isTappable: false), // Cannot tap on this tab
                 ],
               ),
             ),
           ],
         ),
       ),
-      bottomNavigationBar: CustomBottomNavBar(),
+      bottomNavigationBar:
+          CustomBottomNavBar(), // Bring back the custom bottom navbar
     );
   }
 
-  Widget _buildTabContent(String tabName) {
+  Widget _buildTabContent(String tabName, {required bool isTappable}) {
     return Obx(
       () => ListView.builder(
         itemCount: notificationController.notificationRequests.length,
@@ -106,19 +109,24 @@ class _NotificationViewState extends State<NotificationView>
           return _buildNotificationCard(
             name: notification.description,
             requestId: notification.requestId,
+            isTappable: isTappable,
           );
         },
       ),
     );
   }
 
-  Widget _buildNotificationCard(
-      {required String name, required int requestId}) {
+  Widget _buildNotificationCard({
+    required String name,
+    required int requestId,
+    required bool isTappable,
+  }) {
     return GestureDetector(
-      onTap: () {
-        Get.delete<NotificationController>();
-        Get.to(() => DetailAdoption(notiAdopReqId: requestId));
-      },
+      onTap: isTappable
+          ? () {
+              Get.to(() => DetailAdoption(notiAdopReqId: requestId));
+            }
+          : null,
       child: Card(
         color: Color(0xFFFFD54F),
         margin: EdgeInsets.symmetric(vertical: 8),
@@ -128,19 +136,17 @@ class _NotificationViewState extends State<NotificationView>
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              CircleAvatar(
-                backgroundImage: NetworkImage(
-                    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtn6gKRJ_Cx6faDUAqA5w_zyG_8jSwLe1ygA&s'),
-                radius: 35,
-              ),
+              Icon(Icons.notifications, size: 35),
               SizedBox(width: 16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(name,
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold)),
+                    Text(
+                      name,
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
                     SizedBox(height: 4),
                     Text('ดูข้อมูลเพิ่มเติม'),
                   ],

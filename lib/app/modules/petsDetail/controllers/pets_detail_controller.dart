@@ -89,6 +89,7 @@ class PetsDetailController extends GetxController {
           snackPosition: SnackPosition.BOTTOM,
           duration: Duration(seconds: 3),
         );
+        enableRequestButton();
         return;
       }
 
@@ -107,14 +108,22 @@ class PetsDetailController extends GetxController {
         duration: Duration(seconds: 3),
       );
     } on DioError catch (e) {
-      // ถ้ามี error 409 ให้แสดงข้อความคำขอซ้ำ
-      if (e.response?.statusCode == 409) {
+      if (e.response?.statusCode == 400) {
+        Get.snackbar(
+          'ข้อผิดพลาด',
+          'คำขอไม่ถูกต้อง: ${e.response?.data['message'] ?? 'กรุณาตรวจสอบข้อมูลและลองใหม่'}',
+          snackPosition: SnackPosition.BOTTOM,
+          duration: Duration(seconds: 3),
+        );
+      } else if (e.response?.statusCode == 409) {
         Get.snackbar(
           'คำขอซ้ำ',
           'คุณได้ส่งคำขออุปการะสำหรับโพสต์นี้ไปแล้ว กรุณารอการตอบกลับจากเจ้าของโพสต์',
           snackPosition: SnackPosition.BOTTOM,
           duration: Duration(seconds: 3),
         );
+      } else {
+        Get.snackbar('Error', 'ไม่สามารถส่งคำขออุปการะได้: ${e.message}');
       }
     } catch (e) {
       Get.snackbar('Error', 'ไม่สามารถส่งคำขออุปการะได้');

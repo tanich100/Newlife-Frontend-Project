@@ -78,11 +78,13 @@ class DetailAdoption extends StatelessWidget {
                         'รายได้ต่อเดือน: ${user['monthlyIncome'] ?? 'ไม่ระบุ'}'),
                     SizedBox(height: 16),
 
-                    // เพิ่มปุ่มสำหรับการอนุมัติและไม่อนุมัติ
+                    // ปุ่มอนุมัติและไม่อนุมัติ แสดงเป็นไอคอนติ้กถูกและกากบาท
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        ElevatedButton(
+                        IconButton(
+                          icon: Icon(Icons.check, color: Colors.green),
+                          iconSize: 40,
                           onPressed: () {
                             showDialog(
                               context: context,
@@ -98,13 +100,11 @@ class DetailAdoption extends StatelessWidget {
                               },
                             );
                           },
-                          child: Text('อนุมัติ'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green,
-                          ),
                         ),
                         SizedBox(width: 20),
-                        ElevatedButton(
+                        IconButton(
+                          icon: Icon(Icons.close, color: Colors.red),
+                          iconSize: 40,
                           onPressed: () {
                             showDialog(
                               context: context,
@@ -120,10 +120,6 @@ class DetailAdoption extends StatelessWidget {
                               },
                             );
                           },
-                          child: Text('ไม่อนุมัติ'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red,
-                          ),
                         ),
                       ],
                     ),

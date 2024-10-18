@@ -13,11 +13,10 @@ class ConfirmDialogView extends StatelessWidget {
     return AlertDialog(
       backgroundColor: Color.fromARGB(255, 226, 184, 31),
       title: Center(child: Text('ยืนยันการอุปการะ')),
-      content: Text('คุณต้องการอุปการะน้อง$petName ใช่หรือไม่?'),
+      content: Text('คุณต้องการอุปการะน้อง $petName ใช่หรือไม่?'),
       actions: [
         Row(
-          mainAxisAlignment:
-              MainAxisAlignment.spaceBetween, // จัดให้อยู่ตรงกลางแนวนอน
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
               width: 85,
@@ -33,7 +32,7 @@ class ConfirmDialogView extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(width: 8), // ระยะห่างระหว่างปุ่ม
+            SizedBox(width: 8),
             Container(
               width: 85,
               decoration: BoxDecoration(
@@ -44,10 +43,7 @@ class ConfirmDialogView extends StatelessWidget {
                     child:
                         Text('ยืนยัน', style: TextStyle(color: Colors.black)),
                     onPressed: controller.isRequestButtonEnabled.value
-                        ? () {
-                            Get.back(result: true);
-                            controller.sendAdoptionRequest();
-                          }
+                        ? () => Get.back(result: true)
                         : null,
                     style: TextButton.styleFrom(
                       padding:

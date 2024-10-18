@@ -274,7 +274,17 @@ class PetsDetailView extends GetView<PetsDetailController> {
               'ต้องการอุปการะ',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-            onPressed: () => _showConfirmDialog(),
+            onPressed: () async {
+              final result = await Get.dialog<bool>(
+                ConfirmDialogView(
+                    petName: controller.post.value.name ?? 'สัตว์เลี้ยง'),
+                barrierDismissible: false,
+              );
+
+              if (result == true) {
+                controller.sendAdoptionRequest();
+              }
+            },
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color.fromARGB(255, 244, 204, 47),
               foregroundColor: Colors.black,
