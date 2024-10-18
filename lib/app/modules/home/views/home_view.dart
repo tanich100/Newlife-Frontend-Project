@@ -11,6 +11,7 @@ import 'package:newlife_app/app/modules/home/views/new_arrivals.dart';
 import 'package:newlife_app/app/modules/home/views/pets_display.dart';
 import 'package:newlife_app/app/modules/home/views/recommended_pets.dart';
 import 'package:newlife_app/app/modules/home/views/text_search.dart';
+import 'package:newlife_app/app/modules/postPet/controllers/image_search_controller.dart';
 import 'package:newlife_app/app/modules/postPet/controllers/post_pet_controller.dart';
 
 import '../controllers/home_controller.dart';
@@ -45,6 +46,7 @@ class HomeView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     final HomeController controller = Get.find<HomeController>();
     final PostPetController postPetController = Get.put(PostPetController());
+    final ImageSearchController imageSearchController = ImageSearchController();
     AdoptionPostApi adoptionPostApi = AdoptionPostApi();
     return Scaffold(
       backgroundColor: Color(0xfffdcf09),
@@ -97,10 +99,11 @@ class HomeView extends GetView<HomeController> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
+        onPressed: () async {
           // print(_searchText);
           // postPetController.getNewPet();
-          adoptionPostApi.searchByText(_searchText);
+          // adoptionPostApi.searchByText(_searchText);
+          await imageSearchController.getTextSearch(_searchText);
         },
         child: Icon(Icons.search), 
         tooltip: 'Search Pets',
