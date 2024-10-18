@@ -12,6 +12,10 @@ class SubDistrictController extends GetxController {
   RxList<SubDistrictModel> filteredSubDistricts = <SubDistrictModel>[].obs;
   // RxBool isLoadingSubDistricts = true.obs;
 
+  int? get selectedSubDistrictId => selectedSubDistrict.value?.id;
+  String get selectedSubDistrictName => selectedSubDistrict.value?.nameTh ?? '';
+  int? get selectedZipCode => selectedSubDistrict.value?.zipCode;
+
   Future<void> fetchSubDistricts() async {
     try {
       // isLoadingSubDistricts.value = true;

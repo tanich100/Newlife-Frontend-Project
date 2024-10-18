@@ -8,6 +8,8 @@ import 'package:newlife_app/app/data/network/api/adoption_post_api.dart';
 import 'package:newlife_app/app/modules/postPet/views/new_post_detail_page.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../../../data/models/post_model.dart';
+
 class PostPetController extends GetxController {
   AdoptionPostApi adoptionPostApi = AdoptionPostApi();
   final adoptionPostList = <AdoptionPost>[].obs;
@@ -41,15 +43,15 @@ class PostPetController extends GetxController {
     super.onClose();
   }
 
-  Future<void> createAdoptionPost(AdoptionPost post) async {
-    try {
-      final createdPost = await _adoptionPostApi.createPost(post);
-      Get.snackbar('สำเร็จ', 'บันทึกข้อมูลเรียบร้อยแล้ว');
-      // Additional logic after successful creation
-    } catch (e) {
-      Get.snackbar('ผิดพลาด', 'ไม่สามารถบันทึกข้อมูลได้: $e');
-    }
-  }
+  // Future<void> createAdoptionPost(AdoptionPost post) async {
+  //   try {
+  //     final createdPost = await _adoptionPostApi.createPost(post);
+  //     Get.snackbar('สำเร็จ', 'บันทึกข้อมูลเรียบร้อยแล้ว');
+  //     // Additional logic after successful creation
+  //   } catch (e) {
+  //     Get.snackbar('ผิดพลาด', 'ไม่สามารถบันทึกข้อมูลได้: $e');
+  //   }
+  // }
 
   // ฟังก์ชันเลือกภาพ
   Future<void> pickImages() async {
@@ -103,47 +105,71 @@ class PostPetController extends GetxController {
     }
   }
 
- Future<void> uploadImages() async {
-  for (var image in selectedImages) {
-    // แทนที่จะอัปโหลดให้พิมพ์ชื่อไฟล์
-    print('Image selected for upload: ${image.path}');
+//  Future<void> uploadImages() async {
+//   for (var image in selectedImages) {
+//     // แทนที่จะอัปโหลดให้พิมพ์ชื่อไฟล์
+//     print('Image selected for upload: ${image.path}');
     
-    // คุณสามารถจำลองการอัปโหลดโดยการหน่วงเวลา
-    await Future.delayed(Duration(seconds: 1));
-  }
-  print('All images processed successfully');
+//     // คุณสามารถจำลองการอัปโหลดโดยการหน่วงเวลา
+//     await Future.delayed(Duration(seconds: 1));
+//   }
+//   print('All images processed successfully');
   
-  // หลังจากการประมวลผลเสร็จสิ้น คุณอาจต้องการล้างรายการภาพที่เลือก
-  selectedImages.clear();
+//   // หลังจากการประมวลผลเสร็จสิ้น คุณอาจต้องการล้างรายการภาพที่เลือก
+//   selectedImages.clear();
+// }
+
+Future<void> createAdoptionPost(AdoptionPost post) async {
+  try {
+    final createdPost = await _adoptionPostApi.createPost(post);
+    await uploadImages(createdPost.adoptionPostId!);
+    Get.snackbar('สำเร็จ', 'บันทึกข้อมูลและอัปโหลดรูปภาพเรียบร้อยแล้ว');
+    Get.offAllNamed('/profile', arguments: createdPost);
+  } catch (e) {
+    Get.snackbar('ผิดพลาด', 'ไม่สามารถบันทึกข้อมูลได้: $e');
+  }
+}
+
+Future<void> uploadImages(int postId) async {
+  try {
+    for (var image in selectedImages) {
+      await _adoptionPostApi.uploadImage(postId, image);
+    }
+    print('All images uploaded successfully');
+    selectedImages.clear();
+  } catch (e) {
+    print('Error uploading images: $e');
+    Get.snackbar('ข้อผิดพลาด', 'ไม่สามารถอัปโหลดรูปภาพได้: $e');
+  }
 }
 
 
   Future<void> createPost(String postType, String description, String phoneNumber, String lineId) async {
-    // ตรวจสอบว่ามีภาพหรือไม่
-    if (selectedImages.isEmpty) {
-      Get.snackbar('ข้อผิดพลาด', 'กรุณาเพิ่มรูปภาพก่อนดำเนินการต่อ');
-      return;
-    }
-
-    // // สร้าง PostModel โดยใช้ข้อมูลที่ส่งมา
-    // PostModel postData = PostModel(
-    //   postType: postType,
-    //   description: description,
-    //   phoneNumber: phoneNumber,
-    //   lineId: lineId,
-    //   images: selectedImages.toList(),
-    // );
-
-  //   // แสดงผลข้อมูลโพสต์ในคอนโซล (สำหรับทดสอบ)
-  //   print('Creating new adoption post: ${postData.toString()}');
-
-  //   // เปลี่ยนไปยังหน้าถัดไป
-  //   Get.to(() => NewPostPageDetail(selectedPost: postData));
-
-  //   // ล้าง selectedImages หลังจากสร้างโพสต์
-  //   selectedImages.clear();
-  // }
+  if (selectedImages.isEmpty) {
+    Get.snackbar('ข้อผิดพลาด', 'กรุณาเพิ่มรูปภาพก่อนดำเนินการต่อ');
+    return;
   }
+
+   AdoptionPost postData = AdoptionPost(
+    postStatus: postType,
+    description: description,
+    tel: phoneNumber,
+    // ไม่มีฟิลด์สำหรับ Line ID ใน AdoptionPost ดังนั้นเราจะรวมไว้ใน description
+    // description: description + '\nLine ID: ' + lineId,
+  );
+
+  print('Creating new adoption post: ${postData.toString()}');
+
+  Get.to(() => NewPostPageDetail(
+    selectedPost: postData,
+    selectedImages: selectedImages.toList(),
+  ));
+  }
+
+  
+
+
+
 
 
   // ฟังก์ชันบันทึกภาพ

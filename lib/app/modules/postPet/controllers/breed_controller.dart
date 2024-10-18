@@ -16,6 +16,8 @@ class BreedController extends GetxController {
   RxString selectedSex = ''.obs;
   RxBool isNeedAttention = false.obs;
 
+  int? get selectedBreedId => selectedBreed.value?.breedId;
+
   @override
   void onInit() {
     super.onInit();

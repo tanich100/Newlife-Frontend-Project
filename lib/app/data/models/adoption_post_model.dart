@@ -12,6 +12,7 @@ class AdoptionPost {
   String? image9;
   String? image10;
   String? name;
+  String? tel;
   int? breedId;
   int? age;
   String? sex;
@@ -41,10 +42,11 @@ class AdoptionPost {
     this.image9,
     this.image10,
     this.name,
+    this.tel,
     this.breedId,
     this.age,
     this.sex,
-    this.isNeedAttention,
+    this.isNeedAttention, 
     this.description,
     this.provinceId,
     this.districtId,
@@ -72,6 +74,7 @@ class AdoptionPost {
       image9: json['image_9'] ?? json['image9'],
       image10: json['image_10'] ?? json['image10'],
       name: json['name'],
+      tel: json['tel'],
       breedId: json['breed_id'] ?? json['breedId'],
       age: json['age'],
       sex: json['sex'],
@@ -116,6 +119,7 @@ class AdoptionPost {
       'image_9': image9,
       'image_10': image10,
       'name': name,
+      'tel': tel,
       'breed_id': breedId,
       'age': age,
       'sex': sex,

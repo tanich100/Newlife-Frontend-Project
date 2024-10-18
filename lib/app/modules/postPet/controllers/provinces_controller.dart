@@ -11,6 +11,9 @@ class ProvinceController extends GetxController {
   Rx<Province?> selectedProvince = Rx<Province?>(null);
   // RxBool isLoadingProvinces = true.obs;
 
+  int? get selectedProvinceId => selectedProvince.value?.provinceId;
+  String get selectedProvinceName => selectedProvince.value?.nameTh ?? '';
+
   Future<void> fetchProvinces() async {
     try {
       // isLoadingProvinces.value = true;

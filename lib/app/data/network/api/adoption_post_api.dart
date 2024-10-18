@@ -147,6 +147,19 @@ class AdoptionPostApi {
     }
   }
 
+  Future<void> uploadImage(int postId, File image) async {
+  try {
+    String fileName = image.path.split('/').last;
+    FormData formData = FormData.fromMap({
+      'image': await MultipartFile.fromFile(image.path, filename: fileName),
+    });
+    await _apiService.post('${AppUrl.adoptionPosts}/$postId/upload', data: formData);
+  } catch (e) {
+    print('Error uploading image: $e');
+    rethrow;
+  }
+}
+
   Future<AdoptionPost> createPost(AdoptionPost post) async {
     try {
       final response = await _apiService

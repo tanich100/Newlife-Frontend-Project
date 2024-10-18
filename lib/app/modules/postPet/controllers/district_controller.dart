@@ -10,6 +10,9 @@ class DistrictController extends GetxController {
   Rx<District?> selectedDistrict = Rx<District?>(null);
   // RxBool isLoadingDistricts = true.obs;
 
+  int? get selectedDistrictId => selectedDistrict.value?.id;
+  String get selectedDistrictName => selectedDistrict.value?.nameTh ?? '';
+
   Future<void> fetchDistricts() async {
     try {
       // isLoadingDistricts.value = true;
