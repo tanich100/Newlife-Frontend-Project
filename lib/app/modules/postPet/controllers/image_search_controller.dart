@@ -103,7 +103,10 @@ class ImageSearchController extends GetxController {
     var IdTextlist = await adoptionPostApi.searchByText(text);
     await fetchFromTextResult(IdTextlist);
     isSearchingText.value = false;
-    Get.to(ResultTextView());
+
+    Get.to(ResultTextView(), arguments: filteredAllPets);
+
+    // Get.to(ResultTextView());
   }
 
   Future<void> fetchFromTextResult(List<int> Idlist) async {

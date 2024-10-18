@@ -12,10 +12,13 @@ class _ResultTextViewState extends State<ResultTextView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
+      appBar: AppBar(
         title: const Text('ผลการค้นหาจากคำค้นหา'),
         backgroundColor: Colors.yellow,
       ),
-      body: Container(child: ResultTextWidget(),),);
+      body: Container(
+        child: ResultTextWidget(),
+      ),
+    );
   }
 }
