@@ -7,12 +7,17 @@ import 'package:newlife_app/app/data/network/api/adoption_post_api.dart';
 import 'package:newlife_app/app/data/network/api/find_owner_post_api.dart';
 import 'package:newlife_app/app/data/network/services/user_storage_service.dart';
 import 'package:newlife_app/app/modules/camera/views/result_view.dart';
+import 'package:newlife_app/app/modules/camera/views/searching_Text_view.dart';
 import 'package:newlife_app/app/modules/camera/views/searching_view.dart';
+
+import '../../camera/views/result_text_view .dart';
 
 class ImageSearchController extends GetxController {
   AdoptionPostApi adoptionPostApi = AdoptionPostApi();
   final FindOwnerPostApi findOwnerPostApi = FindOwnerPostApi();
   RxBool isSearching = false.obs;
+    RxBool isSearchingText= false.obs;
+
   RxList<dynamic> filteredAllPets = <dynamic>[].obs;
 
   Future<void> getImageSearch(String petType, File file) async {
@@ -71,9 +76,53 @@ class ImageSearchController extends GetxController {
         int? postId;
 
         if (pet is AdoptionPost) {
-          postId = pet.adoptionPostId; 
+          postId = pet.adoptionPostId;
         } else if (pet is FindOwnerPost) {
-          postId = pet.adoptionPostId; 
+          postId = pet.adoptionPostId;
+        }
+
+        // Return true if the postId is in Idlist and does not belong to the user
+        return postId != null && Idlist.contains(postId);
+      }).toList();
+
+      print('Filtered pets');
+      // print(pets);
+
+      filteredAllPets.value = pets;
+      print(filteredAllPets);
+    } catch (e) {
+      print('Error fetching or filtering posts: $e');
+    }
+  }
+
+  Future<void> getTextSearch(String text) async {
+    // เริ่มค้นหา
+    isSearchingText.value = true;
+    print(isSearchingText.value);
+    Get.to(const SearchingTextView());
+    var IdTextlist = await adoptionPostApi.searchByText(text);
+    await fetchFromTextResult(IdTextlist);
+    isSearchingText.value = false;
+    Get.to(ResultTextView());
+  }
+
+  Future<void> fetchFromTextResult(List<int> Idlist) async {
+    try {
+      List<dynamic> pets = [];
+      final adoptionPosts = await adoptionPostApi.getPosts();
+      final findOwnerPosts = await findOwnerPostApi.getPosts();
+      pets = [...adoptionPosts, ...findOwnerPosts];
+
+      final userId = UserStorageService.getUserId();
+
+      // Filter pets to include only those in the Idlist, and exclude those belonging to the user
+      pets = pets.where((pet) {
+        int? postId;
+
+        if (pet is AdoptionPost) {
+          postId = pet.adoptionPostId;
+        } else if (pet is FindOwnerPost) {
+          postId = pet.adoptionPostId;
         }
 
         // Return true if the postId is in Idlist and does not belong to the user

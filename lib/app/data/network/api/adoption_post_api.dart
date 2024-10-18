@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -59,13 +60,26 @@ class AdoptionPostApi {
   }
 
   // Future<List<int>> searchByText(String text) async {
-  void searchByText(String text) async {
+  Future<List<int>> searchByText(String text) async {
     try {
       final response = await _apiImageService.get(
         '${AppUrl.searchByText + text}',
       );
-      print(response);
-      // return List<int>.from(response.data);
+
+      // Assuming response.data is already a List<dynamic>
+      final List<dynamic> results = response.data;
+
+      // Filter results with similarity > 0 and extract the postId values
+      List<int> postIdList = results
+          .where((result) => result['similarity'] > 0)
+          .map<int>((result) => result['postId'])
+          .toList();
+
+      // Print the filtered postId list
+      print("Id");
+      print(postIdList);
+      return postIdList;
+      // Use the postIdList as needed
     } catch (e) {
       print('Error in getPost: $e');
       rethrow;
