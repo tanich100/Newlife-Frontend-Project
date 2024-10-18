@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:newlife_app/app/data/models/adoption_post_model.dart';
 import 'package:newlife_app/app/data/models/find_owner_post_model.dart';
 import 'package:newlife_app/app/constants/app_url.dart';
+import 'package:newlife_app/app/modules/home/controllers/home_controller.dart';
 
 class ResultTextWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Retrieve the data passed from the previous page using ModalRoute
-    final List<dynamic> filteredAllPets = ModalRoute.of(context)?.settings.arguments as List<dynamic>? ?? [];
+    final List<dynamic> filteredAllPets =
+        ModalRoute.of(context)?.settings.arguments as List<dynamic>? ?? [];
+    final HomeController controller = Get.find<HomeController>();
 
     return Builder(
       builder: (context) {
@@ -42,7 +46,7 @@ class ResultTextWidget extends StatelessWidget {
 
             return GestureDetector(
               onTap: () {
-                // Handle navigation or any action on pet card tap
+                controller.navigateToPetDetail(pet);
               },
               child: Card(
                 color: Colors.white,

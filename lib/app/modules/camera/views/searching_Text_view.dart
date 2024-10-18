@@ -24,11 +24,11 @@ class _SearchingTextViewState extends State<SearchingTextView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Searching View'),
-      ),
+      // appBar: AppBar(
+      //   title: const Text('Searching View'),
+      // ),
       body: Obx(() {
-        if (imageSearchController.isSearchingText.value) {
+        if (!imageSearchController.isSearchingText.value) {
           // Show loading indicator if searching
           return Center(
             child: CircularProgressIndicator(),
