@@ -1,59 +1,105 @@
+import 'package:newlife_app/app/data/models/user_update_dto.dart';
+
 class UserProfileModel {
   final int userId;
-  final String name;
-  final String lastName;
+  String name;
+  String lastName;
   final String email;
-  final String? monthlyIncome;
-  final String? freeTimePerDay;
-  final String? typeOfResidence;
-  final String? profilePic;
+  String? tel;
+  String? gender;
+  int? age;
+  String? address;
+  String? career;
+  int? numOfFamMembers;
+  bool? isHaveExperience;
+  String? sizeOfResidence;
+  String? typeOfResidence;
+  int? freeTimePerDay;
+  int? monthlyIncome;
+  String? profilePic;
 
   UserProfileModel({
     required this.userId,
     required this.name,
     required this.lastName,
-    this.monthlyIncome,
-    this.freeTimePerDay,
-    this.typeOfResidence,
     required this.email,
+    this.tel,
+    this.gender,
+    this.age,
+    this.address,
+    this.career,
+    this.numOfFamMembers,
+    this.isHaveExperience,
+    this.sizeOfResidence,
+    this.typeOfResidence,
+    this.freeTimePerDay,
+    this.monthlyIncome,
     this.profilePic,
   });
 
   factory UserProfileModel.fromJson(Map<String, dynamic> json) {
     return UserProfileModel(
-      userId: json['user_id'],
-      name: json['name'],
-      lastName: json['lastname'],
-      monthlyIncome: json['monthlyIncome'],
-      freeTimePerDay: json['freeTimePerDay'],
+      userId: json['userId'] ?? 0,
+      name: json['name'] ?? '',
+      lastName: json['lastName'] ?? '',
+      email: json['email'] ?? '',
+      tel: json['tel'],
+      gender: json['gender'],
+      age: json['age'] != null ? int.parse(json['age'].toString()) : null,
+      address: json['address'],
+      career: json['career'],
+      numOfFamMembers: json['numOfFamMembers'] != null
+          ? int.parse(json['numOfFamMembers'].toString())
+          : null,
+      isHaveExperience: json['isHaveExperience'],
+      sizeOfResidence: json['sizeOfResidence'],
       typeOfResidence: json['typeOfResidence'],
-      email: json['email'],
-      profilePic: json['profile_pic'],
+      freeTimePerDay: json['freeTimePerDay'] != null
+          ? int.parse(json['freeTimePerDay'].toString())
+          : null,
+      monthlyIncome: json['monthlyIncome'] != null
+          ? int.parse(json['monthlyIncome'].toString())
+          : null,
+      profilePic: json['profilePic'],
     );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {
-      'userId': userId,
+    return {
+      'user_id': userId,
       'name': name,
-      'lastName': lastName,
+      'lastname': lastName,
       'email': email,
+      'tel': tel,
+      'gender': gender,
+      'age': age,
+      'address': address,
+      'career': career,
+      'numOfFamMembers': numOfFamMembers,
+      'isHaveExperience': isHaveExperience,
+      'sizeOfResidence': sizeOfResidence,
+      'typeOfResidence': typeOfResidence,
+      'freeTimePerDay': freeTimePerDay,
+      'monthlyIncome': monthlyIncome,
+      'profile_pic': profilePic,
     };
+  }
 
-    // Add nullable fields only if they are not null
-    if (monthlyIncome != null) {
-      data['monthlyIncome'] = monthlyIncome;
-    }
-    if (freeTimePerDay != null) {
-      data['freeTimePerDay'] = freeTimePerDay;
-    }
-    if (typeOfResidence != null) {
-      data['typeOfResidence'] = typeOfResidence;
-    }
-    if (profilePic != null) {
-      data['profilePic'] = profilePic;
-    }
-
-    return data;
+  UserUpdateDto toUpdateDto() {
+    return UserUpdateDto(
+      name: name,
+      lastName: lastName,
+      tel: tel,
+      gender: gender,
+      age: age,
+      address: address,
+      career: career,
+      numOfFamMembers: numOfFamMembers,
+      isHaveExperience: isHaveExperience,
+      sizeOfResidence: sizeOfResidence,
+      typeOfResidence: typeOfResidence,
+      freeTimePerDay: freeTimePerDay,
+      monthlyIncome: monthlyIncome,
+    );
   }
 }

@@ -49,36 +49,26 @@ class RegisterController extends GetxController {
       isLoading.value = true;
 
       final registerModel = RegisterModel(
-        email: emailController.text,
+        email: emailController.text.trim(),
         password: passwordController.text,
         name: nameController.text,
         lastName: lastNameController.text,
         tel: telController.text,
         gender: genderController.text,
         age: int.tryParse(ageController.text) ?? 0,
-        address:
-            addressController.text.isNotEmpty ? addressController.text : null,
-        career: careerController.text.isNotEmpty ? careerController.text : null,
-        numOfFamMembers: int.tryParse(numOfFamMembersController.text) ?? 0,
-        sizeOfResidence: sizeOfResidenceController.text.isNotEmpty
-            ? sizeOfResidenceController.text
-            : null,
-        typeOfResidence: typeOfResidenceController.text.isNotEmpty
-            ? typeOfResidenceController.text
-            : null,
-        freeTimePerDay: int.tryParse(freeTimePerDayController.text) ?? 0,
-        reasonForAdoption: reasonForAdoptionController.text.isNotEmpty
-            ? reasonForAdoptionController.text
-            : null,
-        monthlyIncome: int.tryParse(monthlyIncomeController.text) ?? 0,
+        address: addressController.text,
+        career: careerController.text,
+        numOfFamMembers: int.tryParse(numOfFamMembersController.text),
+        sizeOfResidence: sizeOfResidenceController.text,
+        typeOfResidence: typeOfResidenceController.text,
+        freeTimePerDay: int.tryParse(freeTimePerDayController.text),
+        monthlyIncome: int.tryParse(monthlyIncomeController.text),
         isHaveExperience: isHaveExperience.value,
         interestedBreedIds: selectedBreedIds,
       );
 
-      final response =
-          await _userApi.register(registerModel, profilePic.value ?? null);
+      final response = await _userApi.register(registerModel, profilePic.value);
 
-      // บันทึกข้อมูลผู้ใช้ลงใน GetStorage หลังจากลงทะเบียนสำเร็จ
       UserStorageService.saveUserData(
         userId: response.userId,
         name: response.name,
@@ -89,8 +79,9 @@ class RegisterController extends GetxController {
       );
 
       Get.snackbar('Success', 'Registration successful');
-      Get.toNamed('/login');
+      Get.offAllNamed('/login');
     } catch (e) {
+      print('Error in registration: $e');
       Get.snackbar('Error', 'Registration failed: $e');
     } finally {
       isLoading.value = false;
@@ -121,11 +112,9 @@ class RegisterController extends GetxController {
     addressController.dispose();
     careerController.dispose();
     numOfFamMembersController.dispose();
-
     sizeOfResidenceController.dispose();
     typeOfResidenceController.dispose();
     freeTimePerDayController.dispose();
-    reasonForAdoptionController.dispose();
     super.onClose();
   }
 }

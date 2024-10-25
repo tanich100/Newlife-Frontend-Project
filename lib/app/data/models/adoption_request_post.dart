@@ -27,10 +27,10 @@ class AdoptionRequestModel {
 
   factory AdoptionRequestModel.fromJson(Map<String, dynamic> json) {
     return AdoptionRequestModel(
-      requestId: json['requestId'] ?? 0, // ป้องกัน null ด้วยค่า default
+      requestId: json['requestId'] ?? 0,
       userId: json['userId'],
       adoptionPostId: json['adoptionPostId'],
-      status: json['status'] ?? 'unknown', // กำหนดค่า default ถ้า null
+      status: json['status'] ?? 'unknown',
       reasonForAdoption: json['reasonForAdoption'],
       dateAdded: DateTime.parse(json['dateAdded']),
       adoptionPost: json['adoptionPost'] != null

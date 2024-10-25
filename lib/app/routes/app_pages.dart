@@ -9,6 +9,8 @@ import '../modules/camera/bindings/camera_binding.dart';
 import '../modules/camera/views/camera_view.dart';
 import '../modules/donate/bindings/donate_binding.dart';
 import '../modules/donate/views/donate_view.dart';
+import '../modules/edit_user_info/bindings/edit_user_info_binding.dart';
+import '../modules/edit_user_info/views/edit_user_info_view.dart';
 import '../modules/favorite/bindings/favorite_binding.dart';
 import '../modules/favorite/views/favorite_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -129,5 +131,10 @@ class AppPages {
         page: () => AdoptionHistoryView(),
         binding: AdoptionHistoryBinding(),
         middlewares: [AuthMiddleware()]),
+    GetPage(
+      name: _Paths.EDIT_USER_INFO,
+      page: () => EditUserInfoView(),
+      binding: EditUserInfoBinding(),
+    ),
   ];
 }

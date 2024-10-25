@@ -12,6 +12,10 @@ class ApiService {
     dio = Dio(BaseOptions(
       baseUrl: AppUrl.baseUrl,
       responseType: ResponseType.json,
+      connectTimeout: Duration(seconds: 30),
+      receiveTimeout: Duration(seconds: 30),
+      contentType: 'application/json',
+      validateStatus: (status) => status! < 500,
     ));
 
     dio.interceptors.add(InterceptorsWrapper(
@@ -41,19 +45,34 @@ class ApiService {
     };
   }
 
-  Future<Response> get(String url,
-      {Map<String, dynamic>? queryParameters}) async {
+  Future<Response> get(
+    String url, {
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+  }) async {
     try {
-      return await dio.get(url, queryParameters: queryParameters);
+      return await dio.get(
+        url,
+        queryParameters: queryParameters,
+        options: options,
+      );
     } catch (e) {
       print('GET request error: $e');
       rethrow;
     }
   }
 
-  Future<Response> post(String url, {dynamic data}) async {
+  Future<Response> post(
+    String url, {
+    dynamic data,
+    Options? options,
+  }) async {
     try {
-      return await dio.post(url, data: data);
+      return await dio.post(
+        url,
+        data: data,
+        options: options,
+      );
     } catch (e) {
       print('POST request error: $e');
       rethrow;
@@ -78,9 +97,17 @@ class ApiService {
     }
   }
 
-  Future<Response> patch(String url, {dynamic data}) async {
+  Future<Response> patch(
+    String url, {
+    dynamic data,
+    Options? options,
+  }) async {
     try {
-      return await dio.patch(url, data: data);
+      return await dio.patch(
+        url,
+        data: data,
+        options: options,
+      );
     } catch (e) {
       print('PATCH request error: $e');
       rethrow;

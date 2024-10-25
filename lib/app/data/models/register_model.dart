@@ -12,7 +12,6 @@ class RegisterModel {
   final String? sizeOfResidence;
   final String? typeOfResidence;
   final int? freeTimePerDay;
-  final String? reasonForAdoption;
   final int? monthlyIncome;
   final bool? isHaveExperience;
   final List<int> interestedBreedIds;
@@ -31,7 +30,6 @@ class RegisterModel {
     this.sizeOfResidence,
     this.typeOfResidence,
     this.freeTimePerDay,
-    this.reasonForAdoption,
     this.monthlyIncome,
     this.isHaveExperience,
     required this.interestedBreedIds,
@@ -58,7 +56,6 @@ class RegisterModel {
       sizeOfResidence: json['sizeOfResidence'] ?? '',
       typeOfResidence: json['typeOfResidence'] ?? '',
       freeTimePerDay: json['freeTimePerDay'] ?? 0,
-      reasonForAdoption: json['reasonForAdoption'] ?? '',
       interestedBreedIds: breedIds,
     );
   }
@@ -78,8 +75,6 @@ class RegisterModel {
       'SizeOfResidence': sizeOfResidence ?? '', // กำหนดค่าเริ่มต้นหากเป็น null
       'TypeOfResidence': typeOfResidence ?? '', // กำหนดค่าเริ่มต้นหากเป็น null
       'FreeTimePerDay': freeTimePerDay ?? 0,
-      'ReasonForAdoption':
-          reasonForAdoption ?? '', // กำหนดค่าเริ่มต้นหากเป็น null
       'MonthlyIncome': monthlyIncome ?? 0,
       'IsHaveExperience': isHaveExperience ?? false,
       'InterestedBreedIds': interestedBreedIds,

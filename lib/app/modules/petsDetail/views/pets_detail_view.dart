@@ -274,17 +274,7 @@ class PetsDetailView extends GetView<PetsDetailController> {
               'ต้องการอุปการะ',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-            onPressed: () async {
-              final result = await Get.dialog<bool>(
-                ConfirmDialogView(
-                    petName: controller.post.value.name ?? 'สัตว์เลี้ยง'),
-                barrierDismissible: false,
-              );
-
-              if (result == true) {
-                controller.sendAdoptionRequest();
-              }
-            },
+            onPressed: controller.goToEditUserInfoPage,
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color.fromARGB(255, 244, 204, 47),
               foregroundColor: Colors.black,
@@ -307,7 +297,7 @@ class PetsDetailView extends GetView<PetsDetailController> {
     );
 
     if (result == true) {
-      controller.sendAdoptionRequest();
+      controller.submitAdoptionRequest();
     }
   }
 }

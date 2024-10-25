@@ -1,10 +1,10 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:newlife_app/app/constants/app_url.dart';
 import 'package:newlife_app/app/data/models/login_model.dart';
 import 'package:newlife_app/app/data/models/register_model.dart';
 import 'package:newlife_app/app/data/models/user_profile_model.dart';
+import 'package:newlife_app/app/data/models/user_update_dto.dart';
 import 'package:newlife_app/app/data/network/services/api_service.dart';
 
 class UserApi {
@@ -54,16 +54,40 @@ class UserApi {
   }
 
   // User Profile get by userId
-  Future<LoginResponseModel> getUserProfile(int userId) async {
+  Future<UserProfileModel> getUserProfile(int userId) async {
     try {
-      final response = await _apiService.get('${AppUrl.user}/$userId');
-      if (response.statusCode == 200) {
-        return LoginResponseModel.fromJson(response.data);
+      final response = await _apiService.get(
+        '${AppUrl.user}/$userId',
+        options: Options(
+          responseType: ResponseType.json,
+          validateStatus: (status) => status! < 500,
+        ),
+      );
+
+      if (response.statusCode == 200 && response.data != null) {
+        return UserProfileModel.fromJson(response.data);
       } else {
-        throw Exception('Failed to load user profile');
+        throw Exception(
+            'Failed to get user details: ${response.statusMessage}');
       }
     } catch (e) {
       print('Error fetching user profile: $e');
+      rethrow;
+    }
+  }
+
+// Update User
+  Future<void> updateUser(int userId, UserUpdateDto userUpdateDto) async {
+    try {
+      await _apiService.patch(
+        '${AppUrl.user}/UpdateUser/$userId',
+        data: userUpdateDto.toJson(),
+        options: Options(
+          contentType: 'application/json',
+        ),
+      );
+    } catch (e) {
+      print('Error updating user: $e');
       rethrow;
     }
   }

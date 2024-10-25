@@ -18,6 +18,7 @@ abstract class Routes {
   static const USER = _Paths.USER;
   static const ADOPTED_HISTORY = _Paths.ADOPTED_HISTORY;
   static const ADOPTION_HISTORY = _Paths.ADOPTION_HISTORY;
+  static const EDIT_USER_INFO = _Paths.EDIT_USER_INFO;
 }
 
 abstract class _Paths {
@@ -37,4 +38,5 @@ abstract class _Paths {
   static const USER = '/user';
   static const ADOPTED_HISTORY = '/adopted-history';
   static const ADOPTION_HISTORY = '/adoption-history';
+  static const EDIT_USER_INFO = '/edit-user-info';
 }

@@ -49,10 +49,13 @@ class AdoptedHistoryController extends GetxController {
       int adoptionPostId, String reasonForAdoption) async {
     try {
       int userId = UserStorageService.getUserId() ?? 0;
+
       AdoptionRequestDto requestDto = AdoptionRequestDto(
         userId: userId,
         adoptionPostId: adoptionPostId,
         reasonForAdoption: reasonForAdoption,
+        updateUserInfo: false,
+        userUpdate: null,
       );
       await _apiService.createAdoptionRequest(requestDto);
       fetchAdoptionHistory();

@@ -90,9 +90,6 @@ class AdoptView extends GetView<RegisterController> {
                 _buildTextField('เวลาว่างต่อวัน (ชั่วโมง)',
                     controller.freeTimePerDayController),
                 SizedBox(height: 16),
-                _buildTextField('เหตุผลในการรับเลี้ยงสัตว์',
-                    controller.reasonForAdoptionController),
-                SizedBox(height: 16),
                 // เพิ่ม Checkbox สำหรับ isHaveExperience
                 Row(
                   children: [
@@ -138,32 +135,7 @@ class AdoptView extends GetView<RegisterController> {
   }
 
   void _validateAndSubmit() {
-    // Check if all fields are filled
-    if (controller.nameController.text.isEmpty ||
-        controller.lastNameController.text.isEmpty ||
-        controller.telController.text.isEmpty ||
-        controller.genderController.text.isEmpty ||
-        controller.ageController.text.isEmpty ||
-        controller.careerController.text.isEmpty ||
-        controller.monthlyIncomeController.text.isEmpty ||
-        controller.numOfFamMembersController.text.isEmpty ||
-        controller.addressController.text.isEmpty ||
-        controller.sizeOfResidenceController.text.isEmpty ||
-        controller.typeOfResidenceController.text.isEmpty ||
-        controller.freeTimePerDayController.text.isEmpty ||
-        controller.reasonForAdoptionController.text.isEmpty) {
-      // Show snackbar if validation fails
-      Get.snackbar(
-        'ข้อผิดพลาด',
-        'กรุณากรอกข้อมูลให้ครบทุกช่อง',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.redAccent,
-        colorText: Colors.white,
-      );
-    } else {
-      // Navigate to InterestView if validation passes
-      Get.to(() => InterestView());
-    }
+    Get.to(() => InterestView());
   }
 
   Widget _buildTextField(String label, TextEditingController controller) {
@@ -184,8 +156,7 @@ class AdoptView extends GetView<RegisterController> {
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide.none,
         ),
-        contentPadding: EdgeInsets.symmetric(
-            horizontal: 16, vertical: 20), // ปรับ vertical padding
+        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
       ),
       controller: controller,
     );

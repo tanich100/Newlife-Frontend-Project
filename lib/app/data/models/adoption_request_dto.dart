@@ -1,17 +1,25 @@
+import 'user_update_dto.dart';
+
 class AdoptionRequestDto {
   final int userId;
   final int adoptionPostId;
   final String reasonForAdoption;
+  final bool updateUserInfo;
+  final UserUpdateDto? userUpdate;
 
   AdoptionRequestDto({
     required this.userId,
     required this.adoptionPostId,
     required this.reasonForAdoption,
+    required this.updateUserInfo,
+    this.userUpdate,
   });
 
   Map<String, dynamic> toJson() => {
-        'userId': userId,
-        'adoptionPostId': adoptionPostId,
-        'reasonForAdoption': reasonForAdoption,
+        'UserId': userId,
+        'AdoptionPostId': adoptionPostId,
+        'ReasonForAdoption': reasonForAdoption,
+        'UpdateUserInfo': updateUserInfo,
+        'UserUpdate': userUpdate?.toJson(),
       };
 }

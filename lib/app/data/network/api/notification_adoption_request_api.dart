@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+
 import '../../../constants/app_url.dart';
 import '../../models/notification_adoption_request_model.dart';
 import '../services/api_service.dart';
@@ -40,24 +42,41 @@ class NotificationAdoptionRequestApi {
   }
 
   // ฟังก์ชันดึงรายละเอียดคำขอรับเลี้ยง
-  Future<dynamic> fetchAdoptionRequestDetails(int requestId) async {
+  Future<Map<String, dynamic>?> fetchAdoptionRequestDetails(
+      int requestId) async {
     try {
-      final response = await _apiService
-          .get('/NotificationAdoptionRequest/request-details/$requestId');
-      return response.data;
+      final response = await _apiService.get(
+          '${AppUrl.notificationAdoptionRequest}/request-details/$requestId');
+      if (response.statusCode == 200 && response.data != null) {
+        return Map<String, dynamic>.from(response.data);
+      } else {
+        print('Error status code: ${response.statusCode}');
+        print('Error response: ${response.data}');
+        return null;
+      }
     } catch (e) {
       print('Error fetching request details: $e');
-      rethrow;
+      return null;
     }
   }
 
 // ฟังก์ชันสำหรับการอนุมัติคำขอรับเลี้ยง
   Future<void> approveAdoptionRequest(int notiAdopReqId) async {
     try {
-      await _apiService.patch(
-        AppUrl.notificationAdoptionRequest + "/approve/$notiAdopReqId",
+      final response = await _apiService.patch(
+        '${AppUrl.notificationAdoptionRequest}/approve/$notiAdopReqId',
         data: {},
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          validateStatus: (status) => status! < 500,
+        ),
       );
+
+      if (response.statusCode != 200) {
+        throw Exception('Failed to approve request: ${response.statusMessage}');
+      }
     } catch (e) {
       print('Error in approve adoption request: $e');
       rethrow;
@@ -67,10 +86,19 @@ class NotificationAdoptionRequestApi {
 // ฟังก์ชันสำหรับการปฏิเสธคำขอรับเลี้ยง
   Future<void> denyAdoptionRequest(int notiAdopReqId) async {
     try {
-      await _apiService.patch(
-        AppUrl.notificationAdoptionRequest + "/deny/$notiAdopReqId",
+      final response = await _apiService.patch(
+        '${AppUrl.notificationAdoptionRequest}/deny/$notiAdopReqId',
         data: {},
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          validateStatus: (status) => status! < 500,
+        ),
       );
+      if (response.statusCode != 200) {
+        throw Exception('Failed to deny request: ${response.statusMessage}');
+      }
     } catch (e) {
       print('Error in deny adoption request: $e');
       rethrow;
