@@ -1,36 +1,76 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newlife_app/app/modules/home/controllers/home_controller.dart';
+import 'package:newlife_app/app/modules/notification/controllers/notification_controller.dart';
 
 class CustomBottomNavBar extends StatelessWidget {
+  const CustomBottomNavBar({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final HomeController controller = Get.find<HomeController>();
+    final NotificationController notificationController =
+        Get.find<NotificationController>();
 
     return BottomNavigationBar(
       currentIndex: _getCurrentIndex(controller),
-      onTap: (index) {
-        _onItemTapped(index);
-      },
-      items: const [
-        BottomNavigationBarItem(
+      onTap: _onItemTapped,
+      items: [
+        const BottomNavigationBarItem(
           icon: Icon(Icons.home),
           label: 'Home',
         ),
-        BottomNavigationBarItem(
+        const BottomNavigationBarItem(
           icon: Icon(Icons.money),
           label: 'Donate',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.notifications),
+          icon: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              const Icon(Icons.notifications),
+              Obx(() {
+                final unreadCount =
+                    notificationController.unreadNotificationCount.value;
+                if (unreadCount > 0) {
+                  return Positioned(
+                    right: -10,
+                    top: -5,
+                    child: Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: Colors.white, width: 1.5),
+                      ),
+                      constraints: const BoxConstraints(
+                        minWidth: 18,
+                        minHeight: 18,
+                      ),
+                      child: Text(
+                        unreadCount > 99 ? '99+' : unreadCount.toString(),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  );
+                }
+                return const SizedBox.shrink();
+              }),
+            ],
+          ),
           label: 'Notifications',
         ),
-        BottomNavigationBarItem(
+        const BottomNavigationBarItem(
           icon: Icon(Icons.person),
           label: 'Profile',
         ),
       ],
-      backgroundColor: Color(0xfffdcf09),
+      backgroundColor: const Color(0xfffdcf09),
       selectedItemColor: Colors.white,
       unselectedItemColor: Colors.white70,
       type: BottomNavigationBarType.fixed,
@@ -54,6 +94,12 @@ class CustomBottomNavBar extends StatelessWidget {
   }
 
   void _onItemTapped(int index) {
+    // เพิ่มการรีเฟรชข้อมูลแจ้งเตือนเมื่อกดไปที่หน้าแจ้งเตือน
+    if (index == 2) {
+      final notificationController = Get.find<NotificationController>();
+      notificationController.refreshAllNotifications();
+    }
+
     switch (index) {
       case 0:
         Get.offNamed('/home');

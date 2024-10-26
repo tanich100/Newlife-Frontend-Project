@@ -15,6 +15,7 @@ class AdoptionRequestDto {
     this.userUpdate,
   });
 
+  // toJson ถูกต้องแล้ว เพราะใช้ตัวพิมพ์ใหญ่ตรงกับ Backend
   Map<String, dynamic> toJson() => {
         'UserId': userId,
         'AdoptionPostId': adoptionPostId,

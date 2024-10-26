@@ -19,6 +19,7 @@ class EditUserInfoController extends GetxController {
   var userUpdateDto = UserUpdateDto().obs;
   final isLoading = true.obs;
 
+  // สถานะการเปิด/ปิดการแก้ไขของฟิลด์แต่ละฟิลด์
   final isNameEditable = false.obs;
   final isLastNameEditable = false.obs;
   final isTelEditable = false.obs;
@@ -41,7 +42,7 @@ class EditUserInfoController extends GetxController {
   Future<void> fetchUserDetails() async {
     try {
       isLoading.value = true;
-      final userDetails = await userApi.getUserProfile(userId);
+      final userDetails = await userApi.getUserDetaileForAdoption(userId);
       if (userDetails != null) {
         userUpdateDto.value = userDetails.toUpdateDto();
       }
@@ -62,6 +63,7 @@ class EditUserInfoController extends GetxController {
           print('Updating user with data: ${userUpdateDto.value!.toJson()}');
           await userApi.updateUser(userId, userUpdateDto.value!);
 
+          // อัพเดทข้อมูลสำเร็จ
           Get.snackbar(
             'สำเร็จ',
             'อัพเดทข้อมูลเรียบร้อยแล้ว',
@@ -69,6 +71,7 @@ class EditUserInfoController extends GetxController {
             colorText: Colors.white,
           );
 
+          // แสดง ConfirmDialog หลังจากอัปเดตข้อมูลเสร็จ
           _showConfirmDialog();
         } else {
           Get.snackbar('Error', 'ไม่พบข้อมูลผู้ใช้สำหรับอัพเดท');
@@ -87,12 +90,12 @@ class EditUserInfoController extends GetxController {
 
   void _showConfirmDialog() async {
     final result = await Get.dialog<bool>(
-      ConfirmDialogView(petName: postName),
+      ConfirmDialogView(petName: postName), // นำชื่อโพสต์มาแสดงใน Dialog
       barrierDismissible: false,
     );
 
     if (result == true) {
-      submitAdoptionRequest();
+      submitAdoptionRequest(); // เรียกฟังก์ชันเพื่อส่งคำขออุปการะ
     }
   }
 
@@ -101,15 +104,16 @@ class EditUserInfoController extends GetxController {
       final requestDto = AdoptionRequestDto(
         userId: userId,
         adoptionPostId: postId,
-        reasonForAdoption: reasonForAdoption.value,
-        updateUserInfo: true,
-        userUpdate: userUpdateDto.value,
+        reasonForAdoption: reasonForAdoption.value, // ข้อมูลเหตุผลในการอุปการะ
+        updateUserInfo: true, // บอกให้ฝั่ง Backend รู้ว่ามีการอัปเดตข้อมูล
+        userUpdate: userUpdateDto.value, // ส่งข้อมูลที่อัปเดตไปพร้อมกับ request
       );
 
       await adoptionRequestApi.createAdoptionRequest(requestDto);
 
+      // แจ้งว่าคำขออุปการะสำเร็จ
       Get.snackbar('สำเร็จ', 'ส่งคำขออุปการะเรียบร้อยแล้ว');
-      Get.back();
+      Get.back(); // กลับไปหน้าก่อนหน้า
     } catch (e) {
       Get.snackbar('Error', 'ไม่สามารถส่งคำขออุปการะได้');
     }

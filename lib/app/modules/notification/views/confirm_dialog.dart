@@ -3,44 +3,59 @@ import 'package:flutter/material.dart';
 class ConfirmDialog extends StatelessWidget {
   final String title;
   final String name;
+  final String message;
   final VoidCallback onConfirm;
 
   const ConfirmDialog({
     Key? key,
-    this.title = 'อนุมัติ ?',
+    required this.title,
     required this.name,
+    required this.message,
     required this.onConfirm,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Center(child: Text(title)),
-      content: Text('ต้องการอนุมัติให้ $name รับเลี้ยงหรือไม่'),
+      title: Center(
+        child: Text(
+          title,
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
+      content: Text(message),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
       actions: <Widget>[
         TextButton(
-          child: Text('ยกเลิก'),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Color.fromARGB(255, 250, 250, 250),
-            foregroundColor: Colors.black,
+          child: Text(
+            'ยกเลิก',
+            style: TextStyle(color: Colors.grey[800]),
+          ),
+          style: TextButton.styleFrom(
+            backgroundColor: Colors.grey[200],
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),
           ),
-          onPressed: () => Navigator.of(context).pop(false),
+          onPressed: () => Navigator.of(context).pop(),
         ),
         ElevatedButton(
-          child: Text('ยืนยัน'),
+          child: Text(
+            'ยืนยัน',
+            style: TextStyle(color: Colors.black),
+          ),
           style: ElevatedButton.styleFrom(
-            backgroundColor: Color.fromARGB(255, 234, 212, 110),
-            foregroundColor: Colors.black,
+            backgroundColor: Color(0xFFFFD54F),
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),
           ),
           onPressed: () {
-            onConfirm(); // เรียกใช้ฟังก์ชันอนุมัติ
-            Navigator.of(context).pop(true);
+            onConfirm();
           },
         ),
       ],

@@ -31,6 +31,8 @@ class EditUserInfoView extends GetView<EditUserInfoController> {
                     style:
                         TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                 SizedBox(height: 16),
+
+                // ข้อมูลส่วนตัว
                 Row(
                   children: [
                     Expanded(
@@ -89,6 +91,8 @@ class EditUserInfoView extends GetView<EditUserInfoController> {
                     userUpdate.numOfFamMembers,
                     (val) => userUpdate.numOfFamMembers = int.tryParse(val),
                     controller.isFamMembersEditable),
+
+                // Checkbox สำหรับ isHaveExperience
                 Row(
                   children: [
                     Text('มีประสบการณ์เลี้ยงสัตว์'),
@@ -119,6 +123,7 @@ class EditUserInfoView extends GetView<EditUserInfoController> {
                     userUpdate.monthlyIncome,
                     (val) => userUpdate.monthlyIncome = int.tryParse(val),
                     controller.isMonthlyIncomeEditable),
+
                 SizedBox(height: 24),
                 Text('เหตุผลในการอุปการะ',
                     style:
@@ -154,6 +159,7 @@ class EditUserInfoView extends GetView<EditUserInfoController> {
     );
   }
 
+  // สร้างฟิลด์ที่มีไอคอนแก้ไขภายใน
   Widget _buildEditableTextField(String label, String? initialValue,
       Function(String) onChanged, RxBool isEditable) {
     return Padding(
@@ -163,7 +169,7 @@ class EditUserInfoView extends GetView<EditUserInfoController> {
           Expanded(
             child: Obx(() => TextFormField(
                   initialValue: initialValue,
-                  enabled: isEditable.value,
+                  enabled: isEditable.value, // เปิดให้แก้ไขได้เมื่อกดไอคอน
                   decoration: InputDecoration(
                     labelText: label,
                     border: OutlineInputBorder(),
@@ -173,13 +179,15 @@ class EditUserInfoView extends GetView<EditUserInfoController> {
           ),
           IconButton(
             icon: Icon(Icons.edit),
-            onPressed: () => isEditable.value = !isEditable.value,
+            onPressed: () =>
+                isEditable.value = !isEditable.value, // กดเพื่อเปิด/ปิดการแก้ไข
           ),
         ],
       ),
     );
   }
 
+  // สร้างฟิลด์ตัวเลขที่มีไอคอนแก้ไขภายใน
   Widget _buildEditableNumberField(String label, int? initialValue,
       Function(String) onChanged, RxBool isEditable) {
     return Padding(

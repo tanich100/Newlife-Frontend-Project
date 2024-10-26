@@ -23,19 +23,36 @@ class NotificationAdoptionRequest {
   });
 
   factory NotificationAdoptionRequest.fromJson(Map<String, dynamic> json) {
-    return NotificationAdoptionRequest(
-      notiAdopReqId: json['notiAdopReqId'] ?? 0,
-      requestId: json['requestId'] ?? 0,
-      userId: json['userId'] ?? 0,
-      description: json['description'] ?? '',
-      isRead: json['isRead'] ?? false,
-      notiDate: DateTime.parse(json['notiDate']),
-      adoptionRequest: json['adoptionRequest'] != null
-          ? AdoptionRequestModel.fromJson(json['adoptionRequest'])
-          : null,
-      status: json['status'] as String?,
-    );
+    try {
+      return NotificationAdoptionRequest(
+        notiAdopReqId: json['notiAdopReqId'] ?? 0,
+        requestId: json['requestId'] ?? 0,
+        userId: json['userId'] ?? 0,
+        description: json['description'] ?? '',
+        isRead: json['isRead'] ?? false,
+        notiDate: DateTime.parse(json['notiDate']),
+        adoptionRequest: json['adoptionRequest'] != null
+            ? AdoptionRequestModel.fromJson(json['adoptionRequest'])
+            : null,
+        status: json['status'] as String?,
+      );
+    } catch (e) {
+      print('Error parsing NotificationAdoptionRequest: $e');
+      print('JSON data: $json');
+      rethrow;
+    }
   }
+
+  Map<String, dynamic> toJson() => {
+        'notiAdopReqId': notiAdopReqId,
+        'requestId': requestId,
+        'userId': userId,
+        'description': description,
+        'isRead': isRead,
+        'notiDate': notiDate.toIso8601String(),
+        'adoptionRequest': adoptionRequest?.toJson(),
+        'status': status,
+      };
 
   String? get postName => adoptionRequest?.adoptionPost?.name;
   String? get postImage => adoptionRequest?.adoptionPost?.image1;
