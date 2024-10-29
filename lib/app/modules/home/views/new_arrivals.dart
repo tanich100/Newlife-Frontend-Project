@@ -21,7 +21,7 @@ class NewArrivals extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: GestureDetector(
                 onTap: () {
-                  postPetController.getNewPet(); // Fetch new pets on tap
+                  Get.toNamed('/pets-detail', arguments: {'pet': pet});
                 },
                 child: Card(
                   color: Color(0xfffdcf09),
