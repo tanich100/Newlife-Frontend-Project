@@ -259,12 +259,9 @@ class _NotificationViewState extends State<NotificationView>
     void onCardTap() async {
       await controller.markNotificationAsRead(notification);
 
-      // สำหรับ PostOwner notifications
       if (isTappable && !isHandled) {
         Get.to(() => DetailAdoption(notiAdopReqId: notification.notiAdopReqId));
-      }
-      // สำหรับ Requester notifications ที่มีสถานะ accepted หรือ declined
-      else if (tabType == TabType.myRequests ||
+      } else if (tabType == TabType.myRequests ||
           (tabType == TabType.notification && !isTappable && isHandled)) {
         controller.showNotificationDetails(notification);
       }
@@ -323,20 +320,25 @@ class _NotificationViewState extends State<NotificationView>
                               ),
                             ],
                             SizedBox(height: 4),
-                            Text(
-                              _formatDate(notification.notiDate),
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey[600],
-                              ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  _formatDate(notification.notiDate),
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.grey[600],
+                                  ),
+                                ),
+                                if (notification.status != null)
+                                  _buildStatusIndicator(notification.status!),
+                              ],
                             ),
                           ],
                         ),
                       ),
                     ],
                   ),
-                  if (notification.status != null)
-                    _buildStatusIndicator(notification.status!),
                   if (isTappable && !isHandled) _buildTapIndicator(),
                 ],
               ),
@@ -421,19 +423,22 @@ class _NotificationViewState extends State<NotificationView>
   Widget _buildStatusIndicator(String status) {
     return Padding(
       padding: EdgeInsets.only(top: 12),
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-        decoration: BoxDecoration(
-          color: status == 'accepted'
-              ? Colors.green.withOpacity(0.1)
-              : Colors.red.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Text(
-          status == 'accepted' ? 'อนุมัติแล้ว' : 'ปฏิเสธแล้ว',
-          style: TextStyle(
-            color: status == 'accepted' ? Colors.green : Colors.red,
-            fontWeight: FontWeight.w500,
+      child: Align(
+        alignment: Alignment.centerRight,
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          decoration: BoxDecoration(
+            color: status == 'accepted'
+                ? Colors.green.withOpacity(0.1)
+                : Colors.red.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Text(
+            status == 'accepted' ? 'อนุมัติแล้ว' : 'ปฏิเสธแล้ว',
+            style: TextStyle(
+              color: status == 'accepted' ? Colors.green : Colors.red,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ),
       ),
@@ -443,12 +448,14 @@ class _NotificationViewState extends State<NotificationView>
   Widget _buildTapIndicator() {
     return Padding(
       padding: EdgeInsets.only(top: 12),
-      child: Text(
-        'แตะเพื่อดูรายละเอียด',
-        style: TextStyle(
-          fontSize: 12,
-          color: Colors.grey[700],
-          fontStyle: FontStyle.italic,
+      child: Align(
+        alignment: Alignment.centerRight,
+        child: Text(
+          'ดูรายละเอียดเพิ่มเติม',
+          style: TextStyle(
+              fontSize: 14,
+              color: Colors.grey[700],
+              fontWeight: FontWeight.w500),
         ),
       ),
     );
