@@ -48,16 +48,15 @@ class NotificationAdoptionRequestApi {
           '${AppUrl.notificationAdoptionRequest}/request-details/$requestId');
 
       if (response.statusCode == 200 && response.data != null) {
-        print('API Response data: ${response.data}'); // เพิ่ม debug print
+        print('API Response data: ${response.data}');
 
-        // แปลงข้อมูลให้เป็น camelCase
         var data = Map<String, dynamic>.from(response.data);
         if (data.containsKey('ReasonForAdoption')) {
           data['reasonForAdoption'] = data['ReasonForAdoption'];
           data.remove('ReasonForAdoption');
         }
 
-        print('Transformed data: $data'); // เพิ่ม debug print
+        print('Transformed data: $data');
         return data;
       } else {
         print('Error status code: ${response.statusCode}');

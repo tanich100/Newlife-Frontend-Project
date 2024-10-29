@@ -25,7 +25,6 @@ class NotificationPetDetailsView extends GetView<NotificationController> {
           return Center(child: CircularProgressIndicator());
         }
 
-        // Extract post details from either adoptionPost or adoptionRequest
         final postName = notification.adoptionPost?['name'] ??
             notification.adoptionRequest?.adoptionPost?.name ??
             'สัตว์เลี้ยง';

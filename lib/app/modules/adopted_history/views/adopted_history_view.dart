@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:newlife_app/app/constants/app_url.dart';
 import 'package:newlife_app/app/data/models/adoption_request_post.dart';
 import '../controllers/adopted_history_controller.dart';
 
@@ -67,13 +68,38 @@ class AdoptedHistoryView extends GetView<AdoptedHistoryController> {
   }
 
   Widget _buildRequestList(String tabStatus) {
-    return ListView.builder(
-      padding: EdgeInsets.all(16),
-      itemCount: controller.getFilteredRequests(tabStatus).length,
-      itemBuilder: (context, index) {
-        final request = controller.getFilteredRequests(tabStatus)[index];
-        return _buildRequestCard(request);
-      },
+    final filteredRequests = controller.getFilteredRequests(tabStatus);
+
+    if (filteredRequests.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.history, size: 64, color: Colors.grey),
+            SizedBox(height: 16),
+            Text(
+              'ไม่มีประวัติการขอรับเลี้ยงในสถานะ${_getStatusText(tabStatus)}',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey[600],
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return RefreshIndicator(
+      onRefresh: controller.fetchAdoptionHistory,
+      child: ListView.builder(
+        padding: EdgeInsets.all(5),
+        itemCount: filteredRequests.length,
+        itemBuilder: (context, index) {
+          final request = filteredRequests[index];
+          return _buildRequestCard(request);
+        },
+      ),
     );
   }
 
@@ -86,38 +112,74 @@ class AdoptedHistoryView extends GetView<AdoptedHistoryController> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CircleAvatar(
-              backgroundImage: request.adoptionPost?.image1 != null
-                  ? NetworkImage(request.adoptionPost!.image1!)
-                  : AssetImage('assets/default_image.png') as ImageProvider,
-              radius: 30,
+            ClipRRect(
+              borderRadius: BorderRadius.circular(30),
+              child: Container(
+                width: 60,
+                height: 60,
+                child: request.adoptionPost?.image1 != null
+                    ? Image.network(
+                        '${AppUrl.baseUrl}/AdoptionPost/getImage/${request.adoptionPost!.image1}',
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          print('Error loading image: $error');
+                          return Icon(Icons.pets, size: 30, color: Colors.grey);
+                        },
+                      )
+                    : Icon(Icons.pets,
+                        size: 30,
+                        color: const Color.fromARGB(255, 255, 255, 255)),
+              ),
             ),
             SizedBox(width: 16),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // ตรวจสอบก่อนใช้ name และ age
-                  Text(
-                    '${request.adoptionPost?.name ?? 'Unknown'} (${request.adoptionPost?.age ?? 'Unknown'})',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                      'สายพันธุ์ ${request.adoptionPost?.breedId ?? 'Unknown'}'),
-                  Text('เหตุผล ${request.reasonForAdoption ?? 'ไม่ระบุ'}'),
+                  if (request.adoptionPost?.name != null)
+                    Text(
+                      '${request.adoptionPost!.name} (${request.adoptionPost!.age} เดือน)',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.black,
+                      ),
+                    ),
+                  if (request.adoptionPost?.breedId != null)
+                    Text(
+                      'สายพันธุ์: American Short Hair',
+                      style: TextStyle(color: Colors.black87),
+                    ),
+                  if (request.reasonForAdoption.isNotEmpty)
+                    Text(
+                      'เหตุผล: ${request.reasonForAdoption}',
+                      style: TextStyle(color: Colors.black87),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                 ],
               ),
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text(request.dateAdded.toString().substring(0, 10)),
                 Text(
-                  _getStatusText(request.status),
-                  style: TextStyle(
-                    color: request.status == 'accepted'
-                        ? Colors.green
-                        : const Color.fromARGB(255, 235, 44, 44),
+                  _formatDate(request.dateAdded),
+                  style: TextStyle(fontSize: 12, color: Colors.black87),
+                ),
+                SizedBox(height: 4),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: _getStatusColor(request.status),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text(
+                    _getStatusText(request.status),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ],
@@ -126,6 +188,25 @@ class AdoptedHistoryView extends GetView<AdoptedHistoryController> {
         ),
       ),
     );
+  }
+
+  String _formatDate(DateTime date) {
+    return '${date.day}/${date.month}/${date.year}';
+  }
+
+  Color _getStatusColor(String status) {
+    switch (status.toLowerCase()) {
+      case 'waiting':
+        return const Color.fromARGB(255, 243, 185, 99);
+      case 'accepted':
+        return const Color.fromARGB(255, 136, 193, 138);
+      case 'declined':
+        return const Color.fromARGB(255, 213, 123, 117);
+      case 'cancelled':
+        return Colors.grey;
+      default:
+        return Colors.grey;
+    }
   }
 
   String _getStatusText(String status) {

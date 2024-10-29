@@ -29,23 +29,25 @@ class AdoptionRequestModel {
 
   factory AdoptionRequestModel.fromJson(Map<String, dynamic> json) {
     try {
+      print('Parsing json: $json'); // Debug print
+
+      // แก้การแปลงข้อมูลให้ตรงกับ JSON ที่ได้รับ
       return AdoptionRequestModel(
-        requestId: json['RequestId'] ?? 0,
-        adoptionPostId: json['AdoptionPostId'] ?? 0,
-        userId: json['UserId'] ?? 0,
-        status: json['Status'] ?? '',
-        reasonForAdoption: json['ReasonForAdoption'] ?? '',
+        requestId: json['requestId'] ?? 0,
+        adoptionPostId: json['adoptionPost']?['adoptionPostId'] ?? 0,
+        userId: json['userId'] ?? 0,
+        status: (json['status'] as String?)?.toLowerCase() ?? '',
+        reasonForAdoption: json['reasonForAdoption'] ?? '',
         dateAdded: DateTime.parse(
-            json['DateAdded'] ?? DateTime.now().toIso8601String()),
-        adoptionPost: json['AdoptionPost'] != null
-            ? AdoptionPost.fromJson(json['AdoptionPost'])
+            json['dateAdded'] ?? DateTime.now().toIso8601String()),
+        adoptionPost: json['adoptionPost'] != null
+            ? AdoptionPost.fromJson(
+                json['adoptionPost'] as Map<String, dynamic>)
             : null,
-        user: json['User'] != null
-            ? UserProfileModel.fromJson(json['User'])
-            : null,
-        notifications: json['Notifications'] != null
-            ? (json['Notifications'] as List)
-                .map((n) => NotificationAdoptionRequest.fromJson(n))
+        notifications: json['notifications'] != null
+            ? (json['notifications'] as List)
+                .map((n) => NotificationAdoptionRequest.fromJson(
+                    n as Map<String, dynamic>))
                 .toList()
             : null,
       );

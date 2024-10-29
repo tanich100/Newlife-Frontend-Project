@@ -135,45 +135,14 @@ class NotificationController extends GetxController {
     try {
       isLoading.value = true;
 
-      List<NotificationAdoptionRequest> notificationsToMark = [];
-
-      // รวบรวมรายการแจ้งเตือนที่จะ mark as read ตาม tab ปัจจุบัน
-      switch (currentTab.value) {
-        case 0:
-        case 2:
-          notificationsToMark =
-              requesterNotifications.where((n) => !n.isRead).toList();
-          break;
-        case 1:
-          notificationsToMark =
-              postOwnerNotifications.where((n) => !n.isRead).toList();
-          break;
-      }
+      var notificationsToMark =
+          requesterNotifications.where((n) => !n.isRead).toList();
 
       for (var notification in notificationsToMark) {
         await _notificationApi.markAsRead(notification.notiAdopReqId);
       }
 
-      if (currentTab.value == 0 || currentTab.value == 2) {
-        // อัพเดทเฉพาะ requester notifications
-        final userId = UserStorageService.getUserId();
-        if (userId != null) {
-          final notifications =
-              await _notificationApi.getRequesterNotifications(userId);
-          requesterNotifications.value =
-              notifications.where((n) => !n.isRead).toList();
-        }
-      } else {
-        final userId = UserStorageService.getUserId();
-        if (userId != null) {
-          final notifications =
-              await _notificationApi.getPostOwnerNotifications(userId);
-          postOwnerNotifications.value =
-              notifications.where((n) => !n.isRead).toList();
-        }
-      }
-
-      // อัพเดทจำนวนแจ้งเตือนที่ยังไม่ได้อ่าน
+      await getRequesterNotifications();
       updateUnreadCount();
     } catch (e) {
       print('Error clearing notifications: $e');
