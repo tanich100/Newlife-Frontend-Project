@@ -1,3 +1,4 @@
+import 'package:newlife_app/app/data/models/adoption_post_model.dart';
 import 'package:newlife_app/app/data/models/adoption_request_post.dart';
 import 'package:newlife_app/app/data/models/user_profile_model.dart';
 
@@ -10,6 +11,7 @@ class NotificationAdoptionRequest {
   final DateTime notiDate;
   final AdoptionRequestModel? adoptionRequest;
   final String? status;
+  final Map<String, dynamic>? adoptionPost;
 
   NotificationAdoptionRequest({
     required this.notiAdopReqId,
@@ -20,6 +22,7 @@ class NotificationAdoptionRequest {
     required this.notiDate,
     this.adoptionRequest,
     this.status,
+    this.adoptionPost,
   });
 
   factory NotificationAdoptionRequest.fromJson(Map<String, dynamic> json) {
@@ -35,6 +38,7 @@ class NotificationAdoptionRequest {
             ? AdoptionRequestModel.fromJson(json['adoptionRequest'])
             : null,
         status: json['status'] as String?,
+        adoptionPost: json['adoptionPost'] as Map<String, dynamic>?,
       );
     } catch (e) {
       print('Error parsing NotificationAdoptionRequest: $e');
@@ -52,11 +56,14 @@ class NotificationAdoptionRequest {
         'notiDate': notiDate.toIso8601String(),
         'adoptionRequest': adoptionRequest?.toJson(),
         'status': status,
+        'adoptionPost': adoptionPost,
       };
 
-  String? get postName => adoptionRequest?.adoptionPost?.name;
-  String? get postImage => adoptionRequest?.adoptionPost?.image1;
-  String? get reasonForAdoption => adoptionRequest?.reasonForAdoption;
+//postName & postImage ดึงข้อมูลได้จาก adoptionPost
+  String? get postName =>
+      adoptionPost?['name'] ?? adoptionRequest?.adoptionPost?.name;
+  String? get postImage =>
+      adoptionPost?['image1'] ?? adoptionRequest?.adoptionPost?.image1;
 
   UserProfileModel? get requestingUser => adoptionRequest?.user;
   String? get userName => requestingUser?.name;

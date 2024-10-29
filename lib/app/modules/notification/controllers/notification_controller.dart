@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:newlife_app/app/data/models/adoption_post_model.dart';
 import 'package:newlife_app/app/data/models/notification_adoption_request_model.dart';
 import 'package:newlife_app/app/data/network/api/notification_adoption_request_api.dart';
 import 'package:newlife_app/app/data/network/services/user_storage_service.dart';
+import 'package:newlife_app/app/modules/notification/views/notification_pet_details_view.dart';
+import 'package:newlife_app/app/modules/notification/views/notification_view.dart';
 
 class NotificationController extends GetxController {
   final NotificationAdoptionRequestApi _notificationApi =
@@ -17,12 +20,32 @@ class NotificationController extends GetxController {
 
   RxInt unreadNotificationCount = 0.obs;
 
+  final Rx<NotificationAdoptionRequest?> selectedNotification =
+      Rx<NotificationAdoptionRequest?>(null);
+
   @override
   void onInit() {
     super.onInit();
-    getPostOwnerNotifications();
-    getRequesterNotifications();
     initializeNotifications();
+  }
+
+  Future<void> showNotificationDetails(
+      NotificationAdoptionRequest notification) async {
+    try {
+      print('Selected notification: ${notification.toJson()}');
+      print('Adoption post data: ${notification.adoptionPost}');
+      print('Post name: ${notification.postName}');
+      print('Post image: ${notification.postImage}');
+
+      if (notification.adoptionPost == null) {
+        return;
+      }
+
+      selectedNotification.value = notification;
+      Get.to(() => NotificationPetDetailsView());
+    } catch (e) {
+      print('Error showing notification details: $e');
+    }
   }
 
   RxList<NotificationAdoptionRequest> get combinedNotifications =>

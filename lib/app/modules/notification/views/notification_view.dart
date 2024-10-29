@@ -257,9 +257,16 @@ class _NotificationViewState extends State<NotificationView>
         notification.status == 'accepted' || notification.status == 'declined';
 
     void onCardTap() async {
+      await controller.markNotificationAsRead(notification);
+
+      // สำหรับ PostOwner notifications
       if (isTappable && !isHandled) {
-        await controller.markNotificationAsRead(notification);
         Get.to(() => DetailAdoption(notiAdopReqId: notification.notiAdopReqId));
+      }
+      // สำหรับ Requester notifications ที่มีสถานะ accepted หรือ declined
+      else if (tabType == TabType.myRequests ||
+          (tabType == TabType.notification && !isTappable && isHandled)) {
+        controller.showNotificationDetails(notification);
       }
     }
 
