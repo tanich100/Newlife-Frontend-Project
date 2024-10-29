@@ -54,27 +54,27 @@ class UserApi {
   }
 
   // User Profile get by userId
-  // Future<UserProfileModel> getUserProfile(int userId) async {
-  //   try {
-  //     final response = await _apiService.get(
-  //       '${AppUrl.user}/$userId',
-  //       options: Options(
-  //         responseType: ResponseType.json,
-  //         validateStatus: (status) => status! < 500,
-  //       ),
-  //     );
+  Future<UserProfileModel> getUserProfile(int userId) async {
+    try {
+      final response = await _apiService.get(
+        '${AppUrl.user}/$userId',
+        options: Options(
+          responseType: ResponseType.json,
+          validateStatus: (status) => status! < 500,
+        ),
+      );
 
-  //     if (response.statusCode == 200 && response.data != null) {
-  //       return UserProfileModel.fromJson(response.data);
-  //     } else {
-  //       throw Exception(
-  //           'Failed to get user details: ${response.statusMessage}');
-  //     }
-  //   } catch (e) {
-  //     print('Error fetching user profile: $e');
-  //     rethrow;
-  //   }
-  // }
+      if (response.statusCode == 200 && response.data != null) {
+        return UserProfileModel.fromJson(response.data);
+      } else {
+        throw Exception(
+            'Failed to get user details: ${response.statusMessage}');
+      }
+    } catch (e) {
+      print('Error fetching user profile: $e');
+      rethrow;
+    }
+  }
 
   Future<UserProfileModel> getUserDetaileForAdoption(int userId) async {
     try {

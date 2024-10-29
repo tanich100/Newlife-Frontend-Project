@@ -48,11 +48,14 @@ class HomeController extends GetxController
       List<dynamic> pets = [];
       final adoptionPosts = await adoptionPostApi.getPosts();
       final findOwnerPosts = await findOwnerPostApi.getPosts();
-      pets = [...adoptionPosts, ...findOwnerPosts];
+
+      pets = [
+        ...adoptionPosts.where((post) => post.adoptionStatus != "complete"),
+        ...findOwnerPosts
+      ];
 
       final userId = UserStorageService.getUserId();
 
-      // กรองโพสต์ที่เป็นของตัวเองออก
       if (userId != null) {
         pets = pets.where((pet) {
           if (pet is AdoptionPost) {
@@ -67,7 +70,7 @@ class HomeController extends GetxController
       filteredAllPets.value = pets;
 
       print(
-          'Fetched ${filteredAllPets.length} total pets excluding user\'s own posts');
+          'Fetched ${filteredAllPets.length} total pets excluding user\'s own posts and completed posts');
     } catch (e) {
       print('Error fetching pets: $e');
     }
@@ -80,13 +83,14 @@ class HomeController extends GetxController
         List<AdoptionPost> recommendedPosts =
             await adoptionPostApi.getRecommendedPosts(userId);
 
-        // กรองโพสต์ที่เป็นของตัวเองออก
-        recommendedPosts =
-            recommendedPosts.where((post) => post.userId != userId).toList();
+        recommendedPosts = recommendedPosts
+            .where((post) =>
+                post.userId != userId && post.adoptionStatus != "complete")
+            .toList();
 
-        recommendedPets.value = recommendedPosts;
+        this.recommendedPets.value = recommendedPosts;
         print(
-            'Fetched ${recommendedPets.length} recommended pets excluding user\'s own posts');
+            'Fetched ${recommendedPets.length} recommended pets excluding user\'s own posts and completed posts');
       }
     } catch (e) {
       print('Error fetching recommended pets: $e');
@@ -100,18 +104,27 @@ class HomeController extends GetxController
       if (selectedCategory.value == 'สุนัข') {
         final adoptionDogs = await adoptionPostApi.getDogPosts();
         final findOwnerDogs = await findOwnerPostApi.getDogPosts();
-        pets = [...adoptionDogs, ...findOwnerDogs];
+        pets = [
+          ...adoptionDogs.where((post) => post.adoptionStatus != "complete"),
+          ...findOwnerDogs
+        ];
       } else if (selectedCategory.value == 'แมว') {
         final adoptionCats = await adoptionPostApi.getCatPosts();
         final findOwnerCats = await findOwnerPostApi.getCatPosts();
-        pets = [...adoptionCats, ...findOwnerCats];
+        pets = [
+          ...adoptionCats.where((post) => post.adoptionStatus != "complete"),
+          ...findOwnerCats
+        ];
       } else if (selectedCategory.value == 'สัตว์ดูแลพิเศษ') {
         pets = await adoptionPostApi.getSpecialCarePosts();
+        pets = pets.where((post) => post.adoptionStatus != "complete").toList();
       } else {
-        // เรียกข้อมูลทั้งหมดจาก API
         final adoptionPosts = await adoptionPostApi.getPosts();
         final findOwnerPosts = await findOwnerPostApi.getPosts();
-        pets = [...adoptionPosts, ...findOwnerPosts];
+        pets = [
+          ...adoptionPosts.where((post) => post.adoptionStatus != "complete"),
+          ...findOwnerPosts
+        ];
       }
 
       filteredAllPets.value = pets; // อัปเดตข้อมูลที่กรองแล้ว

@@ -43,7 +43,7 @@ class EditUserInfoController extends GetxController {
   Future<void> fetchUserDetails() async {
     try {
       isLoading.value = true;
-      final userDetails = await userApi.getUserDetaileForAdoption(userId);
+      final userDetails = await userApi.getUserProfile(userId);
       if (userDetails != null) {
         userUpdateDto.value = userDetails.toUpdateDto();
       }
