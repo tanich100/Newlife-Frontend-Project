@@ -32,6 +32,7 @@ class EditUserInfoController extends GetxController {
   final isTypeOfResidenceEditable = false.obs;
   final isFreeTimeEditable = false.obs;
   final isMonthlyIncomeEditable = false.obs;
+  final isHaveExperienceEditable = false.obs;
 
   @override
   void onInit() {
@@ -59,22 +60,48 @@ class EditUserInfoController extends GetxController {
       if (formKey.currentState?.validate() ?? false) {
         formKey.currentState?.save();
 
-        if (userUpdateDto.value != null) {
-          print('Updating user with data: ${userUpdateDto.value!.toJson()}');
-          await userApi.updateUser(userId, userUpdateDto.value!);
+        // แสดง Dialog ยืนยันการแก้ไขข้อมูล
+        final confirm = await Get.dialog<bool>(
+          AlertDialog(
+            backgroundColor: const Color.fromARGB(255, 226, 184, 31),
+            title: Center(child: Text('ยืนยันข้อมูล')),
+            content: Text('คุณต้องการยืนยันข้อมูลการอุปการะใช่หรือไม่?'),
+            actions: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: 85,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.white,
+                    ),
+                    child: TextButton(
+                      child:
+                          Text('ยกเลิก', style: TextStyle(color: Colors.black)),
+                      onPressed: () => Get.back(result: false),
+                    ),
+                  ),
+                  Container(
+                    width: 85,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.white,
+                    ),
+                    child: TextButton(
+                      child:
+                          Text('ยืนยัน', style: TextStyle(color: Colors.black)),
+                      onPressed: () => Get.back(result: true),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
 
-          // อัพเดทข้อมูลสำเร็จ
-          Get.snackbar(
-            'สำเร็จ',
-            'อัพเดทข้อมูลเรียบร้อยแล้ว',
-            backgroundColor: Colors.green,
-            colorText: Colors.white,
-          );
-
-          // แสดง ConfirmDialog หลังจากอัปเดตข้อมูลเสร็จ
-          _showConfirmDialog();
-        } else {
-          Get.snackbar('Error', 'ไม่พบข้อมูลผู้ใช้สำหรับอัพเดท');
+        if (confirm == true) {
+          await submitAdoptionRequest();
         }
       }
     } catch (e) {
@@ -88,32 +115,47 @@ class EditUserInfoController extends GetxController {
     }
   }
 
-  void _showConfirmDialog() async {
-    final result = await Get.dialog<bool>(
-      ConfirmDialogView(petName: postName), // นำชื่อโพสต์มาแสดงใน Dialog
-      barrierDismissible: false,
-    );
-
-    if (result == true) {
-      submitAdoptionRequest(); // เรียกฟังก์ชันเพื่อส่งคำขออุปการะ
-    }
-  }
-
-  void submitAdoptionRequest() async {
+  Future<void> submitAdoptionRequest() async {
     try {
+      // สร้างคำขออุปการะ
       final requestDto = AdoptionRequestDto(
         userId: userId,
         adoptionPostId: postId,
-        reasonForAdoption: reasonForAdoption.value, // ข้อมูลเหตุผลในการอุปการะ
-        updateUserInfo: true, // บอกให้ฝั่ง Backend รู้ว่ามีการอัปเดตข้อมูล
-        userUpdate: userUpdateDto.value, // ส่งข้อมูลที่อัปเดตไปพร้อมกับ request
+        reasonForAdoption: reasonForAdoption.value,
+        updateUserInfo: true,
+        userUpdate: userUpdateDto.value,
       );
 
       await adoptionRequestApi.createAdoptionRequest(requestDto);
 
-      // แจ้งว่าคำขออุปการะสำเร็จ
-      Get.snackbar('สำเร็จ', 'ส่งคำขออุปการะเรียบร้อยแล้ว');
-      Get.back(); // กลับไปหน้าก่อนหน้า
+      // แสดง Dialog แจ้งสถานะการอุปการะ
+      await Get.dialog(
+        AlertDialog(
+          backgroundColor: const Color.fromARGB(255, 226, 184, 31),
+          title: Center(child: Text('แจ้งสถานะการอุปการะ')),
+          content: Text(
+            'คุณได้ทำการอุปการะน้อง $postName สำเร็จแล้ว\nโปรดรอการอนุมัติจากเจ้าของโพสต์',
+            textAlign: TextAlign.center,
+          ),
+          actions: [
+            Center(
+              child: Container(
+                width: 85,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.white,
+                ),
+                child: TextButton(
+                  child: Text('ตกลง', style: TextStyle(color: Colors.black)),
+                  onPressed: () {
+                    Get.until((route) => route.isFirst); // กลับไปหน้า Home
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
     } catch (e) {
       Get.snackbar('Error', 'ไม่สามารถส่งคำขออุปการะได้');
     }

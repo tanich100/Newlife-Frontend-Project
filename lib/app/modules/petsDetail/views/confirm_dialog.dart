@@ -38,8 +38,7 @@ class ConfirmDialogView extends StatelessWidget {
               child: TextButton(
                 child:
                     const Text('ยืนยัน', style: TextStyle(color: Colors.black)),
-                onPressed: () =>
-                    Get.back(result: true), // ส่งค่าว่า "ยืนยัน" กลับไป
+                onPressed: () => Get.back(result: true),
               ),
             ),
           ],

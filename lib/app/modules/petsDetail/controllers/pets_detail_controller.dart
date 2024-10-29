@@ -112,7 +112,6 @@ class PetsDetailController extends GetxController {
         return;
       }
 
-      // ตรวจสอบการขออุปการะซ้ำ
       final hasDuplicateRequest =
           await checkDuplicateRequest(userId, post.value.adoptionPostId);
       if (hasDuplicateRequest) {

@@ -28,35 +28,40 @@ class ConfirmDialog extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       actions: <Widget>[
-        TextButton(
-          child: Text(
-            'ยกเลิก',
-            style: TextStyle(color: Colors.grey[800]),
-          ),
-          style: TextButton.styleFrom(
-            backgroundColor: Colors.grey[200],
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            TextButton(
+              child: Text(
+                'ยกเลิก',
+                style: TextStyle(color: Colors.grey[800]),
+              ),
+              style: TextButton.styleFrom(
+                backgroundColor: Colors.grey[200],
+                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 8),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              onPressed: () => Navigator.of(context).pop(),
             ),
-          ),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        ElevatedButton(
-          child: Text(
-            'ยืนยัน',
-            style: TextStyle(color: Colors.black),
-          ),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFFFFD54F),
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+            ElevatedButton(
+              child: Text(
+                'ยืนยัน',
+                style: TextStyle(color: Colors.black),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFFFFD54F),
+                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 8),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              onPressed: () {
+                onConfirm();
+              },
             ),
-          ),
-          onPressed: () {
-            onConfirm();
-          },
+          ],
         ),
       ],
     );

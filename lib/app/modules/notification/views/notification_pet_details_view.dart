@@ -93,7 +93,9 @@ class NotificationPetDetailsView extends GetView<NotificationController> {
         Icon(
           isApproved ? Icons.check_circle : Icons.cancel,
           size: 60,
-          color: isApproved ? Colors.green : Colors.red,
+          color: isApproved
+              ? const Color.fromARGB(255, 102, 174, 104)
+              : Colors.red,
         ),
         SizedBox(height: 16),
         Text(

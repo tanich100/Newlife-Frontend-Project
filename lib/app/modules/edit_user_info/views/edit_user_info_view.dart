@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:newlife_app/app/data/models/user_update_dto.dart';
 import '../controllers/edit_user_info_controller.dart';
 
 class EditUserInfoView extends GetView<EditUserInfoController> {
@@ -92,17 +93,8 @@ class EditUserInfoView extends GetView<EditUserInfoController> {
                     (val) => userUpdate.numOfFamMembers = int.tryParse(val),
                     controller.isFamMembersEditable),
 
-                // Checkbox สำหรับ isHaveExperience
-                Row(
-                  children: [
-                    Text('มีประสบการณ์เลี้ยงสัตว์'),
-                    Checkbox(
-                      value: userUpdate.isHaveExperience ?? false,
-                      onChanged: (value) =>
-                          userUpdate.isHaveExperience = value ?? false,
-                    ),
-                  ],
-                ),
+                _buildExperienceField(
+                    userUpdate, controller.isHaveExperienceEditable),
                 _buildEditableTextField(
                     'ขนาดที่อยู่อาศัย',
                     userUpdate.sizeOfResidence,
@@ -159,59 +151,205 @@ class EditUserInfoView extends GetView<EditUserInfoController> {
     );
   }
 
-  // สร้างฟิลด์ที่มีไอคอนแก้ไขภายใน
-  Widget _buildEditableTextField(String label, String? initialValue,
-      Function(String) onChanged, RxBool isEditable) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: 16),
-      child: Row(
-        children: [
-          Expanded(
-            child: Obx(() => TextFormField(
-                  initialValue: initialValue,
-                  enabled: isEditable.value, // เปิดให้แก้ไขได้เมื่อกดไอคอน
-                  decoration: InputDecoration(
-                    labelText: label,
-                    border: OutlineInputBorder(),
+  Widget _buildExperienceField(UserUpdateDto userUpdate, RxBool isEditable) {
+    final currentValue = (userUpdate.isHaveExperience ?? false).obs;
+
+    return Obx(() {
+      return Padding(
+        padding: EdgeInsets.only(bottom: 16),
+        child: Stack(
+          children: [
+            Container(
+              padding: EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: isEditable.value ? Colors.white : Colors.grey[200],
+                border: Border.all(color: Colors.grey.shade400),
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'มีประสบการณ์เลี้ยงสัตว์',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black87,
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          isEditable.value
+                              ? Icons.save_as_outlined
+                              : Icons.edit,
+                          color: isEditable.value
+                              ? const Color.fromARGB(255, 114, 171, 96)
+                              : Colors.grey,
+                        ),
+                        onPressed: () {
+                          isEditable.value = !isEditable.value;
+                          if (!isEditable.value) {
+                            // เมื่อกด save บันทึกค่าใหม่
+                            userUpdate.isHaveExperience = currentValue.value;
+                          }
+                        },
+                      ),
+                    ],
                   ),
-                  onChanged: onChanged,
-                )),
-          ),
-          IconButton(
-            icon: Icon(Icons.edit),
-            onPressed: () =>
-                isEditable.value = !isEditable.value, // กดเพื่อเปิด/ปิดการแก้ไข
-          ),
-        ],
-      ),
-    );
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Row(
+                          children: [
+                            Radio<bool>(
+                              value: true,
+                              groupValue: currentValue.value,
+                              onChanged: isEditable.value
+                                  ? (value) {
+                                      if (value != null) {
+                                        currentValue.value = value;
+                                      }
+                                    }
+                                  : null,
+                              activeColor:
+                                  const Color.fromARGB(255, 114, 171, 96),
+                            ),
+                            Text('มี'),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Row(
+                          children: [
+                            Radio<bool>(
+                              value: false,
+                              groupValue: currentValue.value,
+                              onChanged: isEditable.value
+                                  ? (value) {
+                                      if (value != null) {
+                                        currentValue.value = value;
+                                      }
+                                    }
+                                  : null,
+                              activeColor:
+                                  const Color.fromARGB(255, 114, 171, 96),
+                            ),
+                            Text('ไม่มี'),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    });
   }
 
-  // สร้างฟิลด์ตัวเลขที่มีไอคอนแก้ไขภายใน
+  Widget _buildEditableTextField(String label, String? initialValue,
+      Function(String) onChanged, RxBool isEditable) {
+    // ใช้ RxString เพื่อเก็บค่าระหว่างการแก้ไข
+    final editingValue = RxString(initialValue ?? '');
+    final textController = TextEditingController(text: initialValue);
+
+    return Obx(() {
+      return Padding(
+        padding: EdgeInsets.only(bottom: 16),
+        child: Stack(
+          children: [
+            TextField(
+              controller: textController,
+              enabled: isEditable.value,
+              decoration: InputDecoration(
+                labelText: label,
+                border: OutlineInputBorder(),
+                fillColor: isEditable.value ? Colors.white : Colors.grey[200],
+                filled: true,
+              ),
+              onChanged: (value) {
+                if (isEditable.value) {
+                  editingValue.value = value;
+                }
+              },
+            ),
+            Positioned(
+              right: 0,
+              child: IconButton(
+                icon: Icon(
+                  isEditable.value ? Icons.save_as_outlined : Icons.edit,
+                  color: isEditable.value
+                      ? const Color.fromARGB(255, 114, 171, 96)
+                      : Colors.grey,
+                ),
+                onPressed: () {
+                  isEditable.value = !isEditable.value;
+                  if (!isEditable.value) {
+                    // เมื่อกด save บันทึกค่าใหม่
+                    onChanged(editingValue.value);
+                  }
+                },
+              ),
+            ),
+          ],
+        ),
+      );
+    });
+  }
+
   Widget _buildEditableNumberField(String label, int? initialValue,
       Function(String) onChanged, RxBool isEditable) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: 16),
-      child: Row(
-        children: [
-          Expanded(
-            child: Obx(() => TextFormField(
-                  initialValue: initialValue?.toString(),
-                  enabled: isEditable.value,
-                  decoration: InputDecoration(
-                    labelText: label,
-                    border: OutlineInputBorder(),
-                  ),
-                  keyboardType: TextInputType.number,
-                  onChanged: onChanged,
-                )),
-          ),
-          IconButton(
-            icon: Icon(Icons.edit),
-            onPressed: () => isEditable.value = !isEditable.value,
-          ),
-        ],
-      ),
-    );
+    // ใช้ RxString เพื่อเก็บค่าระหว่างการแก้ไข
+    final editingValue = RxString(initialValue?.toString() ?? '');
+    final textController =
+        TextEditingController(text: initialValue?.toString());
+
+    return Obx(() {
+      return Padding(
+        padding: EdgeInsets.only(bottom: 16),
+        child: Stack(
+          children: [
+            TextField(
+              controller: textController,
+              enabled: isEditable.value,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                labelText: label,
+                border: OutlineInputBorder(),
+                fillColor: isEditable.value ? Colors.white : Colors.grey[200],
+                filled: true,
+              ),
+              onChanged: (value) {
+                if (isEditable.value) {
+                  editingValue.value = value;
+                }
+              },
+            ),
+            Positioned(
+              right: 0,
+              child: IconButton(
+                icon: Icon(
+                  isEditable.value ? Icons.save_as_outlined : Icons.edit,
+                  color: isEditable.value
+                      ? const Color.fromARGB(255, 114, 171, 96)
+                      : Colors.grey,
+                ),
+                onPressed: () {
+                  isEditable.value = !isEditable.value;
+                  if (!isEditable.value) {
+                    // เมื่อกด save บันทึกค่าใหม่
+                    onChanged(editingValue.value);
+                  }
+                },
+              ),
+            ),
+          ],
+        ),
+      );
+    });
   }
 }

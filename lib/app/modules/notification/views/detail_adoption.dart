@@ -93,11 +93,11 @@ class DetailAdoption extends GetView<NotificationController> {
       children: [
         _buildInfoRow('ชื่อ', user['name']),
         _buildInfoRow('อีเมล', user['email']),
-        _buildInfoRow('อายุ', user['age']?.toString()),
+        _buildInfoRow('อายุ', '${user['age'] ?? 'ไม่ระบุ'} ปี'),
         _buildInfoRow('เบอร์โทร', user['tel']),
         _buildInfoRow('อาชีพ', user['career']),
-        _buildInfoRow(
-            'จำนวนสมาชิกในครอบครัว', user['numOfFamMembers']?.toString()),
+        _buildInfoRow('จำนวนสมาชิกในครอบครัว',
+            '${user['numOfFamMembers'] ?? 'ไม่ระบุ'} คน'),
         _buildInfoRow('ประสบการณ์ในการเลี้ยงสัตว์',
             user['isHaveExperience'] == true ? "มี" : "ไม่มี"),
         _buildInfoRow('ขนาดที่อยู่อาศัย', user['sizeOfResidence']),
@@ -105,14 +105,34 @@ class DetailAdoption extends GetView<NotificationController> {
         _buildInfoRow('เวลาว่างต่อวัน', '${user['freeTimePerDay']} ชั่วโมง'),
         _buildInfoRow('รายได้ต่อเดือน', '${user['monthlyIncome']} บาท'),
         SizedBox(height: 16),
+        // เหตุผลในการรับเลี้ยง
         Text(
           'เหตุผลในการรับเลี้ยง:',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Colors.black87,
+          ),
         ),
         SizedBox(height: 8),
-        Text(reasonForAdoption?.isNotEmpty == true
-            ? reasonForAdoption!
-            : 'ไม่ระบุ'),
+        Container(
+          width: double.infinity,
+          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 26),
+          decoration: BoxDecoration(
+            color: const Color.fromARGB(255, 237, 237, 237),
+            borderRadius: BorderRadius.circular(4),
+            border: Border.all(color: Colors.grey.shade400),
+          ),
+          child: Text(
+            reasonForAdoption?.isNotEmpty == true
+                ? reasonForAdoption!
+                : 'ไม่ระบุ',
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.black87,
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -126,7 +146,7 @@ class DetailAdoption extends GetView<NotificationController> {
           label: Text('อนุมัติ'),
           style: ElevatedButton.styleFrom(
             foregroundColor: Colors.white,
-            backgroundColor: Colors.green,
+            backgroundColor: const Color.fromARGB(255, 112, 184, 114),
             padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           ),
           onPressed: () => _handleApprove(context, userName),
@@ -137,7 +157,7 @@ class DetailAdoption extends GetView<NotificationController> {
           label: Text('ไม่อนุมัติ'),
           style: ElevatedButton.styleFrom(
             foregroundColor: Colors.white,
-            backgroundColor: Colors.red,
+            backgroundColor: const Color.fromARGB(255, 214, 100, 92),
             padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           ),
           onPressed: () => _handleDeny(context, userName),
