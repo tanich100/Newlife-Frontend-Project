@@ -11,7 +11,7 @@ class ResultTextWidget extends StatelessWidget {
     // Retrieve the data passed from the previous page using ModalRoute
     final List<dynamic> filteredAllPets =
         ModalRoute.of(context)?.settings.arguments as List<dynamic>? ?? [];
-    final HomeController controller = Get.find<HomeController>();
+    final HomeController controller = Get.put(HomeController());
 
     return Builder(
       builder: (context) {
