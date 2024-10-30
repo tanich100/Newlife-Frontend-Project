@@ -25,7 +25,7 @@ class _ResultTextViewState extends State<ResultTextView> {
           ),
         ),
         // Single title for the AppBar
-        backgroundColor: const Color.fromARGB(255, 239, 190, 31),
+        backgroundColor: Color(0xfffdcf09),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back,
               color: Colors.black), // Custom back button icon

@@ -152,7 +152,7 @@ class _ImageSearchState extends State<ImageSearch> {
                   ),
                 ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFFFFD54F),
+                  backgroundColor: Color(0xfffdcf09),
                   padding: EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),

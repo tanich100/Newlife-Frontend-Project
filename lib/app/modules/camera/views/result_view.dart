@@ -31,7 +31,7 @@ class _ResultViewState extends State<ResultView> {
             Get.back();
           },
         ),
-        backgroundColor: Color.fromARGB(255, 239, 190, 31),
+        backgroundColor: Color(0xfffdcf09),
       ),
       body: Container(
         child: ResultWidget(),
