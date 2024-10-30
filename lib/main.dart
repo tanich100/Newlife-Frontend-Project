@@ -30,7 +30,7 @@ void main() async {
         return Theme(
           data: ThemeData(
             appBarTheme: AppBarTheme(
-              backgroundColor: Colors.white, // กำหนดสีพื้นหลังของ AppBar
+              backgroundColor: Colors.white,
             ),
             textTheme: GoogleFonts.notoSansThaiTextTheme(),
             scaffoldBackgroundColor: Colors.white,
