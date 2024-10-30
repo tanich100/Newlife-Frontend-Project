@@ -7,8 +7,16 @@ class DonateView extends StatelessWidget {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 238, 236, 224),
       appBar: AppBar(
-        title: Text('Donate'),
-        backgroundColor: Color.fromARGB(255, 236, 217, 79),
+        centerTitle: true,
+        title: Text(
+          'บริจาคเงินเพื่อสมทบทุน',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 22,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        backgroundColor: Color(0xFFFFD54F),
       ),
       body: ListView(
         children: [

@@ -105,7 +105,8 @@ class HomeView extends GetView<HomeController> {
           // adoptionPostApi.searchByText(_searchText);
           await imageSearchController.getTextSearch(_searchText);
         },
-        child: Icon(Icons.search), 
+        child: Icon(Icons.search),
+        backgroundColor: Color(0xfffdcf09),
         tooltip: 'Search Pets',
       ),
       bottomNavigationBar: CustomBottomNavBar(),

@@ -28,7 +28,16 @@ void main() async {
       theme: ThemeData(textTheme: GoogleFonts.notoSansThaiTextTheme()),
       builder: (context, child) {
         return Theme(
-          data: ThemeData(textTheme: GoogleFonts.notoSansThaiTextTheme()),
+          data: ThemeData(
+            appBarTheme: AppBarTheme(
+              backgroundColor: Colors.white, // กำหนดสีพื้นหลังของ AppBar
+            ),
+            textTheme: GoogleFonts.notoSansThaiTextTheme(),
+            scaffoldBackgroundColor: Colors.white,
+            progressIndicatorTheme: const ProgressIndicatorThemeData(
+              color: Color.fromARGB(255, 239, 190, 31),
+            ),
+          ),
           child: child!,
         );
       },

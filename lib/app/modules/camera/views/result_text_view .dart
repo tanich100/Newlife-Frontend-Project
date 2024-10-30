@@ -14,7 +14,7 @@ class _ResultTextViewState extends State<ResultTextView> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('ผลการค้นหาจากคำค้นหา'),
-        backgroundColor: Colors.yellow,
+        backgroundColor: Color.fromARGB(255, 239, 190, 31),
       ),
       body: Container(
         child: ResultTextWidget(),
