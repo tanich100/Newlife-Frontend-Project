@@ -119,16 +119,33 @@ class AdoptedHistoryView extends GetView<AdoptedHistoryController> {
                 height: 60,
                 child: request.adoptionPost?.image1 != null
                     ? Image.network(
-                        '${AppUrl.baseUrl}/AdoptionPost/getImage/${request.adoptionPost!.image1}',
+                        request.adoptionPost!.image1 ?? '',
                         fit: BoxFit.cover,
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return Center(
+                            child: CircularProgressIndicator(
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded /
+                                      loadingProgress.expectedTotalBytes!
+                                  : null,
+                            ),
+                          );
+                        },
                         errorBuilder: (context, error, stackTrace) {
                           print('Error loading image: $error');
-                          return Icon(Icons.pets, size: 30, color: Colors.grey);
+                          return Container(
+                            color: Colors.grey[200],
+                            child: Icon(Icons.pets,
+                                color: Colors.grey[400], size: 30),
+                          );
                         },
                       )
-                    : Icon(Icons.pets,
-                        size: 30,
-                        color: const Color.fromARGB(255, 255, 255, 255)),
+                    : Container(
+                        color: Colors.grey[200],
+                        child:
+                            Icon(Icons.pets, color: Colors.grey[400], size: 30),
+                      ),
               ),
             ),
             SizedBox(width: 16),
@@ -194,8 +211,8 @@ class AdoptedHistoryView extends GetView<AdoptedHistoryController> {
     return '${date.day}/${date.month}/${date.year}';
   }
 
-  Color _getStatusColor(String status) {
-    switch (status.toLowerCase()) {
+  Color _getStatusColor(String? status) {
+    switch (status?.toLowerCase()) {
       case 'waiting':
         return const Color.fromARGB(255, 243, 185, 99);
       case 'accepted':
@@ -209,8 +226,8 @@ class AdoptedHistoryView extends GetView<AdoptedHistoryController> {
     }
   }
 
-  String _getStatusText(String status) {
-    switch (status) {
+  String _getStatusText(String? status) {
+    switch (status?.toLowerCase()) {
       case 'waiting':
         return 'รอดำเนินการ';
       case 'accepted':
@@ -220,7 +237,7 @@ class AdoptedHistoryView extends GetView<AdoptedHistoryController> {
       case 'cancelled':
         return 'ยกเลิก';
       default:
-        return status;
+        return status ?? '';
     }
   }
 }
