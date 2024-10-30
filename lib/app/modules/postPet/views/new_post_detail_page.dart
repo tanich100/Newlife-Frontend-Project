@@ -195,42 +195,133 @@ class _PostPageDetailState extends State<NewPostPageDetail> {
                     ),
                     minimumSize: Size(double.infinity, 48),
                   ),
-                  onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      // บันทึกข้อมูลจากฟอร์มลงในโมเดล
-                      widget.selectedPost.name = _nameController.text;
-                      widget.selectedPost.age =
-                          int.tryParse(_ageController.text);
-                      widget.selectedPost.sex = controller.selectedSex.value;
-                      widget.selectedPost.isNeedAttention =
-                          _isSpecialCareSelected;
-                      widget.selectedPost.breedId =
-                          breedController.selectedBreedId;
-                      widget.selectedPost.provinceId =
-                          provinceController.selectedProvinceId;
-                      widget.selectedPost.districtId =
-                          districtController.selectedDistrictId;
-                      widget.selectedPost.subdistrictId =
-                          subDistrictController.selectedSubDistrictId;
-                      widget.selectedPost.addressDetails =
-                          _additionalAddressController.text;
+                  // onPressed: () async {
+                  //   if (_formKey.currentState!.validate()) {
+                  //     // บันทึกข้อมูลจากฟอร์มลงในโมเดล
+                  //     widget.selectedPost.name = _nameController.text;
 
-                      try {
-                        // เรียกใช้ฟังก์ชันเพื่อบันทึกข้อมูล
-                        await controller
-                            .createAdoptionPost(widget.selectedPost);
-                        Get.snackbar('สำเร็จ', 'โพสต์ถูกบันทึกเรียบร้อยแล้ว',
-                            snackPosition: SnackPosition.BOTTOM);
-                      } catch (e) {
-                        Get.snackbar(
-                            'เกิดข้อผิดพลาด', 'ไม่สามารถบันทึกโพสต์ได้',
-                            snackPosition: SnackPosition.BOTTOM);
-                      }
-                    } else {
-                      Get.snackbar('ข้อผิดพลาด', 'กรุณากรอกข้อมูลให้ครบถ้วน',
-                          snackPosition: SnackPosition.BOTTOM);
-                    }
-                  }),
+                  //     widget.selectedPost.age = int.tryParse(_ageController.text);
+                      
+                  //     widget.selectedPost.sex = controller.selectedSex.value;
+
+                  //     widget.selectedPost.isNeedAttention = _isSpecialCareSelected;
+
+                  //     widget.selectedPost.breedId = breedController.selectedBreedId;
+
+                  //     widget.selectedPost.provinceId = provinceController.selectedProvinceId;
+
+                  //     widget.selectedPost.districtId = districtController.selectedDistrictId;
+
+                  //     widget.selectedPost.subdistrictId = subDistrictController.selectedSubDistrictId;
+
+                  //     widget.selectedPost.addressDetails = _additionalAddressController.text;
+                  //     try {
+                  //       // เรียกใช้ฟังก์ชันเพื่อบันทึกข้อมูล
+                  //       await controller
+                  //           .createAdoptionPost(widget.selectedPost);
+                  //       Get.snackbar('สำเร็จ', 'โพสต์ถูกบันทึกเรียบร้อยแล้ว',
+                  //           snackPosition: SnackPosition.BOTTOM);
+                  //     } catch (e) {
+                  //       Get.snackbar(
+                  //           'เกิดข้อผิดพลาด', 'ไม่สามารถบันทึกโพสต์ได้',
+                  //           snackPosition: SnackPosition.BOTTOM);
+                  //     }
+                  //   } else {
+                  //     Get.snackbar('ข้อผิดพลาด', 'กรุณากรอกข้อมูลให้ครบถ้วน',
+                  //         snackPosition: SnackPosition.BOTTOM);
+                  //   }
+                  // }
+                  onPressed: () async {
+    // เพิ่ม logging ก่อนการ validate
+    print('=== Testing Post Button ===');
+    print('Form Key: ${_formKey.currentState}');
+
+    if (_formKey.currentState!.validate()) {
+      // Log ข้อมูลที่จะบันทึก
+      print('=== Form Data ===');
+      print('''
+      Name: ${_nameController.text}
+      Age: ${_ageController.text}
+      Sex: ${controller.selectedSex.value}
+      Special Care: $_isSpecialCareSelected
+      Breed ID: ${breedController.selectedBreedId}
+      Province ID: ${provinceController.selectedProvinceId}
+      District ID: ${districtController.selectedDistrictId}
+      Subdistrict ID: ${subDistrictController.selectedSubDistrictId}
+      Address Details: ${_additionalAddressController.text}
+      Selected Images: ${widget.selectedImages.length} images
+      ''');
+
+      try {
+        // บันทึกข้อมูลจากฟอร์มลงในโมเดล
+        print('=== Updating Post Model ===');
+        
+        widget.selectedPost.name = _nameController.text;
+        print('Set name: ${widget.selectedPost.name}');
+
+        widget.selectedPost.age = int.tryParse(_ageController.text);
+        print('Set age: ${widget.selectedPost.age}');
+        
+        widget.selectedPost.sex = controller.selectedSex.value;
+        print('Set sex: ${widget.selectedPost.sex}');
+
+        widget.selectedPost.isNeedAttention = _isSpecialCareSelected;
+        print('Set special care: ${widget.selectedPost.isNeedAttention}');
+
+        widget.selectedPost.breedId = breedController.selectedBreedId;
+        print('Set breed ID: ${widget.selectedPost.breedId}');
+
+        widget.selectedPost.provinceId = provinceController.selectedProvinceId;
+        print('Set province ID: ${widget.selectedPost.provinceId}');
+
+        widget.selectedPost.districtId = districtController.selectedDistrictId;
+        print('Set district ID: ${widget.selectedPost.districtId}');
+
+        widget.selectedPost.subdistrictId = subDistrictController.selectedSubDistrictId;
+        print('Set subdistrict ID: ${widget.selectedPost.subdistrictId}');
+
+        widget.selectedPost.addressDetails = _additionalAddressController.text;
+        print('Set address details: ${widget.selectedPost.addressDetails}');
+
+        // Log final post data
+        print('=== Final Post Data ===');
+        print('Post to JSON: ${widget.selectedPost.toJson()}');
+
+        // เรียกใช้ controller เพื่อสร้างโพสต์
+        print('Calling createAdoptionPost...');
+        await controller.createAdoptionPost(widget.selectedPost);
+        
+        print('Post created successfully');
+        Get.snackbar(
+          'สำเร็จ', 
+          'โพสต์ถูกบันทึกเรียบร้อยแล้ว',
+          snackPosition: SnackPosition.BOTTOM,
+          duration: Duration(seconds: 3)
+        );
+        
+      } catch (e) {
+        print('=== Error Creating Post ===');
+        print('Error type: ${e.runtimeType}');
+        print('Error details: $e');
+        
+        Get.snackbar(
+          'เกิดข้อผิดพลาด', 
+          'ไม่สามารถบันทึกโพสต์ได้: ${e.toString()}',
+          snackPosition: SnackPosition.BOTTOM,
+          duration: Duration(seconds: 5)
+        );
+      }
+    } else {
+      print('=== Form Validation Failed ===');
+      Get.snackbar(
+        'ข้อผิดพลาด', 
+        'กรุณากรอกข้อมูลให้ครบถ้วน',
+        snackPosition: SnackPosition.BOTTOM
+      );
+    }
+  }
+),
+                
             ),
           ],
         ),

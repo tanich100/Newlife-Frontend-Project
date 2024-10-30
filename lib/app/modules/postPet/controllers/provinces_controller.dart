@@ -19,7 +19,7 @@ class ProvinceController extends GetxController {
       // isLoadingProvinces.value = true;
       provinces.value = await _provinceApi.getAllProvinces();
     } catch (e) {
-      print('Error fetching provinces: $e');
+      // print('Error fetching provinces: $e');
       // Handle error as needed
     } finally { 
       // isLoadingProvinces.value = false;

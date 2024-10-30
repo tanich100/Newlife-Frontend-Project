@@ -227,10 +227,11 @@ class NewPostPage extends StatelessWidget {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     controller.createPost(
-                      postType, // ต้องกำหนดค่า postType
+                      postType,
                       _descriptionController.text,
                       _phoneController.text,
                       _lineIdController.text,
+                      controller.selectedImages.toList(),
                     ); // เรียกใช้ฟังก์ชันสร้างโพสต์
                   }
                 },

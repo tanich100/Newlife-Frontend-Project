@@ -27,6 +27,7 @@ class AdoptionPost {
   DateTime? createAt;
   DateTime? updateAt;
   DateTime? deleteAt;
+  List<String> imageFileNames;
 
   AdoptionPost({
     this.adoptionPostId,
@@ -46,7 +47,7 @@ class AdoptionPost {
     this.breedId,
     this.age,
     this.sex,
-    this.isNeedAttention, 
+    this.isNeedAttention,
     this.description,
     this.provinceId,
     this.districtId,
@@ -57,12 +58,14 @@ class AdoptionPost {
     this.createAt,
     this.updateAt,
     this.deleteAt,
+    this.imageFileNames = const [],
   });
 
   factory AdoptionPost.fromJson(Map<String, dynamic> json) {
     return AdoptionPost(
       adoptionPostId: json['adoption_post_id'] ?? json['adoptionPostId'],
       userId: json['user_id'] ?? json['userId'],
+      imageFileNames: List<String>.from(json['image_file_names'] ?? []),
       image1: json['image_1'] ?? json['image1'],
       image2: json['image_2'] ?? json['image2'],
       image3: json['image_3'] ?? json['image3'],
@@ -105,35 +108,37 @@ class AdoptionPost {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'adoption_post_id': adoptionPostId,
-      'user_id': userId,
-      'image_1': image1,
-      'image_2': image2,
-      'image_3': image3,
-      'image_4': image4,
-      'image_5': image5,
-      'image_6': image6,
-      'image_7': image7,
-      'image_8': image8,
-      'image_9': image9,
-      'image_10': image10,
-      'name': name,
-      'tel': tel,
-      'breed_id': breedId,
-      'age': age,
-      'sex': sex,
-      'is_need_attention': isNeedAttention,
-      'description': description,
-      'province_id': provinceId,
-      'district_id': districtId,
-      'subdistrict_id': subdistrictId,
-      'address_details': addressDetails,
-      'adoption_status': adoptionStatus,
-      'post_status': postStatus,
-      'create_at': createAt?.toIso8601String(),
-      'update_at': updateAt?.toIso8601String(),
-      'delete_at': deleteAt?.toIso8601String(),
+    final data = {
+      'adoptionPostId': adoptionPostId ?? 1,
+      'userId': userId ?? 61, // ต้องปรับให้เหมาะสม
+      'name': name ?? "test",
+      'tel': tel ?? null,
+      'breedId': breedId ?? null,
+      'age': age ?? null,
+      'sex': sex ?? "M",
+      'isNeedAttention': isNeedAttention ?? null,
+      'description': description ?? "testdescription",
+      'provinceId': provinceId ?? null,
+      'districtId': districtId ?? null,
+      'subdistrictId': subdistrictId ?? null,
+      'addressDetails': addressDetails ?? "addressDetails",
+      'adoptionStatus': adoptionStatus ?? "pending",         // ต้องปรับให้เหมาะสม
+      'postStatus': postStatus ?? "active",
+      'createAt': createAt?.toIso8601String(),
+      'updateAt': updateAt?.toIso8601String(),
+      'deleteAt': deleteAt?.toIso8601String(),
     };
+
+    // เพิ่มชื่อไฟล์รูปภาพลงใน image1 ถึง image10 ตามลำดับ
+    for (int i = 0; i < imageFileNames.length; i++) {
+      data['Image${i + 1}'] = imageFileNames[i];
+    }
+
+    // กรณีที่ไม่มีข้อมูลรูปภาพให้ตั้งค่าเป็น null
+    for (int i = imageFileNames.length; i < 10; i++) {
+      data['Image${i + 1}'] = null;
+    }
+
+    return data;
   }
 }

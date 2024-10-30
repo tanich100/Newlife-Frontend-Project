@@ -22,7 +22,7 @@ class SubDistrictController extends GetxController {
       subDistricts.value = await _subDistrictApi.getAllSubDistricts();
       filteredSubDistricts.value = subDistricts;
     } catch (e) {
-      print('Error fetching sub-districts: $e');
+      // print('Error fetching sub-districts: $e');
       // Handle error as needed
     } finally {
       // isLoadingSubDistricts.value = false;

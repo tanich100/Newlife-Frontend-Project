@@ -18,7 +18,7 @@ class DistrictController extends GetxController {
       // isLoadingDistricts.value = true;
       districts.value = await _districtApi.getAllDistricts();
     } catch (e) {
-      print('Error fetching districts: $e');
+      // print('Error fetching districts: $e');
       // Handle error as needed
     } finally {
       // isLoadingDistricts.value = false;

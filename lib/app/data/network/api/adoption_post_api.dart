@@ -6,6 +6,9 @@ import 'package:newlife_app/app/data/network/services/api_service.dart';
 import '../../../constants/app_url.dart';
 import '../../models/adoption_post_model.dart';
 import '../services/api_image_service.dart';
+import 'package:logger/logger.dart';
+
+final Logger logger = Logger();
 
 class AdoptionPostApi {
   final ApiService _apiService = ApiService();
@@ -162,32 +165,63 @@ class AdoptionPostApi {
   }
 
   Future<void> uploadImage(int postId, File image) async {
-  try {
-    String fileName = image.path.split('/').last;
-    FormData formData = FormData.fromMap({
-      'image': await MultipartFile.fromFile(image.path, filename: fileName),
-    });
-    await _apiService.post('${AppUrl.adoptionPosts}/$postId/upload', data: formData);
-  } catch (e) {
-    print('Error uploading image: $e');
-    rethrow;
-  }
-}
-
-  Future<AdoptionPost> createPost(AdoptionPost post) async {
     try {
-      final response = await _apiService
-          .post('${AppUrl.adoptionPosts}/SavePost', data: post.toJson());
-      if (response.statusCode == 200) {
-        return AdoptionPost.fromJson(response.data);
-      } else {
-        throw Exception('Failed to create post: ${response.statusMessage}');
-      }
+      String fileName = image.path.split('/').last;
+      FormData formData = FormData.fromMap({
+        'image': await MultipartFile.fromFile(image.path, filename: fileName),
+      });
+      await _apiService.post('${AppUrl.adoptionPosts}/$postId/upload',
+          data: formData);
     } catch (e) {
-      print('Error in createPost: $e');
+      print('Error uploading image: $e');
       rethrow;
     }
   }
+
+  // Future<AdoptionPost> createPost(AdoptionPost post) async {
+  //   try {
+  //     logger.i('ข้อมูลที่ส่งไปยังเซิร์ฟเวอร์นะ: ${post.toJson()}');
+
+  //     final response = await _apiService
+  //         .post('${AppUrl.adoptionPosts}/SavePost', data: post.toJson());
+
+  //     // ตรวจสอบสถานะการตอบกลับ
+  //     if (response.statusCode == 200) {
+  //       logger.i('สร้างโพสต์สำเร็จ: ${response.data}');
+  //       // อัปเดต post ตามข้อมูลที่ได้รับ
+  //       return AdoptionPost.fromJson(response.data);
+  //     } else {
+  //       logger.e(
+  //           'ไม่สามารถสร้างโพสต์ได้: ${response.statusMessage}'); // บันทึกสถานะ
+  //       throw Exception('ไม่สามารถสร้างโพสต์ได้: ${response.statusMessage}');
+  //     }
+  //   } catch (e) {
+  //     logger.e('เกิดข้อผิดพลาดใน createPost: $e');
+  //     rethrow; // ส่งข้อผิดพลาดกลับไป
+  //   }
+  // }
+
+Future<AdoptionPost> createPost(AdoptionPost post) async {
+  try {
+    logger.i('ข้อมูลที่ส่งไปยังเซิร์ฟเวอร์นะ: ${post.toJson()}');
+
+    final response = await _apiService.post(
+      '${AppUrl.adoptionPosts}/SavePost', 
+      data: post.toJson()
+    );
+
+    if (response.statusCode == 200) {
+      logger.i('สร้างโพสต์สำเร็จ: ${response.data}');
+      return AdoptionPost.fromJson(response.data);
+    } else {
+      logger.e('ไม่สามารถสร้างโพสต์ได้: ${response.statusMessage}');
+      throw Exception('ไม่สามารถสร้างโพสต์ได้: ${response.statusMessage}');
+    }
+  } catch (e) {
+    logger.e('เกิดข้อผิดพลาดใน createPost: $e');
+    rethrow;
+  }
+}
 
   Future<AdoptionPost> updatePost(int id, AdoptionPost post) async {
     try {
