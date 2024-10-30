@@ -25,107 +25,152 @@ class _ImageSearchState extends State<ImageSearch> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Center(child: const Text('ค้นหาด้วยภาพ')),
+        centerTitle: true,
+        title: const Text(
+          'ค้นหาด้วยภาพ',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        elevation: 0,
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Center(
-              child: Image.file(
-                File(widget.imagePath),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                  child: _buildRadioListTile(
-                      title: 'สุนัข',
-                      value: 'dog',
-                      icon: Icons.pets,
-                      groupValue: _petType,
-                      onChanged: (value) {
-                        setState(() {
-                          _petType = value;
-                        });
-                      })),
-              Expanded(
-                  child: _buildRadioListTile(
-                      title: 'แมว',
-                      value: 'cat',
-                      icon: Icons.pets,
-                      groupValue: _petType,
-                      onChanged: (value) {
-                        setState(() {
-                          _petType = value;
-                        });
-                      })),
-            ],
-          ),
-          _buildRadioListTile(
-            title: 'ประกาศหาผู้รับเลี้ยง',
-            value: 'adopt_request',
-            icon: Icons.favorite_border,
-            groupValue: _announcementType,
-            onChanged: (value) {
-              setState(() {
-                _announcementType = value;
-              });
-            },
-          ),
-          _buildRadioListTile(
-            title: 'ประกาศตามหาเจ้าของสัตว์เลี้ยง',
-            value: 'find_owner',
-            icon: Icons.person_outline,
-            groupValue: _announcementType,
-            onChanged: (value) {
-              setState(() {
-                _announcementType = value;
-              });
-            },
-          ),
-          _buildRadioListTile(
-            title: 'ประกาศตามหาสัตว์หาย',
-            value: 'lost_pet',
-            icon: Icons.pets,
-            groupValue: _announcementType,
-            onChanged: (value) {
-              setState(() {
-                _announcementType = value;
-              });
-            },
-          ),
-          Container(
-            width: double.infinity,
-            child: ElevatedButton(
-              child: const Text('ค้นหาด้วยภาพ',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16)),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFFFFD54F),
-                padding: EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+                child: Center(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16.0),
+                child: Image.file(
+                  File(widget.imagePath),
+                  fit: BoxFit.cover,
                 ),
               ),
-              onPressed: (() {
-                if (_petType != null) {
-                  imageSearchController.getImageSearch(
-                      _petType!, File(widget.imagePath));
-                } else {
-                  Get.snackbar('Error', 'Please select a pet type.');
-                }
-              }),
+            )),
+            SizedBox(height: 20),
+            Text(
+              'ประเภทของสัตว์เลี้ยง',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
             ),
-          ),
-          SizedBox(
-            height: 30,
-          )
-        ],
+            SizedBox(height: 5),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: _buildRadioListTile(
+                    title: 'สุนัข',
+                    value: 'dog',
+                    icon: Icons.pets,
+                    groupValue: _petType,
+                    onChanged: (value) {
+                      setState(() {
+                        _petType = value;
+                      });
+                    },
+                  ),
+                ),
+                SizedBox(width: 10),
+                Expanded(
+                  child: _buildRadioListTile(
+                    title: 'แมว',
+                    value: 'cat',
+                    icon: Icons.pets,
+                    groupValue: _petType,
+                    onChanged: (value) {
+                      setState(() {
+                        _petType = value;
+                      });
+                    },
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 10),
+            Text(
+              'ประเภทของโพสต์',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
+            SizedBox(height: 5),
+            _buildRadioListTile(
+              title: 'ประกาศหาผู้รับเลี้ยง',
+              value: 'adopt_request',
+              icon: Icons.favorite_border,
+              groupValue: _announcementType,
+              onChanged: (value) {
+                setState(() {
+                  _announcementType = value;
+                });
+              },
+            ),
+            SizedBox(height: 10),
+            _buildRadioListTile(
+              title: 'ประกาศตามหาเจ้าของสัตว์เลี้ยง',
+              value: 'find_owner',
+              icon: Icons.person_outline,
+              groupValue: _announcementType,
+              onChanged: (value) {
+                setState(() {
+                  _announcementType = value;
+                });
+              },
+            ),
+            SizedBox(height: 10),
+            _buildRadioListTile(
+              title: 'ประกาศตามหาสัตว์หาย',
+              value: 'lost_pet',
+              icon: Icons.pets,
+              groupValue: _announcementType,
+              onChanged: (value) {
+                setState(() {
+                  _announcementType = value;
+                });
+              },
+            ),
+            SizedBox(height: 20),
+            Container(
+              width: double.infinity,
+              child: ElevatedButton(
+                child: const Text(
+                  'ค้นหาด้วยภาพ',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFFFFD54F),
+                  padding: EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                onPressed: () {
+                  if (_petType != null) {
+                    imageSearchController.getImageSearch(
+                        _petType!, File(widget.imagePath));
+                  } else {
+                    Get.snackbar('Error', 'Please select a pet type.');
+                  }
+                },
+              ),
+            ),
+            SizedBox(height: 30),
+          ],
+        ),
       ),
     );
   }
