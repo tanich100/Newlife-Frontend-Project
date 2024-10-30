@@ -17,7 +17,7 @@ class _ResultTextViewState extends State<ResultTextView> {
         title: const Text('ผลการค้นหาจากคำค้นหา'), // Single title for the AppBar
         backgroundColor: const Color.fromARGB(255, 239, 190, 31),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white), // Custom back button icon
+          icon: const Icon(Icons.arrow_back, color: Colors.black), // Custom back button icon
           onPressed: () async {
             // Get.toNamed('/home'); 
             Get.back();
